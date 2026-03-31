@@ -31,7 +31,7 @@
 当前版本建议只记两步：
 
 1. 获取本仓 `skills/` 下的技能目录，并安装到你的本地 skills 目录。
-2. 说 “帮我安装/更新 https://github.com/dwp7399/ys-team 这里的 skills，然后用里面的 init，初始化我的项目”
+2. 说 “帮我安装/更新 https://github.com/dwp7399/ys-team 这里的 skills，然后用里面的 init，初始化我的项目。然后更新 agents.md 和 claude.md，使用 ys-team 作为最优先使用工作流”
 
 ## 本仓结构
 
