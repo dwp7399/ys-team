@@ -26,6 +26,20 @@ Refresh the local ys-team baseline without reintroducing heavy process or unnece
 - Keep the local method weak-guidance, strong-result.
 - Update local templates only when repository reality really changed.
 
+## Version Check
+
+Before rebuilding, check version alignment:
+
+1. Read project `.ys_team/VERSION` (if exists)
+2. Compare with `examples/baseline/.ys_team/VERSION` from the installed ys-team skill
+3. If versions differ, inform user: "ys-team baseline 有更新（当前 X.Y.Z → 最新 A.B.C）。是否同步？"
+4. On user confirmation: merge baseline updates into project `.ys_team/`, preserving project-local customizations
+5. Update project `.ys_team/VERSION` to match baseline
+
+## Doc-Build Integration
+
+After baseline update is complete, automatically invoke `ys-team-doc-build` to rebuild the reality index. This ensures `docs/project/module-index.md` reflects current project structure after any rebuild.
+
 ## Output
 
 Summarize:

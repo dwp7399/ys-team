@@ -39,6 +39,8 @@ Generate or adapt:
 
 When the repository lacks a current-state project doc, create a minimal `docs/project/overview.md` skeleton.
 
+If the repository does not have an `AGENTS.md`, generate one from `examples/baseline/AGENTS.md`, adapted to the project's name and stack.
+
 ## Language Sensitivity
 
 The method is language-agnostic, but local wording should match project reality.
@@ -64,3 +66,5 @@ That means:
 - Treat `examples/baseline/` as the default workflow source, not as a rigid project copy.
 - Do not rerun init for normal project work.
 - Use `ys-team-rebuild` only when project reality has materially changed.
+
+After `.ys_team/` is generated, automatically invoke `ys-team-doc-build` to create the initial reality index (`docs/project/module-index.md`). This is required — the shared reality index is part of the minimum useful baseline.

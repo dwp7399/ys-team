@@ -1,23 +1,119 @@
 ---
 name: ys-team-spec-talk
-description: "Silent internal spec discussion capability. Use repository-local ys-team guidance to turn non-trivial work into control/work specs or refine existing specs."
+description: Discuss a non-trivial change using the repository's local .ys_team setup, load only the selected local role files, escalate to additional roles when needed, and output specs or roadmaps only when the current objective actually requires them.
 ---
 
 # ys-team-spec-talk
 
-This is a silent internal skill.
+Use this skill to discuss a non-trivial change using project-local team guidance.
 
-Use it when discussion has reached the point where the repository needs spec output.
+## Read Order
 
-## Purpose
+1. `.ys_team/README.md`
+2. `.ys_team/team.md`
+3. `.ys_team/methods.md` if present
+4. `.ys_team/policy.md`
+5. repository project/docs context
+6. relevant active or queued specs or roadmaps if the task extends existing work
 
-- decide whether the current objective needs spec output
-- create or refine control/work specs using local templates
-- keep discussion digest, role brief, and acceptance logic tied to repository reality
+## Loading Discipline
 
-## Rules
+- Start by reading only the short header block of candidate role files.
+- Load full role files only for roles that actually participate.
+- Do not retain or write full discussion transcripts.
 
-- read local `.ys_team/` and relevant project docs first
-- write spec to `docs/specs/`
-- keep spec executable, not aspirational
-- include verification, evidence, risks, and rollback when relevant
+## Intent First
+
+Do not assume every discussion should immediately draft a spec.
+
+Before selecting the exact path, infer from the conversation:
+
+- what object is being discussed now
+- what the current objective is
+- whether the current blocker is clarity, execution readiness, missing evidence, missing expertise, or something else
+
+If that is materially unclear, ask a concise clarification before continuing.
+
+## Output Routing
+
+- initiative-level executable acceptance work -> `docs/specs/`
+- stage or directional planning -> `docs/roadmap/`
+- discussion-only clarification -> no required repo artifact unless the user asked for one
+
+## Standard Flow
+
+1. Select the default discussion team from `.ys_team/team.md` unless the local method says otherwise.
+2. Run one internal discussion round using the selected roles.
+3. Identify risks, disagreements, capability gaps, and whether the current objective requires a spec, a roadmap, a revision to an existing artifact, or no file output.
+4. After each round, check whether the discussion is still converging (see `.ys_team/methods.md` Discussion Cost Awareness). If warning signs appear, prefer to stop and emit a result card rather than silently entering another round.
+5. If a gap exists and an external role may be needed, stop and produce an external support request instead of introducing that role immediately.
+6. Ask the user before introducing an external role.
+7. Only after approval, load the external role and continue the next round.
+8. Assign one participating role with `discussion.report` responsibility to write the final summary.
+9. If the current objective requires repository output, write it using `.ys_team/templates/control.md` and `.ys_team/templates/work.md` for specs, or `.ys_team/templates/roadmap-version.md` for roadmaps.
+
+## Required Discussion Result
+
+Every substantial discussion round must end with a result card for the user. Light discussion should still return a compact result card and role brief.
+
+Required fields:
+
+- `Current Mode`
+- `Decision`: `PASS`, `BLOCKED`, or `REJECT`
+- `Current State`
+- `Why`
+- `Needed Changes`
+- `Next Step`
+
+Optional fields when needed:
+
+- `Need Your Input`
+- `External Support Request`
+
+Also include a short `Role Brief` section that summarizes each participating role's current conclusion in one or two lines. User-facing role names should prefer repository-local Chinese titles when available; otherwise use a readable fallback such as `中文标题（role-id）` or `role-id`.
+
+Do not end with a vague recap.
+
+## Required Additions For Written Specs Or Roadmaps
+
+Every generated or updated spec should include:
+
+- `Collaboration Summary`
+- `Discussion Digest`
+
+Every generated or updated roadmap should include role participation and final conclusion summary consistent with the roadmap template.
+
+These sections should summarize:
+
+- which roles participated
+- the user-facing role titles when available
+- how many rounds were used
+- what escalations happened
+- estimated discussion cost
+- whether `ys-team-submit` is recommended for delivery review
+- each role's final contribution, not a transcript
+
+## Host Summary
+
+After writing or updating the target document (or concluding a discussion-only round), close the response with a **[主持人]** summary block. This block is mandatory — it is the visible signal that ys-team workflow ran.
+
+Format:
+
+```
+---
+**[主持人]** ys-team · spec-talk
+
+[1–2 sentences describing what was decided or produced.]
+
+- 参与角色：[localized role titles, comma-separated]
+- 决策：PASS / BLOCKED / REJECT
+- 产出：[artifact path, e.g. docs/specs/active/xxx/control.md, or "无文件输出"]
+- 下一步：[one concrete next action]
+---
+```
+
+Rules:
+- Use repository-local localized role titles when available; otherwise use readable fallback.
+- Keep the block to 5–7 lines. Do not expand into a full recap.
+- If the discussion was BLOCKED or REJECT, the 下一步 line must state what is needed to unblock.
+- Do not omit this block even for discussion-only rounds with no file output.

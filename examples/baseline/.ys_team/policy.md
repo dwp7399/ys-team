@@ -16,6 +16,16 @@
 - 哪些文档承载 roadmap / spec
 - 哪些文档是代码变化后必须同步更新的权威来源
 
+## Reality Index
+
+现实索引（`docs/project/module-index.md`）是 AI 团队各角色对项目模块现实达成共识的基础设施。
+
+- **承载内容**：模块划分、业务职责摘要（2–3 句）、模块间依赖关系
+- **维护时机**：模块新增、模块职责重大变化、模块间依赖关系变化时更新
+- **维护方式**：运行 `ys-team-doc-build`（`ys-team-rebuild` 时自动调用）
+- **使用时机**：control 阶段快速判断影响范围；work 阶段 Write-Scope 语义对齐；evidence 阶段生成验收检查点
+- **读取优先**：在讨论改动前，先读索引，再决定是否需要深入代码
+
 ## Documentation Sync Rules
 
 项目应定义：
