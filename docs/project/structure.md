@@ -8,7 +8,7 @@
 - `.ys_team/`
   - 本仓自用的 ys-team 本地工作流基线
 - `docs/project/`
-  - 仓库现状、结构和方法论说明
+  - 仓库现状、结构、方法论说明和 module index
 - `docs/specs/`
   - 本仓后续演进 spec
 - `docs/roadmap/`

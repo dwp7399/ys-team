@@ -20,6 +20,7 @@
 - `ys-team-init` 初始化 skill
 - `ys-team-rebuild` 重建 skill
 - 一组支撑 discussion / spec / work / acceptance 的静默内部 skills
+- 一份供本仓和下游项目共用的 baseline version / reality index 约束
 - 本仓自用的 `.ys_team/` 配置
 - 一份记录后续产品化方向的 queued spec
 
@@ -53,6 +54,7 @@
 
 - `ys-team` 提供方法论和公开入口
 - `examples/baseline/` 承载默认工作流骨架
+- `.ys_team/` 作为方法仓自用本地基线，并显式对齐 baseline version
 - `ys-team-init` 把 baseline 按项目现实落到本地
 - 静默内部 skills 支撑 discussion、spec、work、status、submit 等能力
 

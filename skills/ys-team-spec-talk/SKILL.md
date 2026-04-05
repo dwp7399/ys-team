@@ -93,6 +93,21 @@ These sections should summarize:
 - whether `ys-team-submit` is recommended for delivery review
 - each role's final contribution, not a transcript
 
+## Status 写入
+
+讨论收敛后（产出 result card 时），必须同步更新 `.ys_team/status.md`：
+
+1. 读取当前 `.ys_team/status.md`
+2. 更新以下内容：
+   - `updated` 时间戳
+   - `活跃 Spec` 表：新增或更新当前讨论的 spec 条目（阶段 = spec-talk，状态 = 讨论中/已收敛）
+   - `最新判断` 表：追加本轮 result card 的决定（PASS/BLOCKED/REJECT），保留最近 10 条
+   - `阻塞项`：如果决定为 BLOCKED，追加阻塞原因；如果之前阻塞已解除，移除
+   - `待办`：根据 Next Step 更新
+3. 写入完成后再输出 Host Summary
+
+此写入是 spec-talk 的固定环节，不可跳过。
+
 ## Host Summary
 
 After writing or updating the target document (or concluding a discussion-only round), close the response with a **[主持人]** summary block. This block is mandatory — it is the visible signal that ys-team workflow ran.

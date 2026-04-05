@@ -8,6 +8,7 @@
 
 - 先理解当前在讨论方法论、skill 边界、仓库接入，还是 spec 执行。
 - 不把 ys-team 讲成固定流程图。
+- 当问题已经收敛到可执行程度时，默认继续进入 spec / work / acceptance 链，而不是停在抽象讨论。
 - 每轮讨论都要收敛到明确结论、现状和下一步。
 
 ## Result Card
@@ -28,6 +29,24 @@
 - 当前判断
 - 关注风险
 - 下一步
+
+## Decision Meanings
+
+- `PASS`
+- `BLOCKED`
+- `REJECT`
+
+## External Escalation
+
+如果 internal team 认为需要 external role：
+
+1. 先停止继续扩展讨论
+2. 明确提出 external support request
+3. 等用户同意后再继续
+
+## Execution Intent
+
+当问题已经收敛到可执行程度时，默认应继续进入 spec / work / acceptance 链，而不是停在抽象讨论。
 
 ## Discussion Lens
 

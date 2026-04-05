@@ -60,6 +60,83 @@ That means:
 - spec can guide execution
 - execution can be accepted with evidence
 
+## 工具内化（Toolbox Internalization）
+
+基础 init 完成后，自动执行工具内化流程：
+
+### 步骤
+
+1. **创建 toolbox 目录**：从 `examples/baseline/.ys_team/toolbox/` 复制模板（`_sources.md`、`_candidates.md`）
+
+2. **扫描项目类型**：根据仓库中的文件特征判断项目类型：
+   - `requirements.txt` / `pyproject.toml` / `setup.py` → python-backend
+   - `pom.xml` / `build.gradle` → java-backend
+   - `package.json` + React 依赖 → frontend-react
+   - 前后端都有 → fullstack
+   - 无法判断 → general
+
+3. **匹配 registry 推荐**：读取 `registry/{项目类型}.md` + `registry/general.md`，合并推荐列表
+
+4. **检索与安装**：
+   - 对推荐列表中的每个工具，检查是否已安装
+   - 已安装的：直接进入内化流程
+   - 未安装但有明确来源的：静默安装后内化
+   - 如果用户安装了 `find-skills` 等检索工具，额外根据项目特征搜索适合的 skill，和用户确认后安装
+
+5. **选择性内化**：对每个选中的工具：
+   - 阅读原 skill 内容
+   - 提取对团队有用的部分（不是完整复制）
+   - 改写成符合 ys-team 方法论的格式
+   - 保留源链接（skill 名、版本、URL）
+   - 写入 `.ys_team/toolbox/{能力名}.md`
+
+6. **角色绑定**：根据推荐的绑定角色建议，更新 `team.md` 中对应角色的 `tools` 字段
+
+7. **更新源索引**：将所有内化工具记录到 `.ys_team/toolbox/_sources.md`
+
+### 内化文件格式
+
+```markdown
+# [能力名称]
+
+source: [原 skill 全名]
+source_url: [GitHub 或 marketplace 地址]
+version: [内化时的版本]
+internalized: [日期]
+
+## 团队用法
+
+[改写后的、融入团队方法论的能力描述]
+
+## 绑定角色
+
+- [角色名]（[使用场景]）
+
+## 重新内化触发条件
+
+[什么情况下应该回到原 skill 重新学习]
+```
+
+### 完成提示
+
+```
+团队基础配置已完成，已内化 N 个工具。
+如需调整工具配置，可运行 /ys-team-rebuild。
+```
+
+## Status 初始化
+
+Init 时从 `examples/baseline/.ys_team/status.md` 复制空模板到项目的 `.ys_team/status.md`。
+
+提示用户可选配置 hooks 以增强状态追踪：
+
+```
+团队状态追踪已初始化（.ys_team/status.md）。
+各工作流环节会在关键节点自动更新状态。
+
+如需更细粒度的事件采集（文件变更、session 等），可参考 scripts/hooks-template.json 配置 Claude Code hooks。
+```
+
 ## After Init
 
 - Use the generated local `.ys_team/` as the project's baseline.
