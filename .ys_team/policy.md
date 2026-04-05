@@ -44,3 +44,12 @@
 - `phase` 使用 `queued`、`active`、`completed`、`cancelled`
 - evidence 放在 initiative 目录下的 `evidence/`
 - 验收必须包含可复核证据
+
+## 并行策略
+
+```yaml
+spec_parallel: false      # 多个不相关 spec 可同时执行
+role_parallel: false       # 同一 spec 内多角色可并行工作
+```
+
+当前项目为方法论仓库，规模较小，暂不启用并行。待团队工作流稳定后可在 rebuild 时开启。
