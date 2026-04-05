@@ -16,6 +16,20 @@ It is a one-time repository specialization step.
 
 Its default workflow source is `examples/baseline/`.
 
+## 语言检测
+
+Init 的第一步是确认用户主语言，所有角色名、角色卡、team.md、selection rules 将使用该语言。
+
+检测逻辑：
+1. 检查用户 CLAUDE.md 中是否有语言偏好声明
+2. 检查系统 locale 环境
+3. 如无法判断，直接询问用户："团队角色使用什么语言命名？（如：中文/English）"
+
+确认后：
+- baseline 中的角色模板按用户语言生成
+- `team.md` 的选择规则使用用户语言
+- 角色卡文件名使用用户语言
+
 ## Core Rules
 
 - Read repository reality before generating anything.

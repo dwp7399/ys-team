@@ -23,6 +23,34 @@ Use it to execute approved work against an existing repository spec.
 - keep implementation, docs, and evidence in sync
 - surface blockers instead of silently changing scope
 
+## 进化感知（工具缺口）
+
+执行过程中，主动检测是否存在工具缺口：
+
+**触发条件**（满足任一即触发）：
+- 执行需要某种工作方法（如 TDD、前端设计规范、性能基准测试）但 `.ys_team/toolbox/` 中没有对应工具
+- 执行到某个步骤发现"如果有 XX 工具会更高效/更安全"
+- 角色的 tools 字段为空，但执行内容明显需要工具辅助
+
+**触发后动作**：
+1. 写入 `.ys_team/evolution/requests.md` 的"待处理"区：
+   ```
+   ### [EVO-YYYY-MM-DD-N] [日期] [类型: 工具]
+   
+   - 来源环节：spec-work
+   - 关联 Spec：[当前执行的 spec]
+   - 缺口描述：[具体缺什么工具/能力]
+   - 发现角色：[哪个角色在执行中发现的]
+   - 建议方案：[建议内化什么工具]
+   - 讨论状态：待讨论
+   ```
+2. 在当前响应中提示用户：
+   ```
+   发现工具缺口：[描述]。已记录进化申请（EVO-YYYY-MM-DD-N）。
+   建议在当前 spec-work 完成后发起进化评估，由团队评估是否内化新工具。
+   ```
+3. **不中断当前执行**——工具缺口不阻塞 spec-work，先记录，完成后再评估
+
 ## Status 写入
 
 在以下关键节点必须同步更新 `.ys_team/status.md`：

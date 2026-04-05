@@ -4,5 +4,5 @@
 
 | 能力名称 | 原 Skill | 版本 | 来源 URL | 内化日期 |
 |----------|----------|------|----------|----------|
-| verification | superpowers:verification-before-completion | 5.0.4 | https://github.com/superpowers-ai/superpowers | 2026-04-05 |
-| systematic-debugging | superpowers:systematic-debugging | 5.0.4 | https://github.com/superpowers-ai/superpowers | 2026-04-05 |
+| 完成前验证 | superpowers:verification-before-completion | 5.0.4 | https://github.com/superpowers-ai/superpowers | 2026-04-05 |
+| 一致性检查 | 自定义（基于项目需求） | 1.0.0 | — | 2026-04-05 |
