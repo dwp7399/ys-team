@@ -1,6 +1,7 @@
 .DS_Store
 .idea/
 .vscode/
+.claude/
 .pytest_cache/
 __pycache__/
 docs/specs/

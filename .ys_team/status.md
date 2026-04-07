@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-07T09:28:00Z
+updated: 2026-04-07T09:36:00Z
 
 ## 活跃 Spec
 
@@ -12,6 +12,7 @@ updated: 2026-04-07T09:28:00Z
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 17:36 | 20260407-170500-npm-distribution-modes | 交付守门人 | BLOCKED | npm 已登录且包名可用，但 `npm publish` 返回 E403，需 OTP 或支持 publish 的 token |
 | 17:28 | 20260407-170500-npm-distribution-modes | 交付守门人 | BLOCKED | 双模式安装已完成，但真实 npm publish 缺少登录态和发布凭证 |
 | 17:10 | 20260407-170500-npm-distribution-modes | 产品演进负责人 | PASS | npm 需要区分全局安装与项目级安装两种模式，并明确发布凭证边界 |
 | 16:30 | 20260407-161500-npm-skill-installer | 交付守门人 | PASS | install-skills CLI、README/docs 与 npm 分发验证已完成 |
@@ -22,8 +23,8 @@ updated: 2026-04-07T09:28:00Z
 
 ## 阻塞项
 
-- 20260407-170500-npm-distribution-modes: 当前环境未登录 npm，`npm whoami` 返回 ENEEDAUTH，无法完成真实 publish
+- 20260407-170500-npm-distribution-modes: `npm publish` 返回 E403，当前凭证需要 OTP 或支持 publish 的 granular token
 
 ## 待办
 
-- 20260407-170500-npm-distribution-modes: 完成 npm login 或提供可用发布凭证后执行 `npm publish`
+- 20260407-170500-npm-distribution-modes: 提供 OTP 或切换到支持 publish 的 token 后重试 `npm publish`

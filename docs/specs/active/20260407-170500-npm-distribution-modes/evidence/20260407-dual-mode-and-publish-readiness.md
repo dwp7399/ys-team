@@ -34,8 +34,18 @@
 
 ### `npm whoami`
 
+- 结果：PASS
+- 说明：当前环境可识别 npm 用户 `ys7399`
+
+### `npm view ys-team version name`
+
+- 结果：PASS
+- 说明：返回 404，说明 `ys-team` 包名当前未被占用
+
+### `npm publish`
+
 - 结果：BLOCKED
-- 说明：当前环境未登录 npm，返回 `ENEEDAUTH`
+- 说明：registry 返回 `E403`，当前凭证不满足 publish 要求，需要 OTP 或带 `bypass 2fa` 的 granular access token
 
 ## Current Conclusion
 
@@ -43,6 +53,6 @@
 
 真实发布仍阻塞于：
 
-- npm 账号登录
-- 可能的 token / 2FA
-- 在发布环境执行 `npm publish`
+- publish 级别凭证
+- 可能的 OTP
+- 或重新生成带 `bypass 2fa` 的 granular access token
