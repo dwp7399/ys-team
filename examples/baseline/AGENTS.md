@@ -2,9 +2,11 @@
 
 ## 最高优先级工作流
 
-本仓库使用 `ys-team` 工作流。
+本仓库使用 `ys-team` 排他工作流。
 
-**任何代码改动请求，必须先调用 `ys-team` skill 进行路由判断。**
+**任何请求必须先经过 `ys-team` 路由。**
+
+**如果当前回复末尾没有出现 `ys-team` 可见标志，视为不在 ys-team 工作流中，必须立即切回路由。**
 
 Trivial 改动定义（可直接执行，无需 spec）：
 - 单文件修改
@@ -13,6 +15,34 @@ Trivial 改动定义（可直接执行，无需 spec）：
 - 用户明确说明是 trivial（如"修拼写错误"、"改注释"）
 
 **如果不确定是否 trivial，必须触发 ys-team-spec-talk。**
+
+## Skill 排他规则
+
+**禁止自动触发 `.ys_team/toolbox/` 以外的任何 skill。**
+
+已内化的工具清单见 `.ys_team/toolbox/_sources.md`。
+仅这些工具的能力（以内化后的版本为准）在工作流中可用。
+
+用户如需临时使用未内化的 skill，必须显式指定（如 `/skill-name`）。
+此时 ys-team 记录该使用行为，作为下次 rebuild 的内化候选。
+
+## 例外
+
+用户在 CLAUDE.md 中显式声明的全局 skill 不受此规则限制。
+
+## 可见标志规则
+
+只要正在执行 `ys-team` 工作流，回复末尾必须出现以下其一：
+
+- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
+- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
+- spec-work：`**[执行中]** ys-team · spec-work`
+- submit：`**[验收]** ys-team · submit`
+- status：`**[状态]** ys-team · status`
+
+如果缺少这些标志，直接要求：
+
+`请先进入 ys-team 工作流，并给出当前阶段标志。`
 
 ## 现实索引
 

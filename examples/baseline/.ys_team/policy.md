@@ -48,3 +48,34 @@
 - 对外接口行为变化
 - 多模块联动
 - 外部回调或异步链路上线
+
+## 并行策略
+
+```yaml
+spec_parallel: false      # 多个不相关 spec 可同时执行
+role_parallel: false       # 同一 spec 内多角色可并行工作
+```
+
+### Spec 级并行（spec_parallel）
+
+启用后，多个不相关的 spec 可同时走 spec-work → submit 链。
+
+- 类似多个 feature branch 同时开发
+- 冲突检测：如果两个 spec 的 write-scope 涉及同一模块，降级为串行，并在 status.md 中标注冲突
+- 每条并行线在 status.md 中独立追踪
+
+### 角色级并行（role_parallel）
+
+启用后，同一 spec 内多个角色可并行工作。
+
+- 如 project-architect 做设计时 delivery-guard 同步准备验收标准
+- 讨论收敛后汇总各角色结果
+- 角色间有依赖时仍需串行（如 architect 的设计完成后 domain-integrator 才能评估集成面）
+
+### 默认关闭
+
+并行能力默认关闭。项目在确认以下条件后可在 rebuild 时开启：
+
+- 团队对 ys-team 工作流已熟悉
+- status 数据追踪正常运行
+- 项目模块边界清晰（现实索引完整）

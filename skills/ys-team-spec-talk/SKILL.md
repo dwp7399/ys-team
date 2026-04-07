@@ -93,6 +93,50 @@ These sections should summarize:
 - whether `ys-team-submit` is recommended for delivery review
 - each role's final contribution, not a transcript
 
+## 进化感知（角色缺口）
+
+讨论过程中，主动检测是否存在角色缺口：
+
+**触发条件**（满足任一即触发）：
+- 讨论涉及某专业领域（安全、数据库迁移、无障碍等），但 `team.md` 中没有对应角色
+- result card 中出现 `External Support Request`，且原因是缺少专业角色
+- 讨论收敛为 BLOCKED，且阻塞原因涉及"缺少 XX 领域的评审/判断"
+
+**触发后动作**：
+1. 写入 `.ys_team/evolution/requests.md` 的"待处理"区：
+   ```
+   ### [EVO-YYYY-MM-DD-N] [日期] [类型: 角色]
+   
+   - 来源环节：spec-talk
+   - 关联 Spec：[当前讨论的 spec]
+   - 缺口描述：[具体缺什么角色/能力]
+   - 发现角色：[哪个角色发现的]
+   - 建议方案：[建议引入什么角色]
+   - 讨论状态：待讨论
+   ```
+2. 在当前响应中提示用户：
+   ```
+   发现团队能力缺口：[描述]。已记录进化申请（EVO-YYYY-MM-DD-N）。
+   建议发起一轮进化评估讨论，由团队评估是否引入新角色。
+   ```
+3. 如果用户同意，立即发起进化评估讨论（由现有角色参与，讨论是否引入新角色）
+4. 讨论收敛后：PASS → 创建角色卡并加入 team.md / REJECT → 记录原因关闭申请
+
+## Status 写入
+
+讨论收敛后（产出 result card 时），必须同步更新 `.ys_team/status.md`：
+
+1. 读取当前 `.ys_team/status.md`
+2. 更新以下内容：
+   - `updated` 时间戳
+   - `活跃 Spec` 表：新增或更新当前讨论的 spec 条目（阶段 = spec-talk，状态 = 讨论中/已收敛）
+   - `最新判断` 表：追加本轮 result card 的决定（PASS/BLOCKED/REJECT），保留最近 10 条
+   - `阻塞项`：如果决定为 BLOCKED，追加阻塞原因；如果之前阻塞已解除，移除
+   - `待办`：根据 Next Step 更新
+3. 写入完成后再输出 Host Summary
+
+此写入是 spec-talk 的固定环节，不可跳过。
+
 ## Host Summary
 
 After writing or updating the target document (or concluding a discussion-only round), close the response with a **[主持人]** summary block. This block is mandatory — it is the visible signal that ys-team workflow ran.

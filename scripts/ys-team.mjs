@@ -1,0 +1,284 @@
+#!/usr/bin/env node
+
+import fs from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const packageRoot = path.resolve(__dirname, "..");
+const bundledSkillsDir = path.join(packageRoot, "skills");
+const baselineAgentsPath = path.join(packageRoot, "examples", "baseline", "AGENTS.md");
+const baselineClaudePath = path.join(packageRoot, "examples", "baseline", "CLAUDE.md");
+
+function defaultSkillsDir() {
+  return path.join(os.homedir(), ".agents", "skills");
+}
+
+function helpText() {
+  return [
+    "ys-team npm surface",
+    "",
+    "This package currently distributes repository assets and can install bundled ys-team skills.",
+    "",
+    "Commands:",
+    "- ys-team --help",
+    "- ys-team install-skills [--dest <dir>] [--force] [--dry-run]",
+    "- ys-team init-project [--dir <project-dir>] [--force] [--dry-run]",
+    "",
+    "Default global install destination:",
+    `- ${defaultSkillsDir()}`,
+    "",
+    "Default project-local install destination:",
+    "- <project>/.agents/skills",
+    "",
+    "Included:",
+    "- skills/",
+    "- examples/baseline/",
+    "- registry/",
+    "- docs/",
+    "- scripts/",
+    "",
+    "Visible workflow markers:",
+    "- route: `ys-team` · [decision] -> [next step]",
+    "- spec-talk: [主持人] ys-team · spec-talk",
+    "- spec-work: [执行中] ys-team · spec-work",
+    "- submit: [验收] ys-team · submit",
+    "- status: [状态] ys-team · status",
+    "",
+    "Current npm boundaries:",
+    "- installs bundled ys-team skills into ~/.agents/skills for global use",
+    "- can initialize project-local .agents/skills plus baseline AGENTS.md / CLAUDE.md",
+    "- does not automatically execute ys-team-init",
+    "- is ready to publish, but actual npm registry publish still needs npm account credentials",
+    "",
+    "Recommended next step after install:",
+    "1. For global mode: run ys-team-init in the target repository.",
+    "2. For project mode: open the target repository and continue with ys-team-init there."
+  ].join("\n");
+}
+
+function parseArgs(argv) {
+  const args = {
+    command: null,
+    dest: defaultSkillsDir(),
+    dir: process.cwd(),
+    force: false,
+    dryRun: false,
+    help: false
+  };
+
+  const rest = argv.slice(2);
+  if (rest.length === 0) {
+    args.help = true;
+    return args;
+  }
+
+  for (let i = 0; i < rest.length; i += 1) {
+    const value = rest[i];
+    if (value === "--help" || value === "-h") {
+      args.help = true;
+      continue;
+    }
+    if (!args.command && !value.startsWith("--")) {
+      args.command = value;
+      continue;
+    }
+    if (value === "--dest") {
+      const next = rest[i + 1];
+      if (!next) {
+        throw new Error("Missing value for --dest");
+      }
+      args.dest = path.resolve(next);
+      i += 1;
+      continue;
+    }
+    if (value === "--dir") {
+      const next = rest[i + 1];
+      if (!next) {
+        throw new Error("Missing value for --dir");
+      }
+      args.dir = path.resolve(next);
+      i += 1;
+      continue;
+    }
+    if (value === "--force") {
+      args.force = true;
+      continue;
+    }
+    if (value === "--dry-run") {
+      args.dryRun = true;
+      continue;
+    }
+    throw new Error(`Unsupported argument: ${value}`);
+  }
+
+  return args;
+}
+
+function ensureBundledSkills() {
+  if (!fs.existsSync(bundledSkillsDir)) {
+    throw new Error(`Bundled skills directory not found: ${bundledSkillsDir}`);
+  }
+  if (!fs.existsSync(baselineAgentsPath) || !fs.existsSync(baselineClaudePath)) {
+    throw new Error("Baseline AGENTS.md / CLAUDE.md templates not found");
+  }
+}
+
+function listBundledSkills() {
+  ensureBundledSkills();
+  return fs.readdirSync(bundledSkillsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+}
+
+function copyDirectoryRecursive(sourceDir, targetDir) {
+  fs.mkdirSync(targetDir, { recursive: true });
+  for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
+    const sourcePath = path.join(sourceDir, entry.name);
+    const targetPath = path.join(targetDir, entry.name);
+    if (entry.isDirectory()) {
+      copyDirectoryRecursive(sourcePath, targetPath);
+    } else {
+      fs.copyFileSync(sourcePath, targetPath);
+    }
+  }
+}
+
+function copyFileWithPolicy(sourcePath, targetPath, { force, dryRun }) {
+  const exists = fs.existsSync(targetPath);
+  if (exists && !force) {
+    return { action: "skipped", targetPath };
+  }
+
+  if (!dryRun) {
+    fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+    fs.copyFileSync(sourcePath, targetPath);
+  }
+
+  return { action: exists ? "replaced" : "created", targetPath };
+}
+
+function installSkills({ dest, force, dryRun }) {
+  const skills = listBundledSkills();
+  const operations = [];
+  const skipped = [];
+
+  for (const skill of skills) {
+    const sourcePath = path.join(bundledSkillsDir, skill);
+    const targetPath = path.join(dest, skill);
+    const exists = fs.existsSync(targetPath);
+
+    if (exists && !force) {
+      skipped.push(skill);
+      continue;
+    }
+
+    operations.push({ skill, sourcePath, targetPath, replace: exists });
+  }
+
+  if (!dryRun) {
+    fs.mkdirSync(dest, { recursive: true });
+    for (const op of operations) {
+      if (op.replace) {
+        fs.rmSync(op.targetPath, { recursive: true, force: true });
+      }
+      copyDirectoryRecursive(op.sourcePath, op.targetPath);
+    }
+  }
+
+  const lines = [
+    dryRun ? "ys-team install-skills dry-run" : "ys-team install-skills",
+    "",
+    `destination: ${dest}`,
+    `bundled skills: ${skills.length}`,
+    `scheduled installs: ${operations.length}`,
+    `skipped existing: ${skipped.length}`
+  ];
+
+  if (operations.length > 0) {
+    lines.push("", "planned:");
+    for (const op of operations) {
+      lines.push(`- ${op.skill}${op.replace ? " (replace)" : ""}`);
+    }
+  }
+
+  if (skipped.length > 0) {
+    lines.push("", "skipped:");
+    for (const skill of skipped) {
+      lines.push(`- ${skill}`);
+    }
+    lines.push("", "Use --force to replace existing installed skills.");
+  }
+
+  if (!dryRun && operations.length > 0) {
+    lines.push("", "next:");
+    lines.push("- run ys-team-init in the target repository");
+    lines.push("- update AGENTS.md and CLAUDE.md so ys-team is the highest-priority workflow");
+  }
+
+  return lines.join("\n");
+}
+
+function initProject({ dir, force, dryRun }) {
+  const skillsDest = path.join(dir, ".agents", "skills");
+  const agentsDest = path.join(dir, "AGENTS.md");
+  const claudeDest = path.join(dir, "CLAUDE.md");
+
+  const installSummary = installSkills({
+    dest: skillsDest,
+    force,
+    dryRun
+  });
+
+  const agentsResult = copyFileWithPolicy(baselineAgentsPath, agentsDest, { force, dryRun });
+  const claudeResult = copyFileWithPolicy(baselineClaudePath, claudeDest, { force, dryRun });
+
+  return [
+    dryRun ? "ys-team init-project dry-run" : "ys-team init-project",
+    "",
+    `project: ${dir}`,
+    `local skills: ${skillsDest}`,
+    `AGENTS.md: ${agentsResult.action}`,
+    `CLAUDE.md: ${claudeResult.action}`,
+    "",
+    installSummary,
+    "",
+    "next:",
+    "- open the target repository",
+    "- run ys-team-init in that repository",
+    "- verify AGENTS.md and CLAUDE.md match your project-local needs"
+  ].join("\n");
+}
+
+function main() {
+  try {
+    const args = parseArgs(process.argv);
+
+    if (args.help || !args.command) {
+      console.log(helpText());
+      process.exit(0);
+    }
+
+    if (args.command === "install-skills") {
+      console.log(installSkills(args));
+      process.exit(0);
+    }
+
+    if (args.command === "init-project") {
+      console.log(initProject(args));
+      process.exit(0);
+    }
+
+    console.error(`Unsupported command: ${args.command}`);
+    console.error("Run `ys-team --help`.");
+    process.exit(1);
+  } catch (error) {
+    console.error(`ys-team error: ${error.message}`);
+    process.exit(1);
+  }
+}
+
+main();

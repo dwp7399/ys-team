@@ -64,6 +64,24 @@ Its job is to keep the conversation anchored in:
   - 用户明确声明是 trivial（如"修拼写错误"、"改注释"）
 - **原则**：举证责任在"跳过路由"，而不在"触发路由"。不确定时，触发。
 
+## 排他工作流
+
+ys-team 启用后，工作流具有排他性：
+
+- **禁止自动触发** `.ys_team/toolbox/` 以外的任何 skill
+- 已内化的工具清单见 `.ys_team/toolbox/_sources.md`
+- 仅内化后的版本在工作流中可用
+- 用户显式调用未内化 skill 时（如 `/skill-name`），记录该使用行为到 `.ys_team/toolbox/_candidates.md`，作为下次 rebuild 的内化候选
+- 用户在 CLAUDE.md 中显式声明的全局 skill 不受此规则限制
+
+## Toolbox 感知
+
+路由判断时，如果 `.ys_team/toolbox/` 存在且非空：
+
+1. 读取 `_sources.md` 了解团队已内化的工具
+2. 在路由决策中考虑已内化工具的能力（如团队有 TDD 能力，执行时建议使用）
+3. 角色绑定的工具（`team.md` 中的 tools 字段）在对应环节自动建议使用
+
 ## Style
 
 - 少解释内部结构，多解释稳定原则。
@@ -84,3 +102,11 @@ Its job is to keep the conversation anchored in:
 示例：`` `ys-team` · 已路由至 spec-talk → 请确认是否开始讨论 ``
 
 **spec-talk / 讨论类响应**使用 `[主持人]` 块（由 ys-team-spec-talk 定义）。不在此重复输出。
+
+**其他环节**也必须保留可见标志：
+
+- `spec-work`：`**[执行中]** ys-team · spec-work`
+- `submit`：`**[验收]** ys-team · submit`
+- `status`：`**[状态]** ys-team · status`
+
+如果当前响应末尾没有任何 `ys-team` 标记，应视为尚未进入 ys-team 工作流，并立刻回到路由判断。

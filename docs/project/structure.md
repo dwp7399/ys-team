@@ -3,13 +3,20 @@
 - `skills/`
   - 对外发布的 ys-team skills
   - 同时包含支撑默认工作流的静默内部 skills
+- `CLAUDE.md` / `AGENTS.md`
+  - 仓库级协作入口
+  - 明确 ys-team 排他工作流与可见标志规则
 - `examples/baseline/`
   - 默认工作流骨架，作为 `ys-team-init` 的默认来源
+  - 包含会下发到项目的 `AGENTS.md` / `CLAUDE.md` 默认约束
 - `.ys_team/`
   - 本仓自用的 ys-team 本地工作流基线
 - `docs/project/`
-  - 仓库现状、结构和方法论说明
+  - 仓库现状、结构、方法论说明和 module index
 - `docs/specs/`
   - 本仓后续演进 spec
 - `docs/roadmap/`
   - 版本或阶段级规划，当前仅保留目录
+- `package.json` / `scripts/`
+  - npm 分发元数据和 CLI 安装入口
+  - 当前提供 `install-skills` 与 `init-project` 两个命令

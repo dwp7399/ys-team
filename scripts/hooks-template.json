@@ -1,0 +1,18 @@
+{
+  "$schema": "https://docs.anthropic.com/claude-code/settings-schema.json",
+  "_comment": "ys-team hooks 配置模板。将此内容合并到项目的 .claude/settings.json 中。",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "command": "echo '[ys-team-hook] file_changed' >> .ys_team/status-events.log"
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "command": "echo '[ys-team-hook] session_end' >> .ys_team/status-events.log"
+      }
+    ]
+  }
+}

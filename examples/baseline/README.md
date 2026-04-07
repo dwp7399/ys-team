@@ -35,6 +35,18 @@
 
 这些能力可以由多个静默内部 skills 支撑，但不要求用户主动点名调用。
 
+## 可见标志
+
+初始化后的项目在执行 `ys-team` 工作流时，回复末尾必须出现明显标志：
+
+- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
+- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
+- spec-work：`**[执行中]** ys-team · spec-work`
+- submit：`**[验收]** ys-team · submit`
+- status：`**[状态]** ys-team · status`
+
+如果没有这些标志，说明当前还没有真正进入 ys-team 工作流。
+
 ## 不包含内容
 
 - 某个单一项目的领域角色
