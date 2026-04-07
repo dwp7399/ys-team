@@ -8,6 +8,8 @@
 
 **任何请求必须先经过 `ys-team` 路由。**
 
+**如果当前回复末尾没有出现 `ys-team` 可见标志，视为不在 ys-team 工作流中，必须立即切回路由。**
+
 ## Primary Rule
 
 - 本仓自身使用 `ys-team`。
@@ -27,6 +29,20 @@
 ## 例外
 
 用户在 CLAUDE.md 中显式声明的全局 skill 不受此规则限制。
+
+## 可见标志规则
+
+只要正在执行 `ys-team` 工作流，回复末尾必须出现以下其一：
+
+- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
+- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
+- spec-work：`**[执行中]** ys-team · spec-work`
+- submit：`**[验收]** ys-team · submit`
+- status：`**[状态]** ys-team · status`
+
+如果缺少这些标志，直接要求：
+
+`请先进入 ys-team 工作流，并给出当前阶段标志。`
 
 ## Repository Scope
 

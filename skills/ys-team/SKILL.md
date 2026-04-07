@@ -102,3 +102,11 @@ ys-team 启用后，工作流具有排他性：
 示例：`` `ys-team` · 已路由至 spec-talk → 请确认是否开始讨论 ``
 
 **spec-talk / 讨论类响应**使用 `[主持人]` 块（由 ys-team-spec-talk 定义）。不在此重复输出。
+
+**其他环节**也必须保留可见标志：
+
+- `spec-work`：`**[执行中]** ys-team · spec-work`
+- `submit`：`**[验收]** ys-team · submit`
+- `status`：`**[状态]** ys-team · status`
+
+如果当前响应末尾没有任何 `ys-team` 标记，应视为尚未进入 ys-team 工作流，并立刻回到路由判断。

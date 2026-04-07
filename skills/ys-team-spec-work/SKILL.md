@@ -74,3 +74,19 @@ Use it to execute approved work against an existing repository spec.
 3. 写入
 
 此写入是 spec-work 的固定环节，不可跳过。
+
+## Visible Marker
+
+每次 `spec-work` 对用户输出后，必须以以下块结尾，作为工作流正在执行的可见标志：
+
+```markdown
+---
+**[执行中]** ys-team · spec-work
+
+[1–2 句说明当前执行内容或本轮完成内容。]
+
+- 关联 Spec：[spec id 或 work 文件]
+- 状态：[执行中 / 待验收 / 已阻塞]
+- 下一步：[一个明确动作]
+---
+```

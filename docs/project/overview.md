@@ -13,7 +13,7 @@
 
 ## 当前状态
 
-当前仓库刚建立第一版骨架，主要承载：
+当前仓库已完成第一版骨架，并进入收口阶段，主要承载：
 
 - `ys-team` 理念入口 skill
 - `examples/baseline/` 默认工作流骨架
@@ -22,7 +22,7 @@
 - 一组支撑 discussion / spec / work / acceptance 的静默内部 skills
 - 一份供本仓和下游项目共用的 baseline version / reality index 约束
 - 本仓自用的 `.ys_team/` 配置
-- 一份记录后续产品化方向的 queued spec
+- 一组用于收口产品化细节并可继续演进的 specs
 
 ## 核心原则
 
@@ -47,6 +47,32 @@
 2. 明确 baseline / init / rebuild 的职责边界
 3. 给 Python / Java 项目提供可解释、可起步的接入方式
 4. 让 init 后的项目能直接进入类似 `ai-gateway` 的默认工作流
+5. 让 ys-team 工作流在用户响应中具备稳定、明显的可见标志
+
+## 工作流可见标志
+
+`ys-team` 当前要求所有工作流响应在末尾留下明显标志，用来判断是否真的处于工作流内。
+
+- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
+- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
+- spec-work：`**[执行中]** ys-team · spec-work`
+- submit：`**[验收]** ys-team · submit`
+- status：`**[状态]** ys-team · status`
+
+如果缺少这些标志，应视为还没有真正进入 ys-team 工作流。
+
+## npm 分发边界
+
+仓库已提供双模式 npm 安装面：
+
+- 全局模式：通过 `install-skills` 安装到 `~/.agents/skills`
+- 项目模式：通过 `init-project` 安装到项目内 `.agents/skills`，并下发 baseline 版 `AGENTS.md` / `CLAUDE.md`
+
+当前 npm 面已经能完成“把 ys-team skills 装到用户级或项目级目录”这一核心动作。
+
+当前仍不把 npm 包定义为完整安装器；目标项目接入仍需要后续执行 `ys-team-init`。
+
+另一个边界是：仓库已具备可发布形态，但真实 npm registry 发布仍依赖发布者自己的 npm 账号和凭证。
 
 ## 默认落地模型
 

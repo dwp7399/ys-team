@@ -36,3 +36,19 @@ Use it when a repository needs a heavier delivery gate.
 5. 写入
 
 此写入是 submit 的固定环节，不可跳过。
+
+## Visible Marker
+
+验收结论输出后，必须以以下块结尾：
+
+```markdown
+---
+**[验收]** ys-team · submit
+
+[1–2 句说明验收结论。]
+
+- 决策：PASS / BLOCKED / REJECT
+- 关联 Spec：[spec id]
+- 下一步：[关闭、回修或补证据]
+---
+```
