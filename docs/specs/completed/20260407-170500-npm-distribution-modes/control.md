@@ -1,7 +1,7 @@
 ---
 Spec-Type: control
 Initiative: 20260407-170500-npm-distribution-modes
-Status: active
+Status: completed
 Owner-Session: ys-team
 Write-Scope: []
 Depends-On: []

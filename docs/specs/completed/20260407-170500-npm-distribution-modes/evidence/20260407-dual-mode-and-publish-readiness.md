@@ -37,22 +37,20 @@
 - 结果：PASS
 - 说明：当前环境可识别 npm 用户 `ys7399`
 
-### `npm view ys-team version name`
+### `npm view ys-team version name dist-tags.latest`
 
 - 结果：PASS
-- 说明：返回 404，说明 `ys-team` 包名当前未被占用
+- 说明：registry 已返回 `ys-team@0.2.0`，`latest` 已指向 `0.2.0`
 
 ### `npm publish`
 
-- 结果：BLOCKED
-- 说明：registry 返回 `E403`，当前凭证不满足 publish 要求，需要 OTP 或带 `bypass 2fa` 的 granular access token
+- 结果：PASS
+- 说明：已成功发布 `ys-team@0.2.0`
 
 ## Current Conclusion
 
-代码形态已经 ready to publish。
+双模式安装和 npm 发布链路都已完成闭环。
 
-真实发布仍阻塞于：
-
-- publish 级别凭证
-- 可能的 OTP
-- 或重新生成带 `bypass 2fa` 的 granular access token
+- 全局模式：`npx ys-team install-skills`
+- 项目模式：`npx ys-team init-project --dir /path/to/project`
+- npm registry：`ys-team@0.2.0`
