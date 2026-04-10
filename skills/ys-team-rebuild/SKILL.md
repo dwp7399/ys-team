@@ -75,6 +75,26 @@ Rebuild 时除了更新基础配置，还需评估和更新工具内化：
 
 下次 rebuild 时会自动处理。
 
+## TEAM.md 同步
+
+Rebuild 时检查 TEAM.md 状态：
+
+1. 如果项目没有 `TEAM.md`（旧版本项目），从 baseline 生成一份，保留项目已有的角色配置
+2. 如果 baseline TEAM.md 有新增配置项（如新版本加了 memory 配置），合并到项目 TEAM.md 中，保留用户已有的自定义值
+3. 如果 TEAM.md 的 roles 列表与 `.ys_team/team.md` 不一致，以 TEAM.md 为准同步 team.md
+
+## 记忆健康检查
+
+Rebuild 时检查记忆系统状态：
+
+1. 如果 `.ys_team/memory/` 不存在（旧版本项目），从 baseline 初始化
+2. 检查角色记忆文件是否与 TEAM.md 的 roles 列表对齐：
+   - 新角色缺少记忆文件 → 创建空文件
+   - 角色已从 TEAM.md 移除但记忆文件存在 → 保留文件，在文件头部标记 `archived: true`
+3. 检查角色记忆文件是否超限（对比 TEAM.md 的 `memory.role_memory_limit`）：
+   - 超限的文件 → 提示用户，建议在下次角色工作时自动压缩
+4. 检查 `memory/policy.md` 是否需要更新（对比 baseline 版本）
+
 ## Doc-Build Integration
 
 After baseline update is complete, automatically invoke `ys-team-doc-build` to rebuild the reality index. This ensures `docs/project/module-index.md` reflects current project structure after any rebuild.

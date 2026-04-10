@@ -23,6 +23,35 @@ Use it to execute approved work against an existing repository spec.
 - keep implementation, docs, and evidence in sync
 - surface blockers instead of silently changing scope
 
+## Read Order
+
+1. `TEAM.md`（如存在，获取 mode、limits、memory 配置）
+2. 当前 spec 的 `control.md`（执行合约）
+3. 当前 spec 的 `workspace.md`（工作记忆，了解前序阶段的上下文）
+4. 当前 spec 的 `qa-report.md`（如存在，说明是 QA 打回后的重试，需针对性修复）
+5. 执行角色的记忆文件（`.ys_team/memory/roles/<role>.md`）
+6. `.ys_team/policy.md`
+
+## Workspace 更新
+
+执行过程中持续更新 `docs/specs/<id>/workspace.md`：
+
+- 执行开始时：记录执行计划和预期步骤
+- 遇到关键决策时：记录决策和原因
+- 遇到阻塞时：记录阻塞原因和尝试的解决方案
+- 执行完成时：记录完成状态和实际变更摘要
+
+长度不超过 TEAM.md 的 `memory.workspace_limit` 配置。
+
+## 角色记忆回顾
+
+执行完成后，角色回顾本次工作：
+
+1. 读取自己的记忆文件
+2. 判断是否有值得记录的跨任务经验（技术陷阱、模块特殊知识等）
+3. 如有，检查记忆是否超限，超限则压缩后写回
+4. 如无新经验，不写入
+
 ## 进化感知（工具缺口）
 
 执行过程中，主动检测是否存在工具缺口：

@@ -43,11 +43,14 @@ Init 的第一步是确认用户主语言，所有角色名、角色卡、team.m
 
 Generate or adapt:
 
+- `TEAM.md`（从 `examples/baseline/TEAM.md` 适配，根据项目类型调整 roles 列表）
 - `.ys_team/README.md`
 - `.ys_team/team.md`
 - `.ys_team/methods.md`
 - `.ys_team/policy.md`
 - `.ys_team/templates/`
+- `.ys_team/memory/policy.md`（从 baseline 复制）
+- `.ys_team/memory/roles/`（根据 TEAM.md 的 roles 列表生成空记忆文件）
 - `docs/specs/`
 - `docs/roadmap/`
 
@@ -137,6 +140,24 @@ internalized: [日期]
 团队基础配置已完成，已内化 N 个工具。
 如需调整工具配置，可运行 /ys-team-rebuild。
 ```
+
+## TEAM.md 生成
+
+Init 时从 `examples/baseline/TEAM.md` 生成项目的 `TEAM.md`：
+
+1. 复制 baseline TEAM.md 到项目根目录
+2. 根据项目类型调整 roles 列表（如纯前端项目去掉 domain-integrator，加 frontend-accessibility-reviewer）
+3. 默认 mode 为 manual
+4. 提示用户可按需调整配置
+
+## 记忆系统初始化
+
+Init 时初始化记忆目录：
+
+1. 从 `examples/baseline/.ys_team/memory/policy.md` 复制记忆策略
+2. 创建 `.ys_team/memory/roles/` 目录
+3. 根据 TEAM.md 的 roles 列表，为每个角色创建空记忆文件（`<role>.md`）
+4. 提示用户记忆系统已就绪
 
 ## Status 初始化
 

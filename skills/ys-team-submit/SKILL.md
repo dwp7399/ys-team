@@ -9,6 +9,8 @@ This is a silent internal skill.
 
 Use it when a repository needs a heavier delivery gate.
 
+**注意**：submit 只负责验收判断，不负责关闭动作。关闭（git commit、状态更新为 done）由编排器的 close 阶段执行。
+
 ## Purpose
 
 - review spec acceptance against actual delivery
@@ -21,6 +23,24 @@ Use it when a repository needs a heavier delivery gate.
 - focus on delivery truth, not optimistic summary
 - call out missing evidence or unsynced docs clearly
 - prefer explicit PASS/BLOCKED/REJECT outcomes
+- **不执行关闭动作**——判断完成后输出结论，由编排器决定下一步
+
+## Read Order
+
+1. `TEAM.md`（如存在）
+2. 当前 spec 的 `control.md`（验收合约）
+3. 当前 spec 的 `work.md`（执行记录）
+4. 当前 spec 的 `workspace.md`（工作记忆）
+5. delivery-guard 的记忆文件（`.ys_team/memory/roles/delivery-guard.md`）
+6. `.ys_team/policy.md`（submit gate 规则）
+
+## 角色记忆回顾
+
+验收完成后，delivery-guard 回顾本次验收：
+
+1. 读取自己的记忆文件
+2. 判断是否有值得记录的验收经验
+3. 如有，检查记忆是否超限，超限则压缩后写回
 
 ## Status 写入
 

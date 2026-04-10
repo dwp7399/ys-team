@@ -64,6 +64,69 @@ Its job is to keep the conversation anchored in:
   - 用户明确声明是 trivial（如"修拼写错误"、"改注释"）
 - **原则**：举证责任在"跳过路由"，而不在"触发路由"。不确定时，触发。
 
+## TEAM.md 加载
+
+当仓库存在 `TEAM.md` 时，ys-team 入口 skill 必须在路由判断前加载它。
+
+`TEAM.md` 是 ys-team 工作流的唯一用户配置面板，包含：
+- `mode`：工作模式（manual / semi-auto / full-auto）
+- `limits`：重试上限、降级策略
+- `memory`：记忆配额
+- `roles`：本项目启用的角色及工具权限
+- `spec_dir`：spec 目录路径
+
+如果 `TEAM.md` 不存在，使用默认值（mode: manual，其余同 baseline）。
+
+## 编排模式
+
+根据 `TEAM.md` 的 `mode` 配置，ys-team 入口 skill 有三种行为模式：
+
+### manual（默认）
+
+现有行为完全不变。用户手动推进每个阶段，ys-team 只做路由判断。
+新增的 spec-review 和 qa 阶段作为可用选项，用户可手动触发。
+
+### semi-auto
+
+用户提出需求后，主 session 进入编排循环，自动推进阶段流转：
+
+1. **spec-talk**：用 Agent tool 启动 subagent，多角色讨论，产出 spec 和 requirement.md
+2. **spec-review**：用 Agent tool 启动独立 subagent（prompt 只传文件路径，不传讨论历史）
+   - PASS → 继续
+   - REJECT → 回 spec-talk，将 review.md 作为输入，重试计数 +1
+   - 重试耗尽 → halt，输出当前状态，等用户决策
+3. **spec-work**：**暂停，提示用户确认后再启动** subagent 执行
+4. **qa**：用 Agent tool 启动独立 subagent，验证落地效果
+   - PASS → 继续
+   - REJECT → 回 spec-work，将 qa-report.md 作为输入，重试计数 +1
+   - 重试耗尽 → halt
+5. **close**：汇总报告输出，**暂停，等用户确认后执行** git commit + 更新 status.md 为 done
+
+### full-auto
+
+与 semi-auto 相同，但：
+- 阶段 3（spec-work）不暂停，直接启动
+- 阶段 5（close）不暂停，自动执行 git commit
+- 重试耗尽时仍然暂停（自动降级为半自动）
+
+### 编排规则
+
+- 每个阶段的 subagent 启动时，从 TEAM.md 读取该角色的工具权限，在 prompt 中声明
+- 每个阶段结束后，更新 status.md 中该 spec 的状态机字段
+- 阶段间通信通过 spec 目录下的文件（requirement.md、control.md、review.md、workspace.md、qa-report.md）
+- subagent prompt 只传文件路径，不传内容，确保上下文隔离
+- 每个 subagent 启动时读取自己的角色记忆（`.ys_team/memory/roles/<role>.md`），结束时回顾并写入新经验
+
+### 记忆集成
+
+所有模式下（包括 manual），角色在工作时都应：
+1. 启动时读取 `.ys_team/memory/roles/<role>.md`（如存在）
+2. 读取当前 spec 的 `workspace.md`（如存在）
+3. 结束时回顾本次工作，有新经验则写入角色记忆
+4. 更新 workspace.md 的工作状态
+
+记忆读写遵循 `.ys_team/memory/policy.md` 的规则。
+
 ## 排他工作流
 
 ys-team 启用后，工作流具有排他性：
@@ -105,8 +168,11 @@ ys-team 启用后，工作流具有排他性：
 
 **其他环节**也必须保留可见标志：
 
+- `spec-review`：`**[审阅]** ys-team · spec-review`
 - `spec-work`：`**[执行中]** ys-team · spec-work`
+- `qa`：`**[质检]** ys-team · qa`
 - `submit`：`**[验收]** ys-team · submit`
+- `close`：`**[关闭]** ys-team · close`
 - `status`：`**[状态]** ys-team · status`
 
 如果当前响应末尾没有任何 `ys-team` 标记，应视为尚未进入 ys-team 工作流，并立刻回到路由判断。

@@ -17,14 +17,16 @@ Use it to display the live ys-team state of a repository.
 
 ## Behavior
 
-1. 读取 `.ys_team/status.md`
-2. 如果文件不存在或 `updated` 为空（`—`），提示："团队状态尚未初始化。首次执行 spec-talk 或 spec-work 后，状态会自动更新。"
-3. 如果文件存在且有数据，格式化输出：
-   - 活跃 Spec 列表
+1. 读取 `TEAM.md`（如存在，获取当前 mode 配置）
+2. 读取 `.ys_team/status.md`
+3. 如果文件不存在或 `updated` 为空（`—`），提示："团队状态尚未初始化。首次执行 spec-talk 或 spec-work 后，状态会自动更新。"
+4. 如果文件存在且有数据，格式化输出：
+   - 当前模式（manual / semi-auto / full-auto）
+   - 活跃 Spec 列表（含状态机当前状态和重试次数）
    - 最新判断（最近 5 条）
    - 阻塞项（高亮显示）
    - 待办事项
-4. 检查 `.ys_team/VERSION` 与 baseline 版本对齐
+5. 检查 `.ys_team/VERSION` 与 baseline 版本对齐
 
 ## Version Notice
 
@@ -60,8 +62,12 @@ updated: [ISO 8601 时间戳]
 
 ## 活跃 Spec
 
-| Spec | 阶段 | 负责角色 | 状态 |
-|------|------|---------|------|
+| Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
+|------|------|------|---------|---------|------|
+
+### 状态值
+
+- idle / spec-talk / spec-review / spec-work / qa / close / done / halt
 
 ## 最新判断
 
