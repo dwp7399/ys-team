@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-07T09:52:00Z
+updated: 2026-04-10T10:30:00+08:00
 
 ## 活跃 Spec
 
@@ -12,6 +12,8 @@ updated: 2026-04-07T09:52:00Z
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-10 10:30 | 20260410-baseline-fullcomplete | 交付守门人 | PASS | 8 个模板文件全部存在，验收标准逐项通过，spec 关闭 |
+| 2026-04-10 10:00 | 20260410-baseline-fullcomplete | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | baseline 模板不完整，范围清晰，无外部依赖，直接进入 spec-work |
 | 17:52 | 20260407-170500-npm-distribution-modes | 交付守门人 | PASS | 双模式安装完成，且 `ys-team@0.2.0` 已成功发布到 npm |
 | 17:36 | 20260407-170500-npm-distribution-modes | 交付守门人 | BLOCKED | npm 已登录且包名可用，但 `npm publish` 返回 E403，需 OTP 或支持 publish 的 token |
 | 17:28 | 20260407-170500-npm-distribution-modes | 交付守门人 | BLOCKED | 双模式安装已完成，但真实 npm publish 缺少登录态和发布凭证 |

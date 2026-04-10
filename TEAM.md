@@ -2,7 +2,7 @@
 
 ## mode
 
-default: manual
+default: full-auto
 # manual:    用户手动推进每个阶段（现有模式）
 # semi-auto: 自动流转，执行前和关闭前暂停等确认
 # full-auto: 全自动，只在重试耗尽时暂停
