@@ -35,7 +35,7 @@ Its job is to keep the conversation anchored in:
 
 不要把内部实现细节包装成用户必须理解的流程图。
 
-默认工作流由 `examples/baseline/` 承载。
+默认工作流由 bundled baseline 承载：仓库内为 `examples/baseline/`，npm 安装后为技能目录旁的 `_ys-team/baseline/`。
 
 ## Core Invariants
 
@@ -49,7 +49,7 @@ Its job is to keep the conversation anchored in:
 - 如果用户想先理解方法论，直接解释 `ys-team`，不要急着让用户执行初始化。
 - 如果仓库还没有 `.ys_team/`，引导到 `ys-team-init`。
 - 如果仓库已有 `.ys_team/`，但团队、模板或约束已经不符合项目现实，引导到 `ys-team-rebuild`。
-- 如果用户想先看默认工作流长什么样，引导到 `examples/baseline/`。
+- 如果用户想先看默认工作流长什么样，引导到 bundled baseline。
 - 如果当前只是澄清理念、边界或推广方式，不强行写 spec。
 
 ## Trigger Default

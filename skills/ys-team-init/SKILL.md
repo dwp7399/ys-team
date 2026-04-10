@@ -14,7 +14,10 @@ Create the first project-local ys-team baseline with the lightest useful footpri
 `ys-team-init` is not a project modeling ceremony.
 It is a one-time repository specialization step.
 
-Its default workflow source is `examples/baseline/`.
+Its default workflow source is the bundled baseline.
+
+- Repository source: `examples/baseline/`
+- npm-installed source: sibling `_ys-team/baseline/` next to the installed skills directory
 
 ## 语言检测
 
@@ -33,7 +36,7 @@ Init 的第一步是确认用户主语言，所有角色名、角色卡、team.m
 ## Core Rules
 
 - Read repository reality before generating anything.
-- Start from `examples/baseline/` as the default workflow source.
+- Start from the bundled baseline as the default workflow source.
 - Prefer the smallest useful local baseline.
 - Do not require the user to understand internal ys-team structure first.
 - Do not block init only because some docs are missing; generate a minimal skeleton when needed.
@@ -43,7 +46,7 @@ Init 的第一步是确认用户主语言，所有角色名、角色卡、team.m
 
 Generate or adapt:
 
-- `TEAM.md`（从 `examples/baseline/TEAM.md` 适配，根据项目类型调整 roles 列表）
+- `TEAM.md`（从 bundled baseline 的 `TEAM.md` 适配，根据项目类型调整 roles 列表）
 - `.ys_team/README.md`
 - `.ys_team/team.md`
 - `.ys_team/methods.md`
@@ -56,7 +59,16 @@ Generate or adapt:
 
 When the repository lacks a current-state project doc, create a minimal `docs/project/overview.md` skeleton.
 
-If the repository does not have an `AGENTS.md`, generate one from `examples/baseline/AGENTS.md`, adapted to the project's name and stack.
+If the repository does not have an `AGENTS.md`, generate one from the bundled baseline `AGENTS.md`, adapted to the project's name and stack.
+
+## Baseline Source Resolution
+
+When `ys-team-init` runs, resolve baseline assets in this order:
+
+1. `examples/baseline/` inside the current `ys-team` repository
+2. `../_ys-team/baseline/` relative to the installed skill directory
+
+If neither exists, stop and report that the installed ys-team package is incomplete.
 
 ## Language Sensitivity
 
@@ -83,7 +95,7 @@ That means:
 
 ### 步骤
 
-1. **创建 toolbox 目录**：从 `examples/baseline/.ys_team/toolbox/` 复制模板（`_sources.md`、`_candidates.md`）
+1. **创建 toolbox 目录**：从 bundled baseline 的 `.ys_team/toolbox/` 复制模板（`_sources.md`、`_candidates.md`）
 
 2. **扫描项目类型**：根据仓库中的文件特征判断项目类型：
    - `requirements.txt` / `pyproject.toml` / `setup.py` → python-backend
@@ -143,9 +155,9 @@ internalized: [日期]
 
 ## TEAM.md 生成
 
-Init 时从 `examples/baseline/TEAM.md` 生成项目的 `TEAM.md`：
+Init 时从 bundled baseline 的 `TEAM.md` 生成项目的 `TEAM.md`：
 
-1. 复制 baseline TEAM.md 到项目根目录
+1. 复制 bundled baseline TEAM.md 到项目根目录
 2. 根据项目类型调整 roles 列表（如纯前端项目去掉 domain-integrator，加 frontend-accessibility-reviewer）
 3. 默认 mode 为 manual
 4. 提示用户可按需调整配置
@@ -154,14 +166,14 @@ Init 时从 `examples/baseline/TEAM.md` 生成项目的 `TEAM.md`：
 
 Init 时初始化记忆目录：
 
-1. 从 `examples/baseline/.ys_team/memory/policy.md` 复制记忆策略
+1. 从 bundled baseline 的 `.ys_team/memory/policy.md` 复制记忆策略
 2. 创建 `.ys_team/memory/roles/` 目录
 3. 根据 TEAM.md 的 roles 列表，为每个角色创建空记忆文件（`<role>.md`）
 4. 提示用户记忆系统已就绪
 
 ## Status 初始化
 
-Init 时从 `examples/baseline/.ys_team/status.md` 复制空模板到项目的 `.ys_team/status.md`。
+Init 时从 bundled baseline 的 `.ys_team/status.md` 复制空模板到项目的 `.ys_team/status.md`。
 
 提示用户可选配置 hooks 以增强状态追踪：
 
@@ -175,7 +187,7 @@ Init 时从 `examples/baseline/.ys_team/status.md` 复制空模板到项目的 `
 ## After Init
 
 - Use the generated local `.ys_team/` as the project's baseline.
-- Treat `examples/baseline/` as the default workflow source, not as a rigid project copy.
+- Treat the bundled baseline as the default workflow source, not as a rigid project copy.
 - Do not rerun init for normal project work.
 - Use `ys-team-rebuild` only when project reality has materially changed.
 

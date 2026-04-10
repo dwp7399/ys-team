@@ -37,13 +37,14 @@ npx ys-team install-skills --dest ~/.claude/skills --force
 ```
 
 > 默认目标为 `~/.agents/skills`，Claude Code 用户需指定 `~/.claude/skills`。
+> 安装时会同时在 skills 目录旁写入一份 bundled baseline：`_ys-team/baseline/`，供 `ys-team-init` / `ys-team-rebuild` 读取模板。
 
 **第二步：在项目里初始化**
 
 打开目标项目，对 Claude 说：
 
 ```
-用 ys-team-init 初始化这个项目
+用 ys-team-init 这个 skill 初始化这个项目
 ```
 
 ### 更新 skills
@@ -90,6 +91,7 @@ npx ys-team check-update
 ```
 
 `init-project` 会向目标项目写入 `.agents/skills`、`AGENTS.md`、`CLAUDE.md`，之后仍需在项目里执行 `ys-team-init`。
+同时也会写入 `.agents/skills/_ys-team/baseline/`，所以项目里的 `ys-team-init` 能拿到默认模板。
 
 ## 本仓结构
 

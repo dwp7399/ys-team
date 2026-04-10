@@ -10,8 +10,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const bundledSkillsDir = path.join(packageRoot, "skills");
+const bundledBaselineDir = path.join(packageRoot, "examples", "baseline");
 const baselineAgentsPath = path.join(packageRoot, "examples", "baseline", "AGENTS.md");
 const baselineClaudePath = path.join(packageRoot, "examples", "baseline", "CLAUDE.md");
+const installedBaselineDirName = "_ys-team";
 
 function defaultSkillsDir() {
   return path.join(os.homedir(), ".agents", "skills");
@@ -123,9 +125,16 @@ function ensureBundledSkills() {
   if (!fs.existsSync(bundledSkillsDir)) {
     throw new Error(`Bundled skills directory not found: ${bundledSkillsDir}`);
   }
+  if (!fs.existsSync(bundledBaselineDir)) {
+    throw new Error(`Bundled baseline directory not found: ${bundledBaselineDir}`);
+  }
   if (!fs.existsSync(baselineAgentsPath) || !fs.existsSync(baselineClaudePath)) {
     throw new Error("Baseline AGENTS.md / CLAUDE.md templates not found");
   }
+}
+
+function sharedBaselineInstallPath(dest) {
+  return path.join(dest, installedBaselineDirName, "baseline");
 }
 
 function listBundledSkills() {
@@ -167,6 +176,8 @@ function installSkills({ dest, force, dryRun }) {
   const skills = listBundledSkills();
   const operations = [];
   const skipped = [];
+  const baselineTargetPath = sharedBaselineInstallPath(dest);
+  const baselineExists = fs.existsSync(baselineTargetPath);
 
   for (const skill of skills) {
     const sourcePath = path.join(bundledSkillsDir, skill);
@@ -189,15 +200,24 @@ function installSkills({ dest, force, dryRun }) {
       }
       copyDirectoryRecursive(op.sourcePath, op.targetPath);
     }
+
+    if (baselineExists && force) {
+      fs.rmSync(baselineTargetPath, { recursive: true, force: true });
+    }
+    if (!baselineExists || force) {
+      copyDirectoryRecursive(bundledBaselineDir, baselineTargetPath);
+    }
   }
 
   const lines = [
     dryRun ? "ys-team install-skills dry-run" : "ys-team install-skills",
     "",
     `destination: ${dest}`,
+    `shared baseline: ${baselineTargetPath}`,
     `bundled skills: ${skills.length}`,
     `scheduled installs: ${operations.length}`,
-    `skipped existing: ${skipped.length}`
+    `skipped existing: ${skipped.length}`,
+    `baseline action: ${baselineExists ? (force ? "replace" : "skip") : "create"}`
   ];
 
   if (operations.length > 0) {
@@ -251,6 +271,7 @@ function initProject({ dir, force, dryRun }) {
     "next:",
     "- open the target repository",
     "- run ys-team-init in that repository",
+    `- baseline assets are available at ${sharedBaselineInstallPath(skillsDest)}`,
     "- verify AGENTS.md and CLAUDE.md match your project-local needs"
   ].join("\n");
 }
