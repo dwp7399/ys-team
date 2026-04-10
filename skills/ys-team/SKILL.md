@@ -35,7 +35,7 @@ Its job is to keep the conversation anchored in:
 
 不要把内部实现细节包装成用户必须理解的流程图。
 
-默认工作流由 bundled baseline 承载：仓库内为 `examples/baseline/`，npm 安装后为技能目录旁的 `_ys-team/baseline/`。
+默认工作流由 bundled baseline 承载：仓库内为 `examples/baseline/`，npm 安装后为 `ys-team/baseline/`。
 
 ## Core Invariants
 

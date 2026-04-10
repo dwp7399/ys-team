@@ -17,7 +17,7 @@ It is a one-time repository specialization step.
 Its default workflow source is the bundled baseline.
 
 - Repository source: `examples/baseline/`
-- npm-installed source: sibling `_ys-team/baseline/` next to the installed skills directory
+- npm-installed source: `ys-team/baseline/` inside the installed skill directory set
 
 ## 语言检测
 
@@ -66,7 +66,7 @@ If the repository does not have an `AGENTS.md`, generate one from the bundled ba
 When `ys-team-init` runs, resolve baseline assets in this order:
 
 1. `examples/baseline/` inside the current `ys-team` repository
-2. `../_ys-team/baseline/` relative to the installed skill directory
+2. `../ys-team/baseline/` relative to the installed skill directory
 
 If neither exists, stop and report that the installed ys-team package is incomplete.
 

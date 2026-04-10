@@ -13,7 +13,7 @@ const bundledSkillsDir = path.join(packageRoot, "skills");
 const bundledBaselineDir = path.join(packageRoot, "examples", "baseline");
 const baselineAgentsPath = path.join(packageRoot, "examples", "baseline", "AGENTS.md");
 const baselineClaudePath = path.join(packageRoot, "examples", "baseline", "CLAUDE.md");
-const installedBaselineDirName = "_ys-team";
+const installedBaselineSkillName = "ys-team";
 
 function defaultSkillsDir() {
   return path.join(os.homedir(), ".agents", "skills");
@@ -134,7 +134,7 @@ function ensureBundledSkills() {
 }
 
 function sharedBaselineInstallPath(dest) {
-  return path.join(dest, installedBaselineDirName, "baseline");
+  return path.join(dest, installedBaselineSkillName, "baseline");
 }
 
 function listBundledSkills() {
