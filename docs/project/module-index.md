@@ -3,7 +3,7 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-04-07
+**Last Updated**: 2026-04-10
 
 ## `skills/`（方法入口与执行能力）
 **职责**：`skills/` 承载对外公开的 `ys-team` 方法入口，以及 init、rebuild、doc-build、spec-talk、spec-work、status、submit 等执行能力。它决定用户如何理解 ys-team，以及仓库如何把 baseline 和本地 reality 连接起来。  
@@ -21,11 +21,12 @@
 - 依赖：方法论定义来自 `skills/ys-team/*` 与仓库文档
 - 被依赖：`ys-team-init`, `ys-team-rebuild`, 外部项目初始化流程
 
-## `.ys_team/`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来“用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。它在 baseline 之上保留方法仓特有角色，如方法论架构、初始化接入和交付守门。  
+## `.ys_team/` + `TEAM.md`（方法仓自用本地基线）
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。v0.3.0 起新增 `memory/` 角色记忆系统，以及 `TEAM.md` 编排模式配置入口。它在 baseline 之上保留方法仓特有角色：方法论架构师、产品演进负责人、交付守门人。
 
 **关系**：
-- 入口：`.ys_team/team.md`, `.ys_team/methods.md`, `.ys_team/policy.md`, `.ys_team/templates/*`
+- 入口：`TEAM.md`, `.ys_team/team.md`, `.ys_team/methods.md`, `.ys_team/policy.md`, `.ys_team/templates/*`
+- 记忆：`.ys_team/memory/roles/*.md`（按角色独立，跨任务经验积累）
 - 依赖：`examples/baseline/.ys_team/` 提供稳定骨架版本，`docs/project/*` 提供仓库现实
 - 被依赖：本仓 specs、方法仓自身 rebuild 判断
 
@@ -52,10 +53,10 @@
 - 依赖：`skills/ys-team/SKILL.md`, `skills/ys-team-spec-talk/SKILL.md`, `skills/ys-team-spec-work/SKILL.md`, `skills/ys-team-submit/SKILL.md`, `skills/ys-team-status/SKILL.md`
 - 被依赖：本仓协作、下游仓库初始化后的默认工作流
 
-## `package.json` / `scripts/`（npm 双模式安装与发布面）
-**职责**：`package.json` 和 `scripts/` 提供 ys-team 当前的 npm 分发与安装能力：全局模式通过 `install-skills` 安装到 `~/.agents/skills`，项目模式通过 `init-project` 安装到项目内 `.agents/skills` 并下发 baseline 版 `AGENTS.md` / `CLAUDE.md`。同时它们承担 npm 可发布形态的元数据配置。  
+## `package.json` / `scripts/`（npm 分发与 CLI 面）
+**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力（已发布 v0.3.0）。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`
 - 依赖：`README.md`, `skills/`, `examples/baseline/`, `registry/`
-- 被依赖：npm 包使用者、分发验证
+- 被依赖：npm 包使用者（`npx ys-team`）、分发验证
