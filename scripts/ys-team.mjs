@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
+import https from "node:https";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -26,6 +27,7 @@ function helpText() {
     "- ys-team --help",
     "- ys-team install-skills [--dest <dir>] [--force] [--dry-run]",
     "- ys-team init-project [--dir <project-dir>] [--force] [--dry-run]",
+    "- ys-team check-update",
     "",
     "Default global install destination:",
     `- ${defaultSkillsDir()}`,
@@ -253,6 +255,61 @@ function initProject({ dir, force, dryRun }) {
   ].join("\n");
 }
 
+function fetchLatestVersion(packageName) {
+  return new Promise((resolve, reject) => {
+    const url = `https://registry.npmjs.org/${packageName}/latest`;
+    https.get(url, { headers: { Accept: "application/json" } }, (res) => {
+      let data = "";
+      res.on("data", (chunk) => { data += chunk; });
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          resolve(json.version);
+        } catch {
+          reject(new Error("解析 npm registry 响应失败"));
+        }
+      });
+    }).on("error", reject);
+  });
+}
+
+function compareVersions(a, b) {
+  const pa = a.split(".").map(Number);
+  const pb = b.split(".").map(Number);
+  for (let i = 0; i < 3; i++) {
+    if ((pa[i] ?? 0) > (pb[i] ?? 0)) return 1;
+    if ((pa[i] ?? 0) < (pb[i] ?? 0)) return -1;
+  }
+  return 0;
+}
+
+async function checkUpdate() {
+  const localPkg = JSON.parse(fs.readFileSync(path.join(packageRoot, "package.json"), "utf8"));
+  const localVersion = localPkg.version;
+
+  process.stdout.write("正在检查更新...\n");
+  const latestVersion = await fetchLatestVersion(localPkg.name);
+  const cmp = compareVersions(latestVersion, localVersion);
+
+  const lines = [
+    "ys-team check-update",
+    "",
+    `已安装版本: v${localVersion}`,
+    `npm 最新版:  v${latestVersion}`,
+  ];
+
+  if (cmp === 0) {
+    lines.push("", "已是最新版本。");
+  } else if (cmp > 0) {
+    lines.push("", "发现新版本，运行以下命令更新 skills：");
+    lines.push(`  npx ys-team@${latestVersion} install-skills --force`);
+  } else {
+    lines.push("", "本地版本比 npm 更新（开发中或未发布）。");
+  }
+
+  return lines.join("\n");
+}
+
 function main() {
   try {
     const args = parseArgs(process.argv);
@@ -270,6 +327,17 @@ function main() {
     if (args.command === "init-project") {
       console.log(initProject(args));
       process.exit(0);
+    }
+
+    if (args.command === "check-update") {
+      checkUpdate().then((output) => {
+        console.log(output);
+        process.exit(0);
+      }).catch((err) => {
+        console.error(`ys-team error: ${err.message}`);
+        process.exit(1);
+      });
+      return;
     }
 
     console.error(`Unsupported command: ${args.command}`);
