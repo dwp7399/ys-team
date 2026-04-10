@@ -26,17 +26,45 @@
 - 多角色讨论用于覆盖风险并形成收敛结论。
 - 交付结果必须可验证、可追溯。
 
-## 当前推荐使用方式
+## 安装与使用
 
-当前版本建议只记两步：
+### 第一次使用
 
-1. 获取本仓 `skills/` 下的技能目录，并安装到你的本地 skills 目录。
-2. 说 “帮我安装/更新 https://github.com/dwp7399/ys-team 这里的 skills，然后用里面的 init，初始化我的项目。然后更新 agents.md 和 claude.md，使用 ys-team 作为最优先使用工作流”
+**第一步：安装 skills**
 
-对 Python / Java 项目，当前起步动作保持一致：
+```bash
+npx ys-team install-skills --dest ~/.claude/skills --force
+```
 
-- Python 项目：先安装 skills，再用 `ys-team-init` 生成项目本地 `.ys_team/`、`docs/specs/` 和现实索引
-- Java 项目：同样先安装 skills，再用 `ys-team-init` 落地本地基线；Java 差异主要体现在 init 对构建工具、多模块和兼容性边界的识别，而不是要求先改业务代码
+> 默认目标为 `~/.agents/skills`，Claude Code 用户需指定 `~/.claude/skills`。
+
+**第二步：在项目里初始化**
+
+打开目标项目，对 Claude 说：
+
+```
+用 ys-team-init 初始化这个项目
+```
+
+### 更新 skills
+
+```bash
+# 检查是否有新版本
+npx ys-team check-update
+
+# 更新到最新版
+npx ys-team@latest install-skills --dest ~/.claude/skills --force
+```
+
+### 更新已有项目的工作流
+
+skills 更新后，项目里的 `.ys_team/` 不会自动变化。如果新版本有结构调整，在项目里运行：
+
+```
+用 ys-team-rebuild 重估这个项目的工作流配置
+```
+
+对 Python / Java 项目，起步动作保持一致，差异由 `ys-team-init` 在识别项目结构时自动处理。
 
 ## 工作流可见标志
 
@@ -52,63 +80,16 @@
 
 `请先进入 ys-team 工作流，并给出当前阶段标志。`
 
-## npm 分发现状
-
-当前仓库已经有 npm 包元数据，并提供两种 npm 安装模式，但还不是完整的一键初始化器。
-
-当前 npm 面提供的是：
-
-- 发布 `skills/`、`examples/baseline/`、`registry/`、文档和脚本
-- 一个最小 CLI 入口：`npx ys-team --help`
-- 全局安装：把包内 skills 安装到 `~/.agents/skills`
-- 项目级安装：把包内 skills 安装到项目的 `.agents/skills`，并下发 baseline 版 `AGENTS.md` / `CLAUDE.md`
-- 支持显式目标目录、项目目录和安全覆盖控制：`--dest`、`--dir`、`--force`、`--dry-run`
-
-当前 npm 面还**没有**：
-
-- 自动执行 `ys-team-init`
-- 自动登录或发布到 npm registry
-
-全局安装模式：
+## CLI 参考
 
 ```bash
-npx ys-team install-skills
+npx ys-team --help
+npx ys-team install-skills [--dest <dir>] [--force] [--dry-run]
+npx ys-team init-project [--dir <project-dir>] [--force] [--dry-run]
+npx ys-team check-update
 ```
 
-全局安装到自定义目录：
-
-```bash
-npx ys-team install-skills --dest /path/to/skills
-```
-
-项目级安装模式：
-
-```bash
-npx ys-team init-project --dir /path/to/project
-```
-
-项目级安装会：
-
-- 写入 `/path/to/project/.agents/skills`
-- 写入 `/path/to/project/AGENTS.md`
-- 写入 `/path/to/project/CLAUDE.md`
-
-两种模式后续都仍需在目标仓库里执行 `ys-team-init`。
-
-## npm 发布状态
-
-当前仓库已经具备**可发布到 npm registry** 的包形态，包括：
-
-- CLI 入口
-- `publishConfig.access = public`
-- 可通过 `npm pack --dry-run` 验证的打包内容
-
-但这不等于已经完成真实发布。真实发布仍需要：
-
-- npm 账号
-- `npm login`
-- 可能的 token / 2FA 配置
-- 在发布环境执行 `npm publish`
+`init-project` 会向目标项目写入 `.agents/skills`、`AGENTS.md`、`CLAUDE.md`，之后仍需在项目里执行 `ys-team-init`。
 
 ## 本仓结构
 
