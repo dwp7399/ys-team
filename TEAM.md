@@ -23,8 +23,8 @@ workspace_limit: 2k
 - 方法论架构师:     tools: [Read, Glob, Grep, Write, Edit]
 - 产品演进负责人:   tools: [Read, Glob, Grep, Write, Edit]
 - 交付守门人:       tools: [Read, Glob, Grep]
-- spec-reviewer:    tools: [Read, Glob, Grep]
-- qa-guard:         tools: [Read, Glob, Grep, Bash]
+- 规格审阅人:       tools: [Read, Glob, Grep]
+- 质量保障守门人:   tools: [Read, Glob, Grep, Bash]
 
 ## spec_dir
 
