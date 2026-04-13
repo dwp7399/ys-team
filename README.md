@@ -1,68 +1,76 @@
 # ys-team
 
-AI 团队治理方法论：以共享现实索引为对齐基础、以多角色讨论为收敛机制、以 Spec 为执行与验收统一依据。
+让你的 AI 编程助手按规矩来。
 
-## 30 秒上手
+## 你为什么会需要它
+
+用 AI agent 写代码很爽，但你大概遇到过这些情况：
+
+- AI 改了不该改的文件，你事后才发现
+- 一个"简单需求"越改越大，最后不知道改了什么
+- 出了 bug 回头看，找不到当时为什么这样改
+- 你说"加个接口"，AI 直接动手，没人讨论过这个接口该长什么样
+
+ys-team 不是要限制 AI 的能力，而是给它一套工作纪律：改之前先对齐现实，复杂的事先讨论清楚，改完要有据可查。
+
+## 它怎么工作
+
+四个原则：
+
+- 现实先于生成 — AI 先看你的项目长什么样，再决定怎么改
+- 规格先于执行 — 复杂改动先写清楚要做什么，再动手
+- 讨论归于收敛 — 多个角色审视同一个问题，但目标是形成结论，不是无限展开
+- 证据胜于感觉 — 改完了要能验证，不是"我觉得改好了"
+
+实际路径：你发一个请求 → ys-team 判断这件事有多复杂 → 简单的直接改，复杂的先讨论再按约定执行，最后用证据验收。
+
+## 适用范围
+
+ys-team 更适合：
+- 个人开发者用 AI coding agent 写代码，想让 AI 更靠谱
+- 小团队多人共用 AI agent 协作，需要基本的治理约束
+- 希望给 AI 编码建立最低纪律的任何团队
+
+对已有成熟工程治理的大团队，ys-team 不一定直接替代现有流程，更适合作为 AI 协作层的补充。
+
+不适用于不涉及代码改动的纯对话场景。
+
+## 30 秒开始
 
 ```bash
-# 安装 skills（默认安装到 ~/.claude/skills）
+# 安装（默认装到 ~/.claude/skills）
 npx ys-team install-skills --force
 
-# 在目标项目里，对 Claude 说：
+# 在你的项目里，对 Claude 说：
 # "用 ys-team-init 初始化这个项目"
 ```
 
-安装完成后，在目标项目里执行 `ys-team-init` 即可启用工作流路由。
+装好之后，在项目里执行 `ys-team-init`，工作流就启用了。详细的首次使用指南见 [开始使用](docs/guide/getting-started.md)。
 
-## The Zen of ys-team
+## 日常怎么用
 
-- 现实先于生成。
-- 规格先于执行。
-- 讨论归于收敛。
-- 证据胜于感觉。
+装好之后，你正常和 AI 对话就行。ys-team 会自动判断每个请求该走什么路径：
 
-## 这是什么
+**小修小补** — "帮我修一下这个拼写错误"
+直接改，不需要任何流程。和没装 ys-team 一样。
 
-ys-team 不是固定流程图，不是项目管理工具。它提供一组稳定约束：
+**明确的小范围改动** — "帮我把这三个文件的日志格式统一一下"
+直接改，但会在状态记录里留一笔，方便以后追溯。
 
-- 项目必须有能反映真实状态的共享现实索引
-- 非 trivial 工作先收敛为 Spec，再依据 Spec 执行和验收
-- 多角色讨论用于覆盖风险并形成收敛结论
-- 交付结果必须可验证、可追溯
+**需要想清楚的改动** — "帮我给用户系统加一个注销功能"
+先讨论（这个功能该怎么做、影响哪些模块、有什么风险），形成明确的规格，再按规格执行，最后验收。
 
-## 工作流
+详细的日常使用场景见 [日常使用](docs/guide/daily-usage.md)。
 
-所有改动请求经过路由判断，按三级分流：
+## 文档地图
 
-| 级别 | 名称 | 条件 | 流程 |
-|------|------|------|------|
-| L0 | trivial | 单文件、无影响、用户声明 | 直接执行 |
-| L1 | patch | ≤3 文件、单模块内、意图清晰 | 执行 → 留痕 |
-| L2 | spec | 跨模块、有风险、需讨论收敛 | 完整 spec 流程 |
-
-L2 完整流程：
-
-```
-spec-talk → spec-review → spec-work → qa → close → done
-```
-
-三种编排模式：manual（手动推进）、semi-auto（自动流转，关键节点暂停）、full-auto（全自动）。
-
-详见 [方法论规范](docs/methodology/)。
-
-## 更新
-
-```bash
-npx ys-team check-update
-npx ys-team@latest install-skills --force
-```
-
-skills 更新后，项目里的 `.ys_team/` 不会自动变化。如需同步：
-
-```
-# 在项目里对 Claude 说：
-# "用 ys-team-rebuild 重估这个项目的工作流配置"
-```
+| 文档 | 说明 |
+|------|------|
+| [为什么需要 ys-team](docs/guide/why-ys-team.md) | 问题、解法、核心路径、适合谁 |
+| [开始使用](docs/guide/getting-started.md) | 安装后的第一次落地，init 做了什么，常见问题 |
+| [日常使用](docs/guide/daily-usage.md) | 按场景组织的使用指南 |
+| [案例与演进](docs/guide/cases-and-evolution.md) | 真实案例、定制方法、未来方向 |
+| [方法论规范](docs/methodology/) | 形式化的规则和协议定义（深入阅读） |
 
 ## CLI 参考
 
@@ -70,46 +78,11 @@ skills 更新后，项目里的 `.ys_team/` 不会自动变化。如需同步：
 npx ys-team install-skills [--dest <dir>] [--force] [--dry-run]
 npx ys-team init-project [--dir <project-dir>] [--force] [--dry-run]
 npx ys-team check-update
-npx ys-team --help
 ```
 
-`install-skills` 安装 skills 到指定目录（默认 `~/.claude/skills`），同时写入 baseline 模板。
+## The Zen of ys-team
 
-`init-project` 向目标项目写入 `.agents/skills`、`AGENTS.md`、`CLAUDE.md`，之后仍需在项目里执行 `ys-team-init`。
-
-## 方法论规范
-
-完整方法论规范位于 `docs/methodology/`：
-
-| 文档 | 内容 |
-|------|------|
-| [00-overview](docs/methodology/00-overview.md) | 方法概述与核心不变量 |
-| [01-state-machine](docs/methodology/01-state-machine.md) | Spec 生命周期状态机 |
-| [02-role-protocol](docs/methodology/02-role-protocol.md) | 角色定义、选择、通信、演进 |
-| [03-discussion-protocol](docs/methodology/03-discussion-protocol.md) | 讨论收敛、结果卡、决策语义 |
-| [04-artifact-schema](docs/methodology/04-artifact-schema.md) | Spec 制品定义 |
-| [05-governance](docs/methodology/05-governance.md) | 治理规则、记忆策略 |
-| [06-bootstrap-and-evolution](docs/methodology/06-bootstrap-and-evolution.md) | 初始化与演进 |
-
-这些文档是平台无关的方法论定义，不依赖任何特定 AI 工具的实现细节。
-
-## 工作流可见标志
-
-ys-team 工作流中，回复末尾必须出现可见标志：
-
-- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
-- 讨论：`**[主持人]** ys-team · spec-talk`
-- 执行：`**[执行中]** ys-team · spec-work`
-- 验收：`**[验收]** ys-team · submit`
-- 状态：`**[状态]** ys-team · status`
-
-没有标志说明不在工作流中，可以要求切回。
-
-## 仓库结构
-
-- `skills/` — 对外发布的 ys-team skills
-- `examples/baseline/` — 默认工作流骨架
-- `docs/methodology/` — 平台无关的方法论规范
-- `docs/project/` — 仓库现状说明
-- `docs/specs/` — 演进 spec
-- `.ys_team/` — 本仓自用工作流基线
+- 现实先于生成。
+- 规格先于执行。
+- 讨论归于收敛。
+- 证据胜于感觉。

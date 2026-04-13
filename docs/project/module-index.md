@@ -13,6 +13,14 @@
 - 被依赖：所有 `skills/*/SKILL.md`（作为平台适配器引用方法论规范）、`examples/baseline/`、`.ys_team/`
 - 版本：`docs/methodology/VERSION`
 
+## `docs/guide/`（用户向使用指南）
+**职责**：`docs/guide/` 面向个人开发者，用通俗语言解释"为什么需要 ys-team"和"怎么用"。它不重复 methodology 的形式化定义，而是建立心智和使用感。
+
+**关系**：
+- 入口：`docs/guide/why-ys-team.md`、`docs/guide/getting-started.md`
+- 引用：`docs/methodology/`（深入阅读链接）
+- 被依赖：`README.md`（文档地图链接到 guide）
+
 ## `skills/`（方法入口与执行能力）
 **职责**：`skills/` 承载对外公开的 `ys-team` 方法入口，以及 init、rebuild、doc-build、spec-talk、spec-work、status、submit 等执行能力。它决定用户如何理解 ys-team，以及仓库如何把 baseline 和本地 reality 连接起来。  
 
