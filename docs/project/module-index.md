@@ -3,7 +3,15 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-04-10
+**Last Updated**: 2026-04-13
+
+## `docs/methodology/`（平台无关方法论规范）
+**职责**：`docs/methodology/` 承载 ys-team 方法论的完整规范，独立于任何 AI 平台实现。它定义状态机、角色协议、讨论协议、制品 schema、治理规则和初始化/演进协议。
+
+**关系**：
+- 入口：`docs/methodology/00-overview.md`、`docs/methodology/01-state-machine.md`
+- 被依赖：所有 `skills/*/SKILL.md`（作为平台适配器引用方法论规范）、`examples/baseline/`、`.ys_team/`
+- 版本：`docs/methodology/VERSION`
 
 ## `skills/`（方法入口与执行能力）
 **职责**：`skills/` 承载对外公开的 `ys-team` 方法入口，以及 init、rebuild、doc-build、spec-talk、spec-work、status、submit 等执行能力。它决定用户如何理解 ys-team，以及仓库如何把 baseline 和本地 reality 连接起来。  

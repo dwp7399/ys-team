@@ -9,6 +9,8 @@ This is a silent internal skill.
 
 Use it to display the live ys-team state of a repository.
 
+> 状态机定义见 `docs/methodology/01-state-machine.md`。
+
 ## Purpose
 
 读取 `.ys_team/status.md` 并格式化展示团队当前状态。

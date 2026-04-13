@@ -16,50 +16,35 @@ const baselineClaudePath = path.join(packageRoot, "examples", "baseline", "CLAUD
 const installedBaselineSkillName = "ys-team";
 
 function defaultSkillsDir() {
-  return path.join(os.homedir(), ".agents", "skills");
+  return path.join(os.homedir(), ".claude", "skills");
 }
 
 function helpText() {
   return [
-    "ys-team npm surface",
-    "",
-    "This package currently distributes repository assets and can install bundled ys-team skills.",
+    "ys-team — AI 团队治理方法论工具链",
     "",
     "Commands:",
-    "- ys-team --help",
-    "- ys-team install-skills [--dest <dir>] [--force] [--dry-run]",
-    "- ys-team init-project [--dir <project-dir>] [--force] [--dry-run]",
-    "- ys-team check-update",
+    "  ys-team install-skills [--dest <dir>] [--force] [--dry-run]",
+    "  ys-team init-project [--dir <project-dir>] [--force] [--dry-run]",
+    "  ys-team check-update",
+    "  ys-team --help",
     "",
-    "Default global install destination:",
-    `- ${defaultSkillsDir()}`,
+    `Default install destination: ${defaultSkillsDir()}`,
     "",
-    "Default project-local install destination:",
-    "- <project>/.agents/skills",
+    "Quick start:",
+    "  npx ys-team install-skills --force",
+    "  # Then in your project, tell Claude: 用 ys-team-init 初始化这个项目",
     "",
-    "Included:",
-    "- skills/",
-    "- examples/baseline/",
-    "- registry/",
-    "- docs/",
-    "- scripts/",
+    "Update:",
+    "  npx ys-team check-update",
+    "  npx ys-team@latest install-skills --force",
     "",
-    "Visible workflow markers:",
-    "- route: `ys-team` · [decision] -> [next step]",
-    "- spec-talk: [主持人] ys-team · spec-talk",
-    "- spec-work: [执行中] ys-team · spec-work",
-    "- submit: [验收] ys-team · submit",
-    "- status: [状态] ys-team · status",
+    "Workflow levels:",
+    "  L0 trivial  — single file, no impact, direct execution",
+    "  L1 patch    — ≤3 files, single module, execute + record",
+    "  L2 spec     — cross-module or risky, full spec flow",
     "",
-    "Current npm boundaries:",
-    "- installs bundled ys-team skills into ~/.agents/skills for global use",
-    "- can initialize project-local .agents/skills plus baseline AGENTS.md / CLAUDE.md",
-    "- does not automatically execute ys-team-init",
-    "- is ready to publish, but actual npm registry publish still needs npm account credentials",
-    "",
-    "Recommended next step after install:",
-    "1. For global mode: run ys-team-init in the target repository.",
-    "2. For project mode: open the target repository and continue with ys-team-init there."
+    "Docs: docs/methodology/ for the full method specification"
   ].join("\n");
 }
 

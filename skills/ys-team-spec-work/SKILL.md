@@ -9,6 +9,8 @@ This is a silent internal skill.
 
 Use it to execute approved work against an existing repository spec.
 
+> 制品定义见 `docs/methodology/04-artifact-schema.md`，治理规则见 `05-governance.md`。
+
 ## Purpose
 
 - implement against the approved spec

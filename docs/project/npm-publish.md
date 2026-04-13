@@ -19,7 +19,7 @@ npx ys-team install-skills
 默认写入：
 
 ```text
-~/.agents/skills
+~/.claude/skills
 ```
 
 ### 项目模式

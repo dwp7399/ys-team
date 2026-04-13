@@ -65,14 +65,12 @@
 
 仓库已提供双模式 npm 安装面：
 
-- 全局模式：通过 `install-skills` 安装到 `~/.agents/skills`
+- 全局模式：通过 `install-skills` 安装到 `~/.claude/skills`（默认）
 - 项目模式：通过 `init-project` 安装到项目内 `.agents/skills`，并下发 baseline 版 `AGENTS.md` / `CLAUDE.md`
 
-当前 npm 面已经能完成“把 ys-team skills 装到用户级或项目级目录”这一核心动作。
+当前 npm 面已经能完成”把 ys-team skills 装到用户级或项目级目录”这一核心动作。
 
 当前仍不把 npm 包定义为完整安装器；目标项目接入仍需要后续执行 `ys-team-init`。
-
-另一个边界是：仓库已具备可发布形态，但真实 npm registry 发布仍依赖发布者自己的 npm 账号和凭证。
 
 ## 默认落地模型
 

@@ -9,6 +9,8 @@ This is a silent internal skill.
 
 Use it when a repository needs a heavier delivery gate.
 
+> 交付门禁规则见 `docs/methodology/05-governance.md`。
+
 **注意**：submit 只负责验收判断，不负责关闭动作。关闭（git commit、状态更新为 done）由编排器的 close 阶段执行。
 
 ## Purpose

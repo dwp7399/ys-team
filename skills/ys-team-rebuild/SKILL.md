@@ -7,6 +7,8 @@ description: "Reassess an existing project-local ys-team baseline and minimally 
 
 Use this skill when a repository already has `.ys_team/`, but the current local method no longer matches repository reality.
 
+> 演进触发条件和重估规则见 `docs/methodology/06-bootstrap-and-evolution.md`。
+
 ## Purpose
 
 Refresh the local ys-team baseline without reintroducing heavy process or unnecessary churn.

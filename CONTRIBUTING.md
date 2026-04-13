@@ -4,7 +4,8 @@
 
 - 保持 `ys-team` 的对外心智尽量少。
 - 优先补强稳定原则、边界和项目本地化能力，不把仓库做成重流程系统。
-- 非 trivial 改动先更新或新增 `docs/specs/` 中的 spec，再执行实现。
+- 改动按三级分流：L0 trivial 直接执行、L1 patch 执行+留痕、L2 spec 完整流程。
+- 方法论规范见 `docs/methodology/`，平台适配逻辑见 `skills/*/SKILL.md`。
 - 文档必须反映仓库当前真实状态。
 
 ## Development Notes

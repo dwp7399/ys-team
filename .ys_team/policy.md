@@ -6,7 +6,8 @@
 
 ## Execution Rules
 
-- 非 trivial 改动先以 `docs/specs/` 为准。
+- 改动按三级分流：L0 trivial（直接执行）、L1 patch（执行 + status.md 留痕）、L2 spec（完整 spec 流程）。
+- L2 改动先以 `docs/specs/` 为准。
 - 文档必须反映项目当前真实状态。
 - spec、实现和验收证据应保持同一次交付闭环。
 - README、skills、项目文档之间必须保持一致。

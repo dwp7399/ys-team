@@ -7,6 +7,8 @@ description: "Initialize a repository-local ys-team baseline once. Generate the 
 
 Use this skill when a repository wants to start using `ys-team` and does not yet have a project-local `.ys_team/`.
 
+> 初始化与演进协议见 `docs/methodology/06-bootstrap-and-evolution.md`。
+
 ## Purpose
 
 Create the first project-local ys-team baseline with the lightest useful footprint.

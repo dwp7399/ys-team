@@ -2,10 +2,11 @@
 
 ## Execution Rules
 
-- 非 trivial 改动先以 `docs/specs/` 为准。
+- 改动按三级分流：L0 trivial（直接执行）、L1 patch（执行 + status.md 留痕）、L2 spec（完整 spec 流程）。
+- L2 改动先以 `docs/specs/` 为准。
 - 文档必须反映项目当前真实状态。
 - spec、实现和验收证据应保持同一次交付闭环。
-- 默认保持最小公开心智，不为了“看起来完整”而把内部能力暴露成用户菜单。
+- 默认保持最小公开心智，不为了”看起来完整”而把内部能力暴露成用户菜单。
 
 ## Documentation Authority
 

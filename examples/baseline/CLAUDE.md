@@ -5,7 +5,7 @@
 ## 首先做什么
 
 - 先判断当前请求是否已进入 `ys-team` 路由
-- 如果不是 trivial 改动，先进入 discussion / spec 链路
+- 按三级分流决定路径：L0 trivial（直接执行）、L1 patch（执行 + 留痕）、L2 spec（完整流程）
 
 ## 工作流可见标志
 

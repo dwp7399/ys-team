@@ -7,6 +7,8 @@ description: Discuss a non-trivial change using the repository's local .ys_team 
 
 Use this skill to discuss a non-trivial change using project-local team guidance.
 
+> 讨论协议规范见 `docs/methodology/03-discussion-protocol.md`，角色协议见 `02-role-protocol.md`。
+
 ## Read Order
 
 1. `TEAM.md`（如存在，获取 mode、limits、memory 配置）
