@@ -50,6 +50,38 @@
 - 多模块联动
 - 外部回调或异步链路上线
 
+## Spec-Review Gate
+
+semi-auto / full-auto 模式下，spec-talk 完成后自动触发独立审阅。
+
+审阅范围：
+- 目标、Non-goals、Write-Scope、Verification 是否达到"可执行"标准
+- 依赖关系是否在 Depends-On 中声明
+- 文档同步项是否列入 Write-Scope
+
+PASS → 进入 spec-work（semi-auto 暂停等确认）
+REJECT → 回退到 spec-talk，review.md 作为输入，重试计数 +1
+
+## QA Gate
+
+semi-auto / full-auto 模式下，spec-work 完成后自动触发独立验证。
+
+验证范围：
+- 项目测试结果
+- Acceptance Criteria 每条是否满足
+- evidence/ 是否存在且与 Verification 对应
+- 文档同步项是否已落地
+
+PASS → 进入 close（semi-auto 暂停等确认）
+REJECT → 回退到 spec-work，qa-report.md 作为输入，重试计数 +1
+
+## Quality Bar
+
+项目应定义质量底线，例如：
+
+- 根因修复，不做兼容层
+- 未完成文档同步的实现视为未完成交付
+
 ## 并行策略
 
 ```yaml

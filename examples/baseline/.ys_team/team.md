@@ -38,3 +38,12 @@
 - `db-migration-auditor`
 - `observability-reviewer`
 - `frontend-accessibility-reviewer`
+
+## Current Signals
+
+<!-- 项目在此维护当前状态快照，供角色选择和 spec 依赖判断参考 -->
+<!-- 示例：
+- 已完成 spec：xxx, yyy
+- 排队 spec：zzz（依赖 xxx）
+- 并行规则：aaa 和 bbb 可并行
+-->
