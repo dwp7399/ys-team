@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-14T18:20:00+08:00
+updated: 2026-04-14T18:42:00+08:00
 
 ## 活跃 Roadmap
 
@@ -16,6 +16,9 @@ updated: 2026-04-14T18:20:00+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-14 18:42 | 20260414-183500-rebuild-method-repo | 交付守门人 | PASS | rebuild 已完成：team 结构段已同步，现实索引时间已刷新，健康检查全部通过 |
+| 2026-04-14 18:38 | 20260414-183500-rebuild-method-repo | 交付守门人 | PASS | 已进入执行，rebuild 仅需最小同步 team 结构段并刷新现实索引 |
+| 2026-04-14 18:35 | 20260414-183500-rebuild-method-repo | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 版本、记忆、toolbox、TEAM 检查均通过；本次 rebuild 只需最小同步 team 结构段并刷新现实索引 |
 | 2026-04-14 18:20 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `ys-team@0.3.2` 已发布，`main` 与 tag 已同步，满足 close 条件 |
 | 2026-04-14 16:48 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `release/0.3.2` 已创建，发布治理与版本同步完成，本地 dry-run 通过，可进入真实 npm publish |
 | 2026-04-14 16:35 | 20260414-163500-release-version-alignment | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 发布线需与主体内容对齐；`0.3.2` 应按 `release/<version>` → npm publish → merge main → tag 的顺序真实走通 |

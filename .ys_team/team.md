@@ -28,3 +28,17 @@
 - 工具在角色对应的工作流环节自动建议使用
 - 工具绑定由 init/rebuild 时的内化流程写入
 - 手动修改时需确保 toolbox 中存在对应的内化文件
+
+## 可用外部候选
+
+- `security-reviewer`
+- `db-migration-auditor`
+- `observability-reviewer`
+- `frontend-accessibility-reviewer`
+
+## 当前信号
+
+- 已完成发布治理收口与 `0.3.2` 发版
+- 当前发布线版本：`0.3.2`
+- 活跃 Roadmap：`v0.4-evolution`
+- `docs/specs/` 与 `docs/roadmap/` 默认被 `.gitignore` 忽略；需要持久化时应显式纳入版本控制
