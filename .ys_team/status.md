@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-14T16:48:00+08:00
+updated: 2026-04-14T18:20:00+08:00
 
 ## 活跃 Roadmap
 
@@ -10,14 +10,13 @@ updated: 2026-04-14T16:48:00+08:00
 
 ## 活跃 Spec
 
-| ID | 标题 | 阶段 | 状态 | 更新时间 |
-|----|------|------|------|----------|
-| 20260414-163500-release-version-alignment | 版本对齐与 0.3.2 发版门禁 | spec-work | 执行中 | 2026-04-14 16:48 |
+（无）
 
 ## 最新判断
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-14 18:20 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `ys-team@0.3.2` 已发布，`main` 与 tag 已同步，满足 close 条件 |
 | 2026-04-14 16:48 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `release/0.3.2` 已创建，发布治理与版本同步完成，本地 dry-run 通过，可进入真实 npm publish |
 | 2026-04-14 16:35 | 20260414-163500-release-version-alignment | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 发布线需与主体内容对齐；`0.3.2` 应按 `release/<version>` → npm publish → merge main → tag 的顺序真实走通 |
 | 2026-04-14 16:00 | v0.4-evolution | 方法论架构师 + 产品演进负责人 | PASS | 产出 docs/roadmap/v0.4-evolution.md，3 方向 6 initiative，优先级 A>B>C，A1 最高 |
@@ -44,4 +43,3 @@ updated: 2026-04-14T16:48:00+08:00
 
 - 用户确认 v0.4 roadmap 优先级（docs/roadmap/v0.4-evolution.md）
 - 确认后从 A1（full-auto 端到端验证）开始转化为具体 spec
-- 执行 20260414-163500-release-version-alignment：更新发布治理、建立 `release/0.3.2`、npm publish 成功后合并回 `main` 并打 tag
