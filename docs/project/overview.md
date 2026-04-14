@@ -83,3 +83,20 @@
 - 静默内部 skills 支撑 discussion、spec、work、status、submit 等能力
 
 目标不是让用户理解全部 skill，而是让用户在 init 后直接开始工作。
+
+## 版本线与发版门禁
+
+当前仓库维护两条版本线：
+
+- 发布线：`package.json`、`examples/baseline/.ys_team/VERSION`、本仓 `.ys_team/VERSION`
+- 方法论线：`docs/methodology/VERSION`
+
+其中，发布线要求与真实发版保持一致；方法论线独立编号，不强制跟随 npm 包版本。
+
+对本仓来说，`.ys_team/VERSION` 表示“本仓当前自用工作流基线版本”。如果它低于当前发布线，说明本仓使用的工作流基线尚未完成同步，而不是说明整个代码库不能运行。
+
+本仓发版门禁：
+
+- 在 `release/<version>` 分支完成版本更新和验证
+- `npm publish` 成功后，才允许合并回 `main`
+- 合并回 `main` 并创建 git tag `<version>` 后，相关 spec 才能 close

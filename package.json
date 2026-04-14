@@ -1,6 +1,6 @@
 {
   "name": "ys-team",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "AI 团队治理方法论：以共享现实索引为对齐基础、以 Spec 为执行与验收统一依据的轻量治理框架",
   "keywords": [
     "claude-code",

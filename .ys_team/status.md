@@ -1,15 +1,26 @@
 # 团队状态
 
-updated: 2026-04-14T11:10:00+08:00
+updated: 2026-04-14T16:48:00+08:00
+
+## 活跃 Roadmap
+
+| ID | 标题 | 阶段 | 状态 | 更新时间 |
+|----|------|------|------|----------|
+| v0.4-evolution | v0.4 演进路线 | roadmap | 草稿已产出，待用户确认优先级 | 2026-04-14 |
 
 ## 活跃 Spec
 
-（无）
+| ID | 标题 | 阶段 | 状态 | 更新时间 |
+|----|------|------|------|----------|
+| 20260414-163500-release-version-alignment | 版本对齐与 0.3.2 发版门禁 | spec-work | 执行中 | 2026-04-14 16:48 |
 
 ## 最新判断
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-14 16:48 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `release/0.3.2` 已创建，发布治理与版本同步完成，本地 dry-run 通过，可进入真实 npm publish |
+| 2026-04-14 16:35 | 20260414-163500-release-version-alignment | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 发布线需与主体内容对齐；`0.3.2` 应按 `release/<version>` → npm publish → merge main → tag 的顺序真实走通 |
+| 2026-04-14 16:00 | v0.4-evolution | 方法论架构师 + 产品演进负责人 | PASS | 产出 docs/roadmap/v0.4-evolution.md，3 方向 6 initiative，优先级 A>B>C，A1 最高 |
 | 2026-04-14 11:10 | 20260413-ai-gateway-backflow | 交付守门人 | PASS | QA 验证通过，11 个验收标准全部满足，已提交 |
 | 2026-04-13 17:00 | 20260413-ai-gateway-backflow | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | ai-gateway 11 个回流点分三档，范围和验收标准已明确，spec 产出 |
 | 2026-04-13 16:00 | methodology-extraction | 方法论架构师 + 产品演进负责人 | PASS | 方法论规范化（7 文档）、三级分流、README 重写、部署流程优化、SKILL.md 瘦身完成 |
@@ -31,4 +42,6 @@ updated: 2026-04-14T11:10:00+08:00
 
 ## 待办
 
-（无）
+- 用户确认 v0.4 roadmap 优先级（docs/roadmap/v0.4-evolution.md）
+- 确认后从 A1（full-auto 端到端验证）开始转化为具体 spec
+- 执行 20260414-163500-release-version-alignment：更新发布治理、建立 `release/0.3.2`、npm publish 成功后合并回 `main` 并打 tag

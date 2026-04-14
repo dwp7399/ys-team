@@ -80,6 +80,15 @@ npx ys-team init-project [--dir <project-dir>] [--force] [--dry-run]
 npx ys-team check-update
 ```
 
+## 仓库发版约束
+
+ys-team 方法论版本和 npm 发布版本不是同一条线：
+
+- npm 发布线：`package.json` + baseline `.ys_team/VERSION` + 项目 `.ys_team/VERSION`
+- 方法论线：`docs/methodology/VERSION`
+
+本仓发版使用 `release/<version>` 分支。只有 `npm publish` 成功后，代码才会合并回 `main`，随后创建同版本 git tag。
+
 ## The Zen of ys-team
 
 - 现实先于生成。

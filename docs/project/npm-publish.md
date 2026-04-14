@@ -8,6 +8,30 @@
 - `publishConfig.access` 已设为 `public`
 - `npm pack --dry-run` 可通过
 
+## 发布线定义
+
+本仓发版时，以下三个文件共同构成发布线版本：
+
+- `package.json`
+- `examples/baseline/.ys_team/VERSION`
+- `.ys_team/VERSION`
+
+`docs/methodology/VERSION` 是方法论规范版本，独立维护，不跟随每次 npm 发包同步 bump。
+
+## 发布顺序
+
+发版按以下顺序执行：
+
+1. 从当前待发布代码拉出 `release/<version>` 分支
+2. 在该分支完成版本号、文档和必要实现更新
+3. 执行发布前检查
+4. 成功执行 `npm publish`
+5. 将 `release/<version>` 合并回 `main`
+6. 创建 git tag `<version>`
+7. 只有到这一步，相关 spec 才能 close
+
+对发版类 spec，QA Gate 的核心通过条件就是第 4 步：真实发布成功。
+
 ## 安装模式
 
 ### 全局模式

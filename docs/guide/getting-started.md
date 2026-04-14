@@ -97,6 +97,8 @@ npx ys-team@latest install-skills --force
 
 skills 更新后，项目里的 `.ys_team/` 不会自动变化。如果新版本有结构调整，再跑一次 rebuild。
 
+对已经接入 ys-team 的项目，如果你看到项目里的 `.ys_team/VERSION` 低于当前 baseline 版本，这表示“项目本地工作流基线还没同步”，而不是技能没装上。处理方式是：更新 skills 后，再执行一次 `ys-team-rebuild`。
+
 ## 常见问题
 
 **Q: init 之后什么都没变？**

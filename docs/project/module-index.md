@@ -38,7 +38,7 @@
 - 被依赖：`ys-team-init`, `ys-team-rebuild`, 外部项目初始化流程
 
 ## `.ys_team/` + `TEAM.md`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。v0.3.0 起新增 `memory/` 角色记忆系统，以及 `TEAM.md` 编排模式配置入口。它在 baseline 之上保留方法仓特有角色：方法论架构师、产品演进负责人、交付守门人。
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。v0.3.0 起新增 `memory/` 角色记忆系统，以及 `TEAM.md` 编排模式配置入口。它在 baseline 之上保留方法仓特有角色：方法论架构师、产品演进负责人、交付守门人。`.ys_team/VERSION` 表示本仓自用工作流基线版本，应与当前发布线对齐。
 
 **关系**：
 - 入口：`TEAM.md`, `.ys_team/team.md`, `.ys_team/methods.md`, `.ys_team/policy.md`, `.ys_team/templates/*`
@@ -70,7 +70,7 @@
 - 被依赖：本仓协作、下游仓库初始化后的默认工作流
 
 ## `package.json` / `scripts/`（npm 分发与 CLI 面）
-**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力（已发布 v0.3.0）。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`。
+**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`。发版时，该模块负责承载发布线版本，并遵守 `release/<version>` → npm publish → merge main → git tag 的顺序。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`

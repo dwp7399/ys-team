@@ -87,6 +87,14 @@
 
 当问题已经收敛到可执行程度时，默认应继续进入 spec / work / acceptance 链，而不是停在抽象讨论。
 
+## Release Intent
+
+涉及真实发版时，默认把“发布成功”而不是“代码写完”视为交付完成。
+
+- 在 `release/<version>` 分支完成版本更新、验证和发版
+- `npm publish` 成功后，才允许合并回 `main`
+- 代码回到 `main` 并创建同版本 git tag 后，spec 才能 close
+
 ## Discussion Lens
 
 本仓允许按问题场景装载思维透镜，例如：

@@ -75,6 +75,18 @@ semi-auto / full-auto 模式下，spec-work 完成后自动触发独立验证。
 PASS → 进入 close（semi-auto 暂停等确认）
 REJECT → 回退到 spec-work，qa-report.md 作为输入，重试计数 +1
 
+发版类 spec 追加要求：
+- QA PASS 必须包含真实 `npm publish` 成功证据
+- 未 publish 成功，不得视为 QA 通过
+
+## Release Gate
+
+- 发布线版本由 `package.json`、`examples/baseline/.ys_team/VERSION`、`.ys_team/VERSION` 共同组成
+- `docs/methodology/VERSION` 是方法论规范版本，独立于发布线
+- 发版工作必须在 `release/<version>` 分支完成
+- 只有在 `npm publish` 成功后，发布分支才允许合并回 `main`
+- 只有在合并回 `main` 并创建 git tag `<version>` 后，发版类 spec 才允许 close
+
 ## Quality Bar
 
 项目应定义质量底线，例如：

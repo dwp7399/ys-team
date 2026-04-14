@@ -97,3 +97,19 @@
 - 方法论版本独立编号（当前 1.0.0），因为方法论规范是新增的独立产出
 - rebuild 时对比项目版本与基线版本，决定是否需要更新
 - 方法论版本变更不一定触发基线版本变更（规范澄清不影响模板）
+
+## 发布线治理
+
+当仓库将 baseline 作为 npm 包主体一并发布时，建议显式区分两条线：
+
+- 发布线：`package.json`、bundled baseline 的 `.ys_team/VERSION`、仓库自用 `.ys_team/VERSION`
+- 方法论线：`docs/methodology/VERSION`
+
+发布线约束：
+
+1. 发版工作在 `release/<version>` 分支完成
+2. 真实发布成功（如 `npm publish`）后，发布分支才合并回 `main`
+3. 合并回 `main` 后创建 git tag `<version>`
+4. 发版类 spec 只有在发布成功且代码回到 `main` 后才 close
+
+如果仓库自用 `.ys_team/VERSION` 低于当前发布线，说明仓库自身尚未完成一次与当前 baseline 的同步。
