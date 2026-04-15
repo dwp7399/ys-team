@@ -1,12 +1,20 @@
 # 团队状态
 
-updated: 2026-04-14T18:42:00+08:00
+updated: 2026-04-15T11:30:00+08:00
 
 ## 活跃 Roadmap
 
 | ID | 标题 | 阶段 | 状态 | 更新时间 |
 |----|------|------|------|----------|
-| v0.4-evolution | v0.4 演进路线 | roadmap | 草稿已产出，待用户确认优先级 | 2026-04-14 |
+| v0.4-evolution | v0.4 演进路线 | roadmap | 全部 spec 已完成，待发版 | 2026-04-15 |
+
+## 队列 Spec（待执行）
+
+（无）
+
+## 活跃 Spec
+
+（无）
 
 ## 活跃 Spec
 
@@ -16,6 +24,16 @@ updated: 2026-04-14T18:42:00+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-15 11:30 | 20260415-close-stage-and-memory-upgrade | 交付守门人 | PASS | 6 项验收标准全部通过：close 5 步清单、policy 三段式、3 个角色记忆重写、baseline 同步 |
+| 2026-04-15 10:24 | 20260414-B2-check-update-diff | 交付守门人 | PASS | B2 已完成：check-update 可输出落后版本摘要与迁移建议，提取失败时降级到 changelog 链接 |
+| 2026-04-15 10:23 | 20260414-B2-check-update-diff | 规格审阅人 | PASS | B2 实现边界清晰：摘要来源、降级策略和验证方式均可复核 |
+| 2026-04-15 10:22 | 20260414-B2-check-update-diff | 产品演进负责人 | PASS | 决定优先对齐已发布 tarball 的 changelog，而不是直接读取未发布主干内容 |
+| 2026-04-15 10:18 | 20260414-B1-baseline-changelog | 交付守门人 | PASS | B1 已完成：baseline CHANGELOG 已建立，AGENTS 与 methodology 06 已补 changelog 维护规则 |
+| 2026-04-15 10:17 | 20260414-B1-baseline-changelog | 规格审阅人 | PASS | B1 范围清晰：版本条目、维护义务和固定结构均已明确，verification 可直接复核 |
+| 2026-04-15 10:16 | 20260414-B1-baseline-changelog | 产品演进负责人 + 交付守门人 | PASS | 决定先建立机器友好的 changelog 结构，为后续 check-update 摘要输出提供稳定来源 |
+| 2026-04-15 10:06 | 20260414-A1-fullato-e2e-validation | 交付守门人 | PASS | A1 已完成：以记忆更新通知为载体跑通一次连续链路，三个 SKILL.md 已补通知规则，至少三个角色记忆文件已有内容 |
+| 2026-04-15 10:03 | 20260414-A1-fullato-e2e-validation | 规格审阅人 | PASS | A1 执行合约已收敛：载体范围明确到三个 SKILL.md、角色记忆与 evidence，verification 可直接复核 |
+| 2026-04-15 10:00 | 20260414-A1-fullato-e2e-validation | 方法论架构师 + 产品演进负责人 | PASS | 决定以“小而可见”的记忆通知规则作为载体，在单轮内完成 full-auto 链路验证 |
 | 2026-04-14 18:42 | 20260414-183500-rebuild-method-repo | 交付守门人 | PASS | rebuild 已完成：team 结构段已同步，现实索引时间已刷新，健康检查全部通过 |
 | 2026-04-14 18:38 | 20260414-183500-rebuild-method-repo | 交付守门人 | PASS | 已进入执行，rebuild 仅需最小同步 team 结构段并刷新现实索引 |
 | 2026-04-14 18:35 | 20260414-183500-rebuild-method-repo | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 版本、记忆、toolbox、TEAM 检查均通过；本次 rebuild 只需最小同步 team 结构段并刷新现实索引 |
@@ -44,5 +62,4 @@ updated: 2026-04-14T18:42:00+08:00
 
 ## 待办
 
-- 用户确认 v0.4 roadmap 优先级（docs/roadmap/v0.4-evolution.md）
-- 确认后从 A1（full-auto 端到端验证）开始转化为具体 spec
+- v0.4 全部 spec 完成，评估是否发布 v0.4.0

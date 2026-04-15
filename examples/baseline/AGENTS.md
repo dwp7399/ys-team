@@ -61,6 +61,14 @@
 
 在讨论影响范围、编写 spec 或评估改动风险时，先读取该索引，而不是直接探索代码库。
 
+## Baseline Changelog
+
+每次 baseline 发生重大变更时，必须同步更新 `examples/baseline/CHANGELOG.md`。
+
+- 重大变更包括：模板增删、角色/策略改写、工作流门禁变化、默认接入面变化
+- 未更新 changelog 的 baseline 交付视为未完成
+- changelog 条目至少包含：`What Changed`、`Why`、`Key Files`、`Migration Hint`
+
 ## 架构约束
 
 <!-- 项目在此声明架构层面的硬约束，例如：

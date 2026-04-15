@@ -33,16 +33,29 @@ Use it when a repository needs a heavier delivery gate.
 2. 当前 spec 的 `control.md`（验收合约）
 3. 当前 spec 的 `work.md`（执行记录）
 4. 当前 spec 的 `workspace.md`（工作记忆）
-5. delivery-guard 的记忆文件（`.ys_team/memory/roles/delivery-guard.md`）
+5. 交付守门人的记忆文件（本仓优先 `.ys_team/memory/roles/交付守门人.md`；如项目仍使用英文 role id，则回退到 `.ys_team/memory/roles/delivery-guard.md`）
 6. `.ys_team/policy.md`（submit gate 规则）
 
 ## 角色记忆回顾
 
-验收完成后，delivery-guard 回顾本次验收：
+验收完成后，交付守门人（或 `delivery-guard`）回顾本次验收：
 
 1. 读取自己的记忆文件
 2. 判断是否有值得记录的验收经验
 3. 如有，检查记忆是否超限，超限则压缩后写回
+
+## 记忆更新通知
+
+如果本轮有角色记忆发生实际写入，在 Visible Marker 之前追加通知行：
+
+```markdown
+> **[记忆更新]** <角色名>：<一句话描述新增的经验>
+```
+
+规则：
+- 仅在实际写入时输出；无新经验则不输出
+- 可多行，每个发生写入的角色各一行
+- 只写一句话摘要，不展开完整记忆内容
 
 ## Status 写入
 

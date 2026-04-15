@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import https from "node:https";
+import zlib from "node:zlib";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -11,6 +12,7 @@ const __dirname = path.dirname(__filename);
 const packageRoot = path.resolve(__dirname, "..");
 const bundledSkillsDir = path.join(packageRoot, "skills");
 const bundledBaselineDir = path.join(packageRoot, "examples", "baseline");
+const bundledBaselineChangelogPath = path.join(bundledBaselineDir, "CHANGELOG.md");
 const baselineAgentsPath = path.join(packageRoot, "examples", "baseline", "AGENTS.md");
 const baselineClaudePath = path.join(packageRoot, "examples", "baseline", "CLAUDE.md");
 const installedBaselineSkillName = "ys-team";
@@ -261,22 +263,215 @@ function initProject({ dir, force, dryRun }) {
   ].join("\n");
 }
 
-function fetchLatestVersion(packageName) {
+function fetchUrl(url, { responseType = "text", redirects = 0 } = {}) {
   return new Promise((resolve, reject) => {
-    const url = `https://registry.npmjs.org/${packageName}/latest`;
     https.get(url, { headers: { Accept: "application/json" } }, (res) => {
-      let data = "";
-      res.on("data", (chunk) => { data += chunk; });
-      res.on("end", () => {
-        try {
-          const json = JSON.parse(data);
-          resolve(json.version);
-        } catch {
-          reject(new Error("解析 npm registry 响应失败"));
+      if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        if (redirects >= 5) {
+          reject(new Error("请求重定向次数过多"));
+          return;
         }
+        resolve(fetchUrl(res.headers.location, { responseType, redirects: redirects + 1 }));
+        return;
+      }
+
+      if (res.statusCode && res.statusCode >= 400) {
+        reject(new Error(`请求失败（HTTP ${res.statusCode}）`));
+        return;
+      }
+
+      const chunks = [];
+      res.on("data", (chunk) => { chunks.push(chunk); });
+      res.on("end", () => {
+        const buffer = Buffer.concat(chunks);
+        resolve(responseType === "buffer" ? buffer : buffer.toString("utf8"));
       });
     }).on("error", reject);
   });
+}
+
+async function fetchLatestPackageMeta(packageName) {
+  const url = `https://registry.npmjs.org/${packageName}/latest`;
+  const data = await fetchUrl(url);
+
+  try {
+    const json = JSON.parse(data);
+    return {
+      version: json.version,
+      dist: json.dist ?? {},
+      repository: json.repository ?? null
+    };
+  } catch {
+    throw new Error("解析 npm registry 响应失败");
+  }
+}
+
+function tarEntrySize(header) {
+  const sizeField = header.subarray(124, 136).toString("utf8").replace(/\0/g, "").trim();
+  return sizeField ? Number.parseInt(sizeField, 8) : 0;
+}
+
+function extractFileFromTarGz(tarballBuffer, entryPath) {
+  const tarBuffer = zlib.gunzipSync(tarballBuffer);
+  let offset = 0;
+
+  while (offset + 512 <= tarBuffer.length) {
+    const header = tarBuffer.subarray(offset, offset + 512);
+    const name = header.subarray(0, 100).toString("utf8").replace(/\0.*$/, "");
+
+    if (!name) {
+      break;
+    }
+
+    const size = tarEntrySize(header);
+    const bodyStart = offset + 512;
+    const bodyEnd = bodyStart + size;
+
+    if (name === entryPath) {
+      return tarBuffer.subarray(bodyStart, bodyEnd).toString("utf8");
+    }
+
+    offset = bodyStart + Math.ceil(size / 512) * 512;
+  }
+
+  throw new Error(`未在 tarball 中找到 ${entryPath}`);
+}
+
+function parseSectionBody(markdown, heading) {
+  const lines = markdown.split("\n");
+  const collected = [];
+  let capture = false;
+
+  for (const line of lines) {
+    if (line === `### ${heading}`) {
+      capture = true;
+      continue;
+    }
+    if (capture && line.startsWith("### ")) {
+      break;
+    }
+    if (capture) {
+      collected.push(line);
+    }
+  }
+
+  return collected.join("\n").trim();
+}
+
+function parseBullets(markdown) {
+  return markdown
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("- "))
+    .map((line) => line.slice(2));
+}
+
+function parseChangelog(markdown) {
+  const matches = [...markdown.matchAll(/^## \[([^\]]+)\] - (.+)$/gm)];
+  const sections = [];
+
+  for (let i = 0; i < matches.length; i += 1) {
+    const current = matches[i];
+    const next = matches[i + 1];
+    const bodyStart = current.index + current[0].length;
+    const bodyEnd = next ? next.index : markdown.length;
+    const body = markdown.slice(bodyStart, bodyEnd).trim();
+
+    sections.push({
+      version: current[1],
+      date: current[2],
+      whatChanged: parseBullets(parseSectionBody(body, "What Changed")),
+      why: parseBullets(parseSectionBody(body, "Why")),
+      keyFiles: parseBullets(parseSectionBody(body, "Key Files")),
+      migrationHint: parseBullets(parseSectionBody(body, "Migration Hint"))
+    });
+  }
+
+  return sections;
+}
+
+function isSemver(version) {
+  return /^\d+\.\d+\.\d+$/.test(version);
+}
+
+function collectUpgradeNotes(localVersion, latestVersion, changelogMarkdown) {
+  return parseChangelog(changelogMarkdown)
+    .filter((section) => isSemver(section.version))
+    .filter((section) => compareVersions(section.version, localVersion) > 0)
+    .filter((section) => compareVersions(section.version, latestVersion) <= 0)
+    .sort((a, b) => compareVersions(b.version, a.version));
+}
+
+function changelogUrlFromRepository(repository) {
+  const repoUrl = typeof repository === "string" ? repository : repository?.url;
+  if (!repoUrl) {
+    return null;
+  }
+
+  const cleaned = repoUrl
+    .replace(/^git\+/, "")
+    .replace(/\.git$/, "");
+
+  return `${cleaned}/blob/main/examples/baseline/CHANGELOG.md`;
+}
+
+function formatUpdateReport({ packageName, localVersion, latestVersion, notes, changelogUrl, summaryAvailable }) {
+  const lines = [
+    "ys-team check-update",
+    "",
+    `已安装版本: v${localVersion}`,
+    `npm 最新版:  v${latestVersion}`,
+  ];
+
+  const cmp = compareVersions(latestVersion, localVersion);
+
+  if (cmp === 0) {
+    lines.push("", "已是最新版本。");
+    return lines.join("\n");
+  }
+
+  if (cmp < 0) {
+    lines.push("", "本地版本比 npm 更新（开发中或未发布）。");
+    return lines.join("\n");
+  }
+
+  lines.push("", "发现新版本，运行以下命令更新 skills：");
+  lines.push(`  npx ${packageName}@${latestVersion} install-skills --force`);
+
+  if (summaryAvailable && notes.length > 0) {
+    lines.push("", `落后版本: ${notes.map((note) => `v${note.version}`).join(", ")}`);
+    for (const note of notes) {
+      lines.push("", `v${note.version} (${note.date})`);
+
+      if (note.whatChanged.length > 0) {
+        lines.push("  主要变化:");
+        for (const item of note.whatChanged) {
+          lines.push(`  - ${item}`);
+        }
+      }
+
+      if (note.keyFiles.length > 0) {
+        lines.push("  关键文件:");
+        for (const item of note.keyFiles.slice(0, 5)) {
+          lines.push(`  - ${item}`);
+        }
+      }
+
+      if (note.migrationHint.length > 0) {
+        lines.push("  迁移建议:");
+        for (const item of note.migrationHint) {
+          lines.push(`  - ${item}`);
+        }
+      }
+    }
+  } else {
+    lines.push("", "未能提取变更摘要。");
+    if (changelogUrl) {
+      lines.push(`查看 CHANGELOG: ${changelogUrl}`);
+    }
+  }
+
+  return lines.join("\n");
 }
 
 function compareVersions(a, b) {
@@ -292,28 +487,39 @@ function compareVersions(a, b) {
 async function checkUpdate() {
   const localPkg = JSON.parse(fs.readFileSync(path.join(packageRoot, "package.json"), "utf8"));
   const localVersion = localPkg.version;
+  const localChangelog = fs.existsSync(bundledBaselineChangelogPath)
+    ? fs.readFileSync(bundledBaselineChangelogPath, "utf8")
+    : null;
 
   process.stdout.write("正在检查更新...\n");
-  const latestVersion = await fetchLatestVersion(localPkg.name);
-  const cmp = compareVersions(latestVersion, localVersion);
+  const latestMeta = await fetchLatestPackageMeta(localPkg.name);
+  const latestVersion = latestMeta.version;
 
-  const lines = [
-    "ys-team check-update",
-    "",
-    `已安装版本: v${localVersion}`,
-    `npm 最新版:  v${latestVersion}`,
-  ];
+  let notes = [];
+  let summaryAvailable = false;
 
-  if (cmp === 0) {
-    lines.push("", "已是最新版本。");
-  } else if (cmp > 0) {
-    lines.push("", "发现新版本，运行以下命令更新 skills：");
-    lines.push(`  npx ys-team@${latestVersion} install-skills --force`);
-  } else {
-    lines.push("", "本地版本比 npm 更新（开发中或未发布）。");
+  if (compareVersions(latestVersion, localVersion) > 0 && latestMeta.dist.tarball) {
+    try {
+      const tarball = await fetchUrl(latestMeta.dist.tarball, { responseType: "buffer" });
+      const changelogMarkdown = extractFileFromTarGz(tarball, "package/examples/baseline/CHANGELOG.md");
+      notes = collectUpgradeNotes(localVersion, latestVersion, changelogMarkdown);
+      summaryAvailable = notes.length > 0;
+    } catch {
+      if (localChangelog) {
+        notes = collectUpgradeNotes(localVersion, latestVersion, localChangelog);
+        summaryAvailable = notes.length > 0;
+      }
+    }
   }
 
-  return lines.join("\n");
+  return formatUpdateReport({
+    packageName: localPkg.name,
+    localVersion,
+    latestVersion,
+    notes,
+    changelogUrl: changelogUrlFromRepository(latestMeta.repository),
+    summaryAvailable
+  });
 }
 
 function main() {
@@ -355,4 +561,17 @@ function main() {
   }
 }
 
-main();
+const isMainModule = process.argv[1] && path.resolve(process.argv[1]) === __filename;
+
+if (isMainModule) {
+  main();
+}
+
+export {
+  checkUpdate,
+  collectUpgradeNotes,
+  compareVersions,
+  extractFileFromTarGz,
+  formatUpdateReport,
+  parseChangelog
+};

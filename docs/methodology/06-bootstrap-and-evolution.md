@@ -113,3 +113,20 @@
 4. 发版类 spec 只有在发布成功且代码回到 `main` 后才 close
 
 如果仓库自用 `.ys_team/VERSION` 低于当前发布线，说明仓库自身尚未完成一次与当前 baseline 的同步。
+
+## Baseline changelog 维护
+
+当 baseline 被持续演进并对外分发时，应维护一份结构化 changelog，帮助用户理解“版本差异意味着什么”。
+
+建议规则：
+
+1. changelog 与 baseline 一起版本化，随重大变更同步更新
+2. 每个版本段落至少包含：
+   - `What Changed`
+   - `Why`
+   - `Key Files`
+   - `Migration Hint`
+3. 未发布版本可使用 `Unreleased` 段持续累积
+4. `check-update` 一类升级提示能力，应优先从 changelog 提取摘要，而不是硬编码版本说明
+
+这样做的目标不是记录所有提交，而是记录对项目使用者真正有迁移价值的基线变化。

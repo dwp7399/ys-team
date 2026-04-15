@@ -130,13 +130,18 @@ L1 流程：
    - PASS → 继续
    - REJECT → 回 spec-work，将 qa-report.md 作为输入，重试计数 +1
    - 重试耗尽 → halt
-5. **close**：汇总报告输出，**暂停，等用户确认后执行** git commit + 更新 status.md 为 done
+5. **close**：**暂停，等用户确认后执行**以下收口清单：
+   1. 角色记忆回顾写入（每个参与角色；即使中间环节漏写，close 时必须兜底回顾）
+   2. workspace.md 标记 closed
+   3. git commit（代码 + evidence + 记忆文件）
+   4. status.md 更新（active → done）
+   5. spec 目录归档（`docs/specs/active/<id>/` → `docs/specs/completed/<id>/`）
 
 ### full-auto
 
 与 semi-auto 相同，但：
 - 阶段 3（spec-work）不暂停，直接启动
-- 阶段 5（close）不暂停，自动执行 git commit
+- 阶段 5（close）不暂停，自动执行收口清单
 - 重试耗尽时仍然暂停（自动降级为半自动）
 
 ### 编排规则

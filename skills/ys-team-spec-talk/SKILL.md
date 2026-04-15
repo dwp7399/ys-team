@@ -159,6 +159,19 @@ These sections should summarize:
 
 记忆读写遵循 `.ys_team/memory/policy.md` 的规则。
 
+## 记忆更新通知
+
+如果本轮有角色记忆发生实际写入，在输出 Host Summary 之前追加通知行：
+
+```markdown
+> **[记忆更新]** <角色名>：<一句话描述新增的经验>
+```
+
+规则：
+- 仅在实际写入时输出；无新经验则不输出
+- 可多行，每个发生写入的角色各一行
+- 只写一句话摘要，不展开完整记忆内容
+
 ## Status 写入
 
 讨论收敛后（产出 result card 时），必须同步更新 `.ys_team/status.md`：
