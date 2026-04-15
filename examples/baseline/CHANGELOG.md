@@ -2,27 +2,32 @@
 
 记录 `examples/baseline/` 及其直接配套接入面的结构化变化，供用户迁移、rebuild 判断和后续 `check-update` 摘要提取使用。
 
-## [0.4.0] - Unreleased
+## [0.4.0] - 2026-04-15
 
 ### What Changed
 
-- 新增 baseline 级 `CHANGELOG.md`，开始按版本沉淀 `What Changed / Why / Key Files / Migration Hint`
-- 后续 v0.4 的 baseline 变化将在此条目下持续追加，直到正式发版
+- **记忆格式升级**：角色记忆文件由事实记录升级为三段式判断规则（错误模式 / 正确做法 / 适用场景），policy.md 明确禁止纯事件描述
+- **close 阶段完整化**：close 收口清单补齐为 5 步（memory 兜底回顾、workspace 标记、git commit、status 更新、spec 归档）
+- **check-update 增强**：版本落后时输出缺失版本的主要变化和迁移建议，提取失败降级为 CHANGELOG 链接
+- **角色记忆更新通知**：spec-talk / spec-work / submit 角色记忆写入时，在 Host Summary 前输出 `[记忆更新]` 可见通知
+- **baseline CHANGELOG 建立**：从本版本起按版本沉淀结构化变更记录
 
 ### Why
 
-- 用户在 `check-update` 看到落后版本时，需要知道“改了什么”和“该怎么迁移”
-- v0.4 进入兑现阶段，需要一份能被人读也能被工具提取的变更源
+- full-auto 实战验证暴露：角色记忆从未触发，close 阶段缺少兜底机制
+- 事实记录型记忆复用价值低，升级为判断规则型才有跨任务迁移价值
+- 用户升级时无法感知”改了什么”，需要 check-update + changelog 双轨支撑
 
 ### Key Files
 
+- `examples/baseline/.ys_team/memory/policy.md`
 - `examples/baseline/CHANGELOG.md`
 - `examples/baseline/AGENTS.md`
-- `docs/methodology/06-bootstrap-and-evolution.md`
 
 ### Migration Hint
 
-- 从这一版开始，baseline 发生重大变更时同步阅读本文件；如果项目本地 baseline 长期滞后，优先结合 `rebuild` 和 changelog 判断是否需要补齐模板、策略或说明文件
+- 若项目角色记忆文件内容为纯事实记录，建议按三段式格式重写（可在下次 spec-work 完成后执行）
+- 若项目 close 阶段缺少 5 步收口清单，更新 ys-team skill 后在下次 rebuild 时确认配置同步
 
 ## [0.3.2] - 2026-04-14
 
