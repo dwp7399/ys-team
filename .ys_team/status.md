@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-15T12:00:00+08:00
+updated: 2026-04-15T16:31:13+08:00
 
 ## 活跃 Roadmap
 
@@ -9,10 +9,6 @@ updated: 2026-04-15T12:00:00+08:00
 | v0.4-evolution | v0.4 演进路线 | roadmap | 已发布 ys-team@0.4.0 | 2026-04-15 |
 
 ## 队列 Spec（待执行）
-
-（无）
-
-## 活跃 Spec
 
 （无）
 
@@ -40,7 +36,7 @@ updated: 2026-04-15T12:00:00+08:00
 | 2026-04-14 18:20 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `ys-team@0.3.2` 已发布，`main` 与 tag 已同步，满足 close 条件 |
 | 2026-04-14 16:48 | 20260414-163500-release-version-alignment | 交付守门人 | PASS | `release/0.3.2` 已创建，发布治理与版本同步完成，本地 dry-run 通过，可进入真实 npm publish |
 | 2026-04-14 16:35 | 20260414-163500-release-version-alignment | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 发布线需与主体内容对齐；`0.3.2` 应按 `release/<version>` → npm publish → merge main → tag 的顺序真实走通 |
-| 2026-04-14 16:00 | v0.4-evolution | 方法论架构师 + 产品演进负责人 | PASS | 产出 docs/roadmap/v0.4-evolution.md，3 方向 6 initiative，优先级 A>B>C，A1 最高 |
+| 2026-04-14 16:00 | v0.4-evolution | 方法论架构师 + 产品演进负责人 | PASS | 产出 docs/roadmap/completed/v0.4-evolution.md，3 方向 6 initiative，优先级 A>B>C，A1 最高 |
 | 2026-04-14 11:10 | 20260413-ai-gateway-backflow | 交付守门人 | PASS | QA 验证通过，11 个验收标准全部满足，已提交 |
 | 2026-04-13 17:00 | 20260413-ai-gateway-backflow | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | ai-gateway 11 个回流点分三档，范围和验收标准已明确，spec 产出 |
 | 2026-04-13 16:00 | methodology-extraction | 方法论架构师 + 产品演进负责人 | PASS | 方法论规范化（7 文档）、三级分流、README 重写、部署流程优化、SKILL.md 瘦身完成 |
@@ -62,4 +58,4 @@ updated: 2026-04-15T12:00:00+08:00
 
 ## 待办
 
-- 评估是否启动下一轮 rebuild（baseline 有较多变化）
+（无）

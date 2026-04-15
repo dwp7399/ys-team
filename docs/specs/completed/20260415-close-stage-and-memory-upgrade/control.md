@@ -1,7 +1,7 @@
 ---
 Spec-Type: control
 Initiative: 20260415-close-stage-and-memory-upgrade
-Status: queued
+Status: completed
 Owner-Session: ys-team
 Write-Scope:
   - skills/ys-team/SKILL.md
@@ -63,12 +63,24 @@ close 阶段 5 步收口清单：
 
 ## Acceptance Criteria
 
-- [ ] `skills/ys-team/SKILL.md` close 阶段有明确的 5 步收口清单
-- [ ] close 清单第 1 步明确：即使中间环节漏写记忆，close 时必须兜底回顾
-- [ ] `.ys_team/memory/policy.md` 格式段描述三段式，明确"禁止纯事实记录"
-- [ ] `.ys_team/memory/roles/*.md` 所有非空文件符合新格式（无纯事件描述条目）
-- [ ] `examples/baseline/.ys_team/memory/policy.md` 与本仓 policy.md 格式段一致
-- [ ] `spec 目录归档` 步骤说明从哪个目录移到哪个目录
+- [x] `skills/ys-team/SKILL.md` close 阶段有明确的 5 步收口清单
+- [x] close 清单第 1 步明确：即使中间环节漏写记忆，close 时必须兜底回顾
+- [x] `.ys_team/memory/policy.md` 格式段描述三段式，明确"禁止纯事实记录"
+- [x] `.ys_team/memory/roles/*.md` 所有非空文件符合新格式（无纯事件描述条目）
+- [x] `examples/baseline/.ys_team/memory/policy.md` 与本仓 policy.md 格式段一致
+- [x] `spec 目录归档` 步骤说明从哪个目录移到哪个目录
+
+## Discussion Digest
+
+- Rounds: 1
+- Conclusion: PASS
+- Closeout Note: 本项已在 2026-04-15 完成交付守门人验收，当前 control 仅补收口状态
+
+## Verification
+
+- 检查 `skills/ys-team/SKILL.md` close 阶段是否为 5 步清单，且第 1 步明确记忆兜底
+- 检查 `.ys_team/memory/policy.md` 与 `examples/baseline/.ys_team/memory/policy.md` 是否都要求三段式记忆格式
+- 检查 `.ys_team/memory/roles/*.md` 的现有非空文件是否已改为判断规则表达
 
 ## Collaboration Summary
 

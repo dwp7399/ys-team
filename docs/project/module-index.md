@@ -50,7 +50,7 @@
 **职责**：`docs/roadmap/` 记录 ys-team 方法仓的版本演进路线和 initiative 规划。每个 roadmap 文件对应一个版本周期，描述方向、initiative 优先级和 exit criteria。
 
 **关系**：
-- 入口：`docs/roadmap/v0.4-evolution.md`
+- 入口：`docs/roadmap/completed/v0.4-evolution.md`
 - 依赖：`docs/project/module-index.md`（影响范围参考）、`docs/specs/`（具体 initiative 转化）
 - 被依赖：spec-talk 路由判断、产品演进负责人决策
 
