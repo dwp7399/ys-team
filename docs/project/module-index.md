@@ -3,7 +3,7 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-04-14
+**Last Updated**: 2026-04-15
 
 ## `docs/methodology/`（平台无关方法论规范）
 **职责**：`docs/methodology/` 承载 ys-team 方法论的完整规范，独立于任何 AI 平台实现。它定义状态机、角色协议、讨论协议、制品 schema、治理规则和初始化/演进协议。
@@ -46,6 +46,14 @@
 - 依赖：`examples/baseline/.ys_team/` 提供稳定骨架版本，`docs/project/*` 提供仓库现实
 - 被依赖：本仓 specs、方法仓自身 rebuild 判断
 
+## `docs/roadmap/`（演进路线）
+**职责**：`docs/roadmap/` 记录 ys-team 方法仓的版本演进路线和 initiative 规划。每个 roadmap 文件对应一个版本周期，描述方向、initiative 优先级和 exit criteria。
+
+**关系**：
+- 入口：`docs/roadmap/v0.4-evolution.md`
+- 依赖：`docs/project/module-index.md`（影响范围参考）、`docs/specs/`（具体 initiative 转化）
+- 被依赖：spec-talk 路由判断、产品演进负责人决策
+
 ## `docs/project/`（方法论现实与结构说明）
 **职责**：`docs/project/` 记录 ys-team 仓库现状、结构和模块职责，是本仓文档权威入口。它负责解释方法论仓库当前承载了哪些能力、哪些目录是对外骨架、哪些是仓库自用配置。  
 
@@ -70,7 +78,7 @@
 - 被依赖：本仓协作、下游仓库初始化后的默认工作流
 
 ## `package.json` / `scripts/`（npm 分发与 CLI 面）
-**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`。发版时，该模块负责承载发布线版本，并遵守 `release/<version>` → npm publish → merge main → git tag 的顺序。
+**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版，版本落后时输出缺失版本的主要变化和迁移建议）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`。发版时，该模块负责承载发布线版本，并遵守 `release/<version>` → npm publish → merge main → git tag 的顺序。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`
