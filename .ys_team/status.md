@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-16T11:16:00+08:00
+updated: 2026-04-16T14:30:00+08:00
 
 ## 活跃 Roadmap
 
@@ -16,12 +16,15 @@ updated: 2026-04-16T11:16:00+08:00
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-（无）
+| 20260416-project-slim | spec-talk | draft | 方法论架构师 + 产品演进负责人 + 交付守门人 | 0 | manual |
+| 20260416-negative-control-language | — | absorbed | — | — | — |
 
 ## 最新判断
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-16 14:30 | 20260416-project-slim | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 4 轮讨论收敛为 L2 spec：项目从治理平台重定位为纪律层，.ys_team 从 ~34 文件精简到 ~10，methodology 7→2，skills 8→4，spec 制品 7→1 必须 + 可选，吸收 negative-control-language |
+| 2026-04-16 11:45 | 20260416-negative-control-language | 方法论架构师 + 产品演进负责人 + 交付守门人 | ABSORBED | 被 20260416-project-slim 吸收，反向控制语言作为瘦身后 rules.md 的核心内容落地 |
 | 2026-04-16 11:16 | 20260416-110800-npx-entrypoint-hotfix | 交付守门人 | PASS | 已修复 `npx ys-team` 静默退出问题，`ys-team@0.4.2` 发布成功且 npx 验证有输出 |
 | 2026-04-16 00:45 | 20260415-193020-delivery-flow-carrier | 交付守门人 | PASS | `ys-team@0.4.1` 已成功发布，release 分支已合并回 main 并创建 tag `0.4.1`，spec 可归档 |
 | 2026-04-16 00:18 | 20260415-193020-delivery-flow-carrier | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 已补安装清理逻辑：`install-skills --force` 会清理不再 bundled 的旧 ys-team skill，`ys-team-submit` 不会在升级后残留 |
