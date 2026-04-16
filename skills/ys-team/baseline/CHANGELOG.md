@@ -4,31 +4,42 @@
 
 ## [Unreleased]
 
+（无）
+
+## [0.5.0] - 2026-04-16
+
 ### What Changed
 
-- 修复 `npx ys-team` 在 npm cache / `/tmp` 路径下静默退出的问题，CLI 入口判断改为 realpath 比较
-- 新增 `.ys_team/delivery-flow.md` 默认骨架，用于固定项目本地的核心交付主链
-- init / rebuild / 主链技能开始把 `delivery-flow.md` 视为本地 baseline 的组成部分
-- `install-skills --force` 开始清理已不再由当前 npm 包提供的旧 ys-team skill（例如已删除的 `ys-team-submit`）
+- **项目瘦身**：baseline 从 ~34 文件精简到 ~10 文件，方法论从 7 篇重写为 2 篇，skills 从 8 个减到 4 个
+- **结构重建**：`TEAM.md` + `team.md` → `config.yaml`，`policy.md` + `methods.md` → `rules.md`，`delivery-flow.md` → `templates/checklist.md`，7 种 spec 模板 → 1 种 `spec.md`
+- **反向控制**：新增 8 条禁止项（含 Ban Levels 和自检锚点），作为 `rules.md` 核心内容
+- **角色压缩**：角色定义从独立文件改为 `config.yaml` 内联（每个角色 3 字段），删除角色卡 schema
+- **记忆简化**：删除 `memory/policy.md`，压缩规则内嵌 skill；baseline 只保留空 `memory/` 目录
+- **现实索引**：`module-index.md` 重命名为 `reality.md`，移入 `.ys_team/`
+- **toolbox/evolution 删除**：不再需要工具内化和演进追踪机制
 
 ### Why
 
-- 状态机、policy 和 spec 制品已经存在，但项目仍缺少一个显式的核心交付逻辑承载位
-- 该文档需要在自身作用范围内提供一致性，而不是逼项目去拼凑隐藏规则
-- 如果 npm 更新只能覆盖现有 skill 而不清理废弃项，用户会长期残留失效入口，工作流定义会和本地安装状态脱节
-- macOS `/tmp` 与 `/private/tmp` 的真实路径差异会让字符串路径比较误判，导致 `main()` 没有执行
+- 用户心智负担过重（~10 个概念），需要降到 3 个：规则、现实索引、Spec
+- 对照 Karpathy 项目（68 行 CLAUDE.md），ys-team 真正多出的价值只有 5 件事，其余都是治理开销
 
 ### Key Files
 
-- `examples/baseline/.ys_team/delivery-flow.md`
-- `examples/baseline/.ys_team/policy.md`
-- `scripts/ys-team.mjs`
+- `examples/baseline/.ys_team/config.yaml`（新）
+- `examples/baseline/.ys_team/rules.md`（新）
+- `examples/baseline/.ys_team/reality.md`（新）
+- `examples/baseline/.ys_team/templates/checklist.md`（新）
+- `examples/baseline/.ys_team/templates/spec.md`（新）
+- `examples/baseline/AGENTS.md`（重写）
+- `examples/baseline/CLAUDE.md`（重写）
 
 ### Migration Hint
 
-- 旧项目升级后，补一份本地 `.ys_team/delivery-flow.md`
-- 只填写会影响主链推进的绑定点，不必追求覆盖全部项目细节
-- 已安装旧版 ys-team 的环境，执行一次 `npx ys-team@latest install-skills --force`
+- 旧项目执行 `ys-team-init --rebuild` 时会收到迁移提示
+- `policy.md` → `rules.md`，`team.md` → `config.yaml`，`delivery-flow.md` → `templates/checklist.md`
+- `TEAM.md`（项目根目录）配置收进 `config.yaml`
+- `toolbox/` 和 `evolution/` 可直接删除
+- 角色记忆文件从 `memory/roles/<role>.md` 改为 `memory/<role-id>.md`
 
 ## [0.4.0] - 2026-04-15
 
