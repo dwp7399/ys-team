@@ -1,12 +1,12 @@
 # 团队状态
 
-updated: 2026-04-16T00:18:00+08:00
+updated: 2026-04-16T00:45:00+08:00
 
 ## 活跃 Roadmap
 
 | ID | 标题 | 阶段 | 状态 | 更新时间 |
 |----|------|------|------|----------|
-| v0.4-evolution | v0.4 演进路线 | roadmap | 已发布 ys-team@0.4.0 | 2026-04-15 |
+| v0.4-evolution | v0.4 演进路线 | roadmap | 已发布 ys-team@0.4.1 | 2026-04-16 |
 
 ## 队列 Spec（待执行）
 
@@ -16,12 +16,13 @@ updated: 2026-04-16T00:18:00+08:00
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-| 20260415-193020-delivery-flow-carrier | close | 待收口 | 方法论架构师 + 产品演进负责人 + 交付守门人 | 0 | manual |
+（无）
 
 ## 最新判断
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-16 00:45 | 20260415-193020-delivery-flow-carrier | 交付守门人 | PASS | `ys-team@0.4.1` 已成功发布，release 分支已合并回 main 并创建 tag `0.4.1`，spec 可归档 |
 | 2026-04-16 00:18 | 20260415-193020-delivery-flow-carrier | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 已补安装清理逻辑：`install-skills --force` 会清理不再 bundled 的旧 ys-team skill，`ys-team-submit` 不会在升级后残留 |
 | 2026-04-15 19:49 | 20260415-193020-delivery-flow-carrier | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 已扩 scope 删除 submit：skill、marker、guide、baseline 与 status 写入方均已改为 qa/close 语义 |
 | 2026-04-15 19:41 | 20260415-193020-delivery-flow-carrier | 质量保障守门人 | PASS | methodology、baseline、self-use `.ys_team` 与主链技能均已接入 delivery-flow，6 项验收要求全部满足 |
@@ -65,4 +66,4 @@ updated: 2026-04-16T00:18:00+08:00
 
 ## 待办
 
-- 决定是否对 20260415-193020-delivery-flow-carrier 执行 close（commit / spec 归档）
+（无）
