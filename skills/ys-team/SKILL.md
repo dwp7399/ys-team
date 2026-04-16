@@ -46,6 +46,14 @@ Its job is to keep the conversation anchored in:
 - 讨论的目标是收敛，而不是无边界扩展。
 - 交付必须留下可复核证据。
 
+## Local Delivery Flow
+
+当仓库存在 `.ys_team/delivery-flow.md` 时，ys-team 主链应把它视为项目本地的核心交付逻辑承载位。
+
+- 它补充 `TEAM.md` 和 `.ys_team/policy.md`，不替代二者
+- 它只覆盖核心交付主链，不追求覆盖全部项目细节
+- 它应显式固定执行起点、spec 状态迁移、evidence 时机、status 更新和 close / release 关系
+
 ## Routing Guidance
 
 - 如果用户想先理解方法论，直接解释 `ys-team`，不要急着让用户执行初始化。
@@ -106,6 +114,8 @@ L1 流程：
 - `spec_dir`：spec 目录路径
 
 如果 `TEAM.md` 不存在，使用默认值（mode: manual，其余同 baseline）。
+
+当 `.ys_team/delivery-flow.md` 存在时，路由判断后的主链阶段还应读取它，以获取项目本地的核心交付约束。
 
 ## 编排模式
 
@@ -206,7 +216,6 @@ ys-team 启用后，工作流具有排他性：
 - `spec-review`：`**[审阅]** ys-team · spec-review`
 - `spec-work`：`**[执行中]** ys-team · spec-work`
 - `qa`：`**[质检]** ys-team · qa`
-- `submit`：`**[验收]** ys-team · submit`
 - `close`：`**[关闭]** ys-team · close`
 - `status`：`**[状态]** ys-team · status`
 

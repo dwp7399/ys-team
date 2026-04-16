@@ -40,6 +40,7 @@ function helpText() {
     "Update:",
     "  npx ys-team check-update",
     "  npx ys-team@latest install-skills --force",
+    "  # --force also prunes stale bundled ys-team skills",
     "",
     "Workflow levels:",
     "  L0 trivial  — single file, no impact, direct execution",
@@ -132,6 +133,18 @@ function listBundledSkills() {
     .sort();
 }
 
+function listManagedInstalledSkills(dest) {
+  if (!fs.existsSync(dest)) {
+    return [];
+  }
+
+  return fs.readdirSync(dest, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .filter((name) => name === installedBaselineSkillName || name.startsWith(`${installedBaselineSkillName}-`))
+    .sort();
+}
+
 function copyDirectoryRecursive(sourceDir, targetDir) {
   fs.mkdirSync(targetDir, { recursive: true });
   for (const entry of fs.readdirSync(sourceDir, { withFileTypes: true })) {
@@ -163,8 +176,18 @@ function installSkills({ dest, force, dryRun }) {
   const skills = listBundledSkills();
   const operations = [];
   const skipped = [];
+  const staleSkills = [];
   const baselineTargetPath = sharedBaselineInstallPath(dest);
   const baselineExists = fs.existsSync(baselineTargetPath);
+
+  if (force) {
+    const bundledSet = new Set(skills);
+    for (const installedSkill of listManagedInstalledSkills(dest)) {
+      if (!bundledSet.has(installedSkill)) {
+        staleSkills.push(installedSkill);
+      }
+    }
+  }
 
   for (const skill of skills) {
     const sourcePath = path.join(bundledSkillsDir, skill);
@@ -181,6 +204,9 @@ function installSkills({ dest, force, dryRun }) {
 
   if (!dryRun) {
     fs.mkdirSync(dest, { recursive: true });
+    for (const staleSkill of staleSkills) {
+      fs.rmSync(path.join(dest, staleSkill), { recursive: true, force: true });
+    }
     for (const op of operations) {
       if (op.replace) {
         fs.rmSync(op.targetPath, { recursive: true, force: true });
@@ -204,6 +230,7 @@ function installSkills({ dest, force, dryRun }) {
     `bundled skills: ${skills.length}`,
     `scheduled installs: ${operations.length}`,
     `skipped existing: ${skipped.length}`,
+    `stale managed skills: ${staleSkills.length}`,
     `baseline action: ${baselineExists ? (force ? "replace" : "skip") : "create"}`
   ];
 
@@ -220,6 +247,13 @@ function installSkills({ dest, force, dryRun }) {
       lines.push(`- ${skill}`);
     }
     lines.push("", "Use --force to replace existing installed skills.");
+  }
+
+  if (staleSkills.length > 0) {
+    lines.push("", force ? "stale managed skills to remove:" : "stale managed skills detected:");
+    for (const skill of staleSkills) {
+      lines.push(`- ${skill}`);
+    }
   }
 
   if (!dryRun && operations.length > 0) {

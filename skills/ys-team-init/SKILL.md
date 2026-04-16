@@ -53,6 +53,7 @@ Generate or adapt:
 - `.ys_team/team.md`
 - `.ys_team/methods.md`
 - `.ys_team/policy.md`
+- `.ys_team/delivery-flow.md`
 - `.ys_team/templates/`
 - `.ys_team/memory/policy.md`（从 baseline 复制）
 - `.ys_team/memory/roles/`（根据 TEAM.md 的 roles 列表生成空记忆文件）
@@ -163,6 +164,14 @@ Init 时从 bundled baseline 的 `TEAM.md` 生成项目的 `TEAM.md`：
 2. 根据项目类型调整 roles 列表（如纯前端项目去掉 domain-integrator，加 frontend-accessibility-reviewer）
 3. 默认 mode 为 manual
 4. 提示用户可按需调整配置
+
+## Delivery Flow 初始化
+
+Init 时从 bundled baseline 的 `.ys_team/delivery-flow.md` 生成项目本地 delivery flow：
+
+1. 复制 bundled baseline 的 `.ys_team/delivery-flow.md`
+2. 保持其“只覆盖核心交付主链”的定位，不擅自扩写成大而全流程文档
+3. 提醒项目后续优先补齐会影响主链推进的绑定点
 
 ## 记忆系统初始化
 

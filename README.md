@@ -80,7 +80,7 @@ npx ys-team init-project [--dir <project-dir>] [--force] [--dry-run]
 npx ys-team check-update
 ```
 
-`check-update` 在版本落后时，会额外展示缺失版本的主要变化、关键文件和迁移建议；如果远程摘要提取失败，则会降级为提示查看 `CHANGELOG.md` 链接。
+`install-skills --force` 会替换当前 ys-team 已安装的同名 skill，并清理已经不再由当前 npm 包提供的旧 ys-team skill。`check-update` 在版本落后时，会额外展示缺失版本的主要变化、关键文件和迁移建议；如果远程摘要提取失败，则会降级为提示查看 `CHANGELOG.md` 链接。
 
 ## 仓库发版约束
 

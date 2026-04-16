@@ -4,7 +4,7 @@
 
 ## 第一优先级
 
-- 任何非 trivial 请求，先执行 `ys-team` 路由判断，再决定是 discussion、spec、work 还是 submit。
+- 任何非 trivial 请求，先执行 `ys-team` 路由判断，再决定是 discussion、spec、work、qa 还是 close。
 - 如果当前回复没有出现 `ys-team` 可见标志，视为还没进入工作流；此时应立即切回 `ys-team` 路由。
 
 ## 可见标志
@@ -14,7 +14,8 @@
 - 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
 - discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
 - spec-work：`**[执行中]** ys-team · spec-work`
-- submit：`**[验收]** ys-team · submit`
+- qa：`**[质检]** ys-team · qa`
+- close：`**[关闭]** ys-team · close`
 - status：`**[状态]** ys-team · status`
 
 如果缺少这些标志，直接切回：

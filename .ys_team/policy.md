@@ -46,6 +46,13 @@
 - evidence 放在 initiative 目录下的 `evidence/`
 - 验收必须包含可复核证据
 
+## Delivery Flow
+
+- 项目应使用 `.ys_team/delivery-flow.md` 固化核心交付主链
+- 该文档只覆盖核心交付逻辑，不追求覆盖全部工作细节
+- 未被该文档覆盖的项目细节，可由其他本地规则补充，但不得与其冲突
+- 项目至少应显式定义：`Execution Start`、`Spec State Moves`、`Evidence Timing`、`Status Timing`、`Delivery Done`、`Release Relation`
+
 ## Spec-Review Gate
 
 semi-auto / full-auto 模式下，spec-talk 完成后自动触发独立审阅。

@@ -41,6 +41,13 @@
 - verification 必须可执行或可复核
 - work 的 write-scope 必须明确到文件或目录
 
+## Delivery Flow
+
+- 项目应使用 `.ys_team/delivery-flow.md` 固化核心交付主链
+- 该文档只覆盖核心交付逻辑，不追求覆盖全部工作细节
+- 未被该文档覆盖的项目细节，可由其他本地规则补充，但不得与其冲突
+- 项目至少应显式定义：`Execution Start`、`Spec State Moves`、`Evidence Timing`、`Status Timing`、`Delivery Done`、`Release Relation`
+
 ## Submit Gate
 
 项目应定义哪些情况需要更重的交付复核，例如：

@@ -48,7 +48,8 @@
 - 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
 - discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
 - spec-work：`**[执行中]** ys-team · spec-work`
-- submit：`**[验收]** ys-team · submit`
+- qa：`**[质检]** ys-team · qa`
+- close：`**[关闭]** ys-team · close`
 - status：`**[状态]** ys-team · status`
 
 如果缺少这些标志，直接要求：

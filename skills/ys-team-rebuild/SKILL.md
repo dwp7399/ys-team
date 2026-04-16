@@ -87,6 +87,14 @@ Rebuild 时检查 TEAM.md 状态：
 2. 如果 baseline TEAM.md 有新增配置项（如新版本加了 memory 配置），合并到项目 TEAM.md 中，保留用户已有的自定义值
 3. 如果 TEAM.md 的 roles 列表与 `.ys_team/team.md` 不一致，以 TEAM.md 为准同步 team.md
 
+## Delivery Flow Sync
+
+Rebuild 时检查 `.ys_team/delivery-flow.md` 状态：
+
+1. 如果项目缺少该文件（旧版本项目），从 baseline 生成一份
+2. 如果 baseline 新增了强制段落或绑定点，合并到项目本地文件
+3. 保留项目已有的本地化交付决策，不为追求 wording 一致而覆盖项目规则
+
 ## 记忆健康检查
 
 Rebuild 时检查记忆系统状态：

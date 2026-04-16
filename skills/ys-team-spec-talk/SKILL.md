@@ -16,10 +16,11 @@ Use this skill to discuss a non-trivial change using project-local team guidance
 3. `.ys_team/team.md`
 4. `.ys_team/methods.md` if present
 5. `.ys_team/policy.md`
-6. 参与角色的记忆文件（`.ys_team/memory/roles/<role>.md`）
-7. 当前 spec 的 `workspace.md`（如存在，用于接续之前的讨论上下文）
-8. repository project/docs context
-9. relevant active or queued specs or roadmaps if the task extends existing work
+6. `.ys_team/delivery-flow.md` if present
+7. 参与角色的记忆文件（`.ys_team/memory/roles/<role>.md`）
+8. 当前 spec 的 `workspace.md`（如存在，用于接续之前的讨论上下文）
+9. repository project/docs context
+10. relevant active or queued specs or roadmaps if the task extends existing work
 
 ## Loading Discipline
 
@@ -38,6 +39,8 @@ Before selecting the exact path, infer from the conversation:
 - whether the current blocker is clarity, execution readiness, missing evidence, missing expertise, or something else
 
 If that is materially unclear, ask a concise clarification before continuing.
+
+When `.ys_team/delivery-flow.md` exists, align the discussion with its project-local core flow and binding points instead of silently inferring stage transitions.
 
 ## Output Routing
 
@@ -95,7 +98,7 @@ These sections should summarize:
 - how many rounds were used
 - what escalations happened
 - estimated discussion cost
-- whether `ys-team-submit` is recommended for delivery review
+- whether additional delivery notes are needed before close
 - each role's final contribution, not a transcript
 
 ## 进化感知（角色缺口）

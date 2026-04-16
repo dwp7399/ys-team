@@ -20,6 +20,7 @@
 - `ys-team-init` 初始化 skill
 - `ys-team-rebuild` 重建 skill
 - 一组支撑 discussion / spec / work / acceptance 的静默内部 skills
+- 一份项目本地 `delivery-flow.md` 承载位，用于固定核心交付主链
 - 一份供本仓和下游项目共用的 baseline version / reality index 约束
 - 本仓自用的 `.ys_team/` 配置
 - 一组用于收口产品化细节并可继续演进的 specs
@@ -56,7 +57,8 @@
 - 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
 - discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
 - spec-work：`**[执行中]** ys-team · spec-work`
-- submit：`**[验收]** ys-team · submit`
+- qa：`**[质检]** ys-team · qa`
+- close：`**[关闭]** ys-team · close`
 - status：`**[状态]** ys-team · status`
 
 如果缺少这些标志，应视为还没有真正进入 ys-team 工作流。
@@ -79,8 +81,9 @@
 - `ys-team` 提供方法论和公开入口
 - `examples/baseline/` 承载默认工作流骨架
 - `.ys_team/` 作为方法仓自用本地基线，并显式对齐 baseline version
+- `.ys_team/delivery-flow.md` 承载项目本地的核心交付逻辑
 - `ys-team-init` 把 baseline 按项目现实落到本地
-- 静默内部 skills 支撑 discussion、spec、work、status、submit 等能力
+- 静默内部 skills 支撑 discussion、spec、work、status 等能力
 
 目标不是让用户理解全部 skill，而是让用户在 init 后直接开始工作。
 

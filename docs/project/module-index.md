@@ -22,7 +22,7 @@
 - 被依赖：`README.md`（文档地图链接到 guide）
 
 ## `skills/`（方法入口与执行能力）
-**职责**：`skills/` 承载对外公开的 `ys-team` 方法入口，以及 init、rebuild、doc-build、spec-talk、spec-work、status、submit 等执行能力。它决定用户如何理解 ys-team，以及仓库如何把 baseline 和本地 reality 连接起来。  
+**职责**：`skills/` 承载对外公开的 `ys-team` 方法入口，以及 init、rebuild、doc-build、spec-talk、spec-work、status 等执行能力。它决定用户如何理解 ys-team，以及仓库如何把 baseline 和本地 reality 连接起来。  
 
 **关系**：
 - 入口：`skills/ys-team/SKILL.md`, `skills/ys-team-init/SKILL.md`, `skills/ys-team-rebuild/SKILL.md`, `skills/ys-team-doc-build/SKILL.md`
@@ -30,7 +30,7 @@
 - 被依赖：使用 ys-team 的外部仓库、方法仓自测与演进
 
 ## `examples/baseline/`（默认工作流骨架）
-**职责**：`examples/baseline/` 是 `ys-team-init` 和 `ys-team-rebuild` 的默认来源，提供最小公开心智下的 `.ys_team/` 结构和项目目录骨架。它不是具体项目实现，而是可被项目本地化的起点。  
+**职责**：`examples/baseline/` 是 `ys-team-init` 和 `ys-team-rebuild` 的默认来源，提供最小公开心智下的 `.ys_team/` 结构和项目目录骨架。它不是具体项目实现，而是可被项目本地化的起点；其中 `.ys_team/delivery-flow.md` 负责承载项目本地的核心交付清单默认骨架。  
 
 **关系**：
 - 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`, `examples/baseline/README.md`
@@ -38,10 +38,10 @@
 - 被依赖：`ys-team-init`, `ys-team-rebuild`, 外部项目初始化流程
 
 ## `.ys_team/` + `TEAM.md`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。v0.3.0 起新增 `memory/` 角色记忆系统，以及 `TEAM.md` 编排模式配置入口。它在 baseline 之上保留方法仓特有角色：方法论架构师、产品演进负责人、交付守门人。`.ys_team/VERSION` 表示本仓自用工作流基线版本，应与当前发布线对齐。
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。v0.3.0 起新增 `memory/` 角色记忆系统，以及 `TEAM.md` 编排模式配置入口；当前再新增 `.ys_team/delivery-flow.md` 作为本仓核心交付主链的本地承载位。它在 baseline 之上保留方法仓特有角色：方法论架构师、产品演进负责人、交付守门人。`.ys_team/VERSION` 表示本仓自用工作流基线版本，应与当前发布线对齐。
 
 **关系**：
-- 入口：`TEAM.md`, `.ys_team/team.md`, `.ys_team/methods.md`, `.ys_team/policy.md`, `.ys_team/templates/*`
+- 入口：`TEAM.md`, `.ys_team/team.md`, `.ys_team/methods.md`, `.ys_team/policy.md`, `.ys_team/delivery-flow.md`, `.ys_team/templates/*`
 - 记忆：`.ys_team/memory/roles/*.md`（按角色独立，跨任务经验积累）
 - 依赖：`examples/baseline/.ys_team/` 提供稳定骨架版本，`docs/project/*` 提供仓库现实
 - 被依赖：本仓 specs、方法仓自身 rebuild 判断
@@ -74,11 +74,11 @@
 
 **关系**：
 - 入口：`CLAUDE.md`, `AGENTS.md`, `examples/baseline/AGENTS.md`, `examples/baseline/CLAUDE.md`
-- 依赖：`skills/ys-team/SKILL.md`, `skills/ys-team-spec-talk/SKILL.md`, `skills/ys-team-spec-work/SKILL.md`, `skills/ys-team-submit/SKILL.md`, `skills/ys-team-status/SKILL.md`
+- 依赖：`skills/ys-team/SKILL.md`, `skills/ys-team-spec-talk/SKILL.md`, `skills/ys-team-spec-work/SKILL.md`, `skills/ys-team-status/SKILL.md`
 - 被依赖：本仓协作、下游仓库初始化后的默认工作流
 
 ## `package.json` / `scripts/`（npm 分发与 CLI 面）
-**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版，版本落后时输出缺失版本的主要变化和迁移建议）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`。发版时，该模块负责承载发布线版本，并遵守 `release/<version>` → npm publish → merge main → git tag 的顺序。
+**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版，版本落后时输出缺失版本的主要变化和迁移建议）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`；其中 `install-skills --force` 会替换同名已安装 skill，并清理已不再由当前 npm 包提供的旧 ys-team skill。发版时，该模块负责承载发布线版本，并遵守 `release/<version>` → npm publish → merge main → git tag 的顺序。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`

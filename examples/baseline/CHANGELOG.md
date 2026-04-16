@@ -2,6 +2,32 @@
 
 记录 `examples/baseline/` 及其直接配套接入面的结构化变化，供用户迁移、rebuild 判断和后续 `check-update` 摘要提取使用。
 
+## [Unreleased]
+
+### What Changed
+
+- 新增 `.ys_team/delivery-flow.md` 默认骨架，用于固定项目本地的核心交付主链
+- init / rebuild / 主链技能开始把 `delivery-flow.md` 视为本地 baseline 的组成部分
+- `install-skills --force` 开始清理已不再由当前 npm 包提供的旧 ys-team skill（例如已删除的 `ys-team-submit`）
+
+### Why
+
+- 状态机、policy 和 spec 制品已经存在，但项目仍缺少一个显式的核心交付逻辑承载位
+- 该文档需要在自身作用范围内提供一致性，而不是逼项目去拼凑隐藏规则
+- 如果 npm 更新只能覆盖现有 skill 而不清理废弃项，用户会长期残留失效入口，工作流定义会和本地安装状态脱节
+
+### Key Files
+
+- `examples/baseline/.ys_team/delivery-flow.md`
+- `examples/baseline/.ys_team/policy.md`
+- `scripts/ys-team.mjs`
+
+### Migration Hint
+
+- 旧项目升级后，补一份本地 `.ys_team/delivery-flow.md`
+- 只填写会影响主链推进的绑定点，不必追求覆盖全部项目细节
+- 已安装旧版 ys-team 的环境，执行一次 `npx ys-team@latest install-skills --force`
+
 ## [0.4.0] - 2026-04-15
 
 ### What Changed

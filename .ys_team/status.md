@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-04-15T16:31:13+08:00
+updated: 2026-04-16T00:18:00+08:00
 
 ## 活跃 Roadmap
 
@@ -14,12 +14,19 @@ updated: 2026-04-15T16:31:13+08:00
 
 ## 活跃 Spec
 
-（无）
+| Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
+|------|------|------|---------|---------|------|
+| 20260415-193020-delivery-flow-carrier | close | 待收口 | 方法论架构师 + 产品演进负责人 + 交付守门人 | 0 | manual |
 
 ## 最新判断
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-16 00:18 | 20260415-193020-delivery-flow-carrier | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 已补安装清理逻辑：`install-skills --force` 会清理不再 bundled 的旧 ys-team skill，`ys-team-submit` 不会在升级后残留 |
+| 2026-04-15 19:49 | 20260415-193020-delivery-flow-carrier | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 已扩 scope 删除 submit：skill、marker、guide、baseline 与 status 写入方均已改为 qa/close 语义 |
+| 2026-04-15 19:41 | 20260415-193020-delivery-flow-carrier | 质量保障守门人 | PASS | methodology、baseline、self-use `.ys_team` 与主链技能均已接入 delivery-flow，6 项验收要求全部满足 |
+| 2026-04-15 19:40 | 20260415-193020-delivery-flow-carrier | 规格审阅人 | PASS | delivery-flow 的范围、最小结构、写入面和验证方式均清晰，可直接执行 |
+| 2026-04-15 19:30 | 20260415-193020-delivery-flow-carrier | 方法论架构师 + 产品演进负责人 + 交付守门人 | PASS | 已收敛 delivery-flow 的定位：抽象承载格式 + baseline 默认填法 + 项目本地实例化 |
 | 2026-04-15 11:30 | 20260415-close-stage-and-memory-upgrade | 交付守门人 | PASS | 6 项验收标准全部通过：close 5 步清单、policy 三段式、3 个角色记忆重写、baseline 同步 |
 | 2026-04-15 10:24 | 20260414-B2-check-update-diff | 交付守门人 | PASS | B2 已完成：check-update 可输出落后版本摘要与迁移建议，提取失败时降级到 changelog 链接 |
 | 2026-04-15 10:23 | 20260414-B2-check-update-diff | 规格审阅人 | PASS | B2 实现边界清晰：摘要来源、降级策略和验证方式均可复核 |
@@ -58,4 +65,4 @@ updated: 2026-04-15T16:31:13+08:00
 
 ## 待办
 
-（无）
+- 决定是否对 20260415-193020-delivery-flow-carrier 执行 close（commit / spec 归档）

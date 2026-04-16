@@ -24,6 +24,7 @@ Use it to execute approved work against an existing repository spec.
 - use the local spec as the working contract
 - keep implementation, docs, and evidence in sync
 - surface blockers instead of silently changing scope
+- when `.ys_team/delivery-flow.md` exists, follow its project-local binding for state moves, evidence timing, status timing, and close / release relation
 
 ## Read Order
 
@@ -33,6 +34,7 @@ Use it to execute approved work against an existing repository spec.
 4. 当前 spec 的 `qa-report.md`（如存在，说明是 QA 打回后的重试，需针对性修复）
 5. 执行角色的记忆文件（`.ys_team/memory/roles/<role>.md`）
 6. `.ys_team/policy.md`
+7. `.ys_team/delivery-flow.md` if present
 
 ## Workspace 更新
 
@@ -109,7 +111,7 @@ Use it to execute approved work against an existing repository spec.
 1. 读取当前 `.ys_team/status.md`
 2. 更新 `updated` 时间戳
 3. 更新 `活跃 Spec` 表：当前 spec 状态改为"待验收"
-4. `待办` 追加：建议运行 submit 验收
+4. `待办` 追加：建议运行 qa 验收或进入 close 收口
 5. 写入
 
 **遇到阻塞时**：

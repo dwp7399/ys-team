@@ -14,5 +14,6 @@
 1. 先读 `team.md`
 2. 再读 `methods.md`
 3. 再读 `policy.md`
-4. 起草或更新 spec 时，使用 `templates/`
-5. 当 skills、baseline 或仓库结构明显变化时，同步更新 `docs/project/module-index.md`
+4. 再读 `delivery-flow.md`
+5. 起草或更新 spec 时，使用 `templates/`
+6. 当 skills、baseline 或仓库结构明显变化时，同步更新 `docs/project/module-index.md`

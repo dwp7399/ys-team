@@ -12,6 +12,7 @@ npx ys-team install-skills --force
 ```
 
 这条命令会把 ys-team 的 skills 安装到 `~/.claude/skills/`。安装完成后，Claude Code 就能识别 ys-team 的工作流了。
+如果你之后用 `npx ys-team@latest install-skills --force` 更新，CLI 会替换同名 ys-team skill，并清理已经被新版本移除的旧 ys-team skill。
 
 如果你想装到其他位置：
 
@@ -72,7 +73,7 @@ ys-team · 判定为 L1 patch → 直接执行
 ```
 
 ```
-**[验收]** ys-team · submit
+**[关闭]** ys-team · close
 ```
 
 ```
