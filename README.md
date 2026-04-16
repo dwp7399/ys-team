@@ -13,6 +13,8 @@
 
 ys-team 不是要限制 AI 的能力，而是给它一套工作纪律：改之前先对齐现实，复杂的事先讨论清楚，改完要有据可查。
 
+> AI 没有约束时会怎样？看 [反模式案例](docs/guide/why-ys-team.md#反模式案例)。
+
 ## 它怎么工作
 
 四个原则：
@@ -66,10 +68,8 @@ npx ys-team install-skills --force
 
 | 文档 | 说明 |
 |------|------|
-| [为什么需要 ys-team](docs/guide/why-ys-team.md) | 问题、解法、核心路径、适合谁 |
-| [开始使用](docs/guide/getting-started.md) | 安装后的第一次落地，init 做了什么，常见问题 |
-| [日常使用](docs/guide/daily-usage.md) | 按场景组织的使用指南 |
-| [案例与演进](docs/guide/cases-and-evolution.md) | 真实案例、定制方法、未来方向 |
+| [为什么需要 ys-team](docs/guide/why-ys-team.md) | 问题、解法、反模式案例 |
+| [开始使用](docs/guide/getting-started.md) | 安装、初始化、日常使用、常见问题 |
 | [方法论规范](docs/methodology/) | 形式化的规则和协议定义（深入阅读） |
 
 ## CLI 参考
@@ -86,10 +86,14 @@ npx ys-team check-update
 
 ys-team 方法论版本和 npm 发布版本不是同一条线：
 
-- npm 发布线：`package.json` + baseline `.ys_team/VERSION` + 项目 `.ys_team/VERSION`
+- npm 发布线：`package.json` + baseline `.ys_team/VERSION`
 - 方法论线：`docs/methodology/VERSION`
 
 本仓发版使用 `release/<version>` 分支。只有 `npm publish` 成功后，代码才会合并回 `main`，随后创建同版本 git tag。
+
+## 兼容性说明
+
+0.5.0 对 baseline 结构做了不兼容变更（config.yaml 替代 TEAM.md + team.md，rules.md 替代 policy.md，checklist 替代 delivery-flow）。已接入 0.4.x 的项目执行 `ys-team-init --rebuild` 时会收到迁移提示。
 
 ## The Zen of ys-team
 
