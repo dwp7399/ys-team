@@ -6,6 +6,7 @@
 
 ### What Changed
 
+- 修复 `npx ys-team` 在 npm cache / `/tmp` 路径下静默退出的问题，CLI 入口判断改为 realpath 比较
 - 新增 `.ys_team/delivery-flow.md` 默认骨架，用于固定项目本地的核心交付主链
 - init / rebuild / 主链技能开始把 `delivery-flow.md` 视为本地 baseline 的组成部分
 - `install-skills --force` 开始清理已不再由当前 npm 包提供的旧 ys-team skill（例如已删除的 `ys-team-submit`）
@@ -15,6 +16,7 @@
 - 状态机、policy 和 spec 制品已经存在，但项目仍缺少一个显式的核心交付逻辑承载位
 - 该文档需要在自身作用范围内提供一致性，而不是逼项目去拼凑隐藏规则
 - 如果 npm 更新只能覆盖现有 skill 而不清理废弃项，用户会长期残留失效入口，工作流定义会和本地安装状态脱节
+- macOS `/tmp` 与 `/private/tmp` 的真实路径差异会让字符串路径比较误判，导致 `main()` 没有执行
 
 ### Key Files
 

@@ -595,9 +595,15 @@ function main() {
   }
 }
 
-const isMainModule = process.argv[1] && path.resolve(process.argv[1]) === __filename;
+function isMainModule() {
+  if (!process.argv[1]) {
+    return false;
+  }
 
-if (isMainModule) {
+  return fs.realpathSync(path.resolve(process.argv[1])) === fs.realpathSync(__filename);
+}
+
+if (isMainModule()) {
   main();
 }
 
