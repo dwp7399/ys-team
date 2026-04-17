@@ -3,84 +3,67 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-04-15
+**Last Updated**: 2026-04-16
 
-## `docs/methodology/`（平台无关方法论规范）
-**职责**：`docs/methodology/` 承载 ys-team 方法论的完整规范，独立于任何 AI 平台实现。它定义状态机、角色协议、讨论协议、制品 schema、治理规则和初始化/演进协议。
+## `docs/methodology/`（方法论规范）
+**职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节。
 
 **关系**：
-- 入口：`docs/methodology/00-overview.md`、`docs/methodology/01-state-machine.md`
-- 被依赖：所有 `skills/*/SKILL.md`（作为平台适配器引用方法论规范）、`examples/baseline/`、`.ys_team/`
+- 入口：`docs/methodology/overview.md`、`docs/methodology/reference.md`
+- 被依赖：所有 `skills/*/SKILL.md`、`examples/baseline/`、`.ys_team/`
 - 版本：`docs/methodology/VERSION`
 
 ## `docs/guide/`（用户向使用指南）
-**职责**：`docs/guide/` 面向个人开发者，用通俗语言解释"为什么需要 ys-team"和"怎么用"。它不重复 methodology 的形式化定义，而是建立心智和使用感。
+**职责**：面向个人开发者，解释”为什么需要 ys-team”（含反模式案例）和”怎么用”。
 
 **关系**：
 - 入口：`docs/guide/why-ys-team.md`、`docs/guide/getting-started.md`
-- 引用：`docs/methodology/`（深入阅读链接）
-- 被依赖：`README.md`（文档地图链接到 guide）
+- 引用：`docs/methodology/`
+- 被依赖：`README.md`
 
 ## `skills/`（方法入口与执行能力）
-**职责**：`skills/` 承载对外公开的 `ys-team` 方法入口，以及 init、rebuild、doc-build、spec-talk、spec-work、status 等执行能力。它决定用户如何理解 ys-team，以及仓库如何把 baseline 和本地 reality 连接起来。  
+**职责**：承载 4 个 skill：ys-team（入口+路由+讨论+状态）、ys-team-init（初始化+重建+现实索引）、ys-team-spec-talk（多角色讨论+spec 产出）、ys-team-spec-work（按 spec 执行+evidence）。
 
 **关系**：
-- 入口：`skills/ys-team/SKILL.md`, `skills/ys-team-init/SKILL.md`, `skills/ys-team-rebuild/SKILL.md`, `skills/ys-team-doc-build/SKILL.md`
-- 依赖：`examples/baseline/`, `.ys_team/`, `docs/project/`, `README.md`
-- 被依赖：使用 ys-team 的外部仓库、方法仓自测与演进
+- 入口：`skills/ys-team/SKILL.md`, `skills/ys-team-init/SKILL.md`
+- 内部委托：`skills/ys-team-spec-talk/SKILL.md`, `skills/ys-team-spec-work/SKILL.md`
+- 依赖：`examples/baseline/`, `.ys_team/`, `docs/project/`
+- 被依赖：使用 ys-team 的外部仓库
 
 ## `examples/baseline/`（默认工作流骨架）
-**职责**：`examples/baseline/` 是 `ys-team-init` 和 `ys-team-rebuild` 的默认来源，提供最小公开心智下的 `.ys_team/` 结构和项目目录骨架。它不是具体项目实现，而是可被项目本地化的起点；其中 `.ys_team/delivery-flow.md` 负责承载项目本地的核心交付清单默认骨架。  
+**职责**：`ys-team-init` 的默认来源。提供最小 `.ys_team/` 结构：config.yaml、rules.md、reality.md、status.md、VERSION、templates/（checklist + spec）、memory/。
 
 **关系**：
-- 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`, `examples/baseline/README.md`
-- 依赖：方法论定义来自 `skills/ys-team/*` 与仓库文档
-- 被依赖：`ys-team-init`, `ys-team-rebuild`, 外部项目初始化流程
+- 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`
+- 被依赖：`ys-team-init`, 外部项目初始化
+- 同步副本：`skills/ys-team/baseline/`
 
-## `.ys_team/` + `TEAM.md`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”，把方法仓的 spec、文档同步和交付约束落到仓库内部。v0.3.0 起新增 `memory/` 角色记忆系统，以及 `TEAM.md` 编排模式配置入口；当前再新增 `.ys_team/delivery-flow.md` 作为本仓核心交付主链的本地承载位。它在 baseline 之上保留方法仓特有角色：方法论架构师、产品演进负责人、交付守门人。`.ys_team/VERSION` 表示本仓自用工作流基线版本，应与当前发布线对齐。
-
-**关系**：
-- 入口：`TEAM.md`, `.ys_team/team.md`, `.ys_team/methods.md`, `.ys_team/policy.md`, `.ys_team/delivery-flow.md`, `.ys_team/templates/*`
-- 记忆：`.ys_team/memory/roles/*.md`（按角色独立，跨任务经验积累）
-- 依赖：`examples/baseline/.ys_team/` 提供稳定骨架版本，`docs/project/*` 提供仓库现实
-- 被依赖：本仓 specs、方法仓自身 rebuild 判断
-
-## `docs/roadmap/`（演进路线）
-**职责**：`docs/roadmap/` 记录 ys-team 方法仓的版本演进路线和 initiative 规划。每个 roadmap 文件对应一个版本周期，描述方向、initiative 优先级和 exit criteria。
+## `.ys_team/`（方法仓自用本地基线）
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。当前仍使用 0.4.x 旧结构（含 policy.md、team.md、delivery-flow.md），计划在 0.5.0 发布后迁移到新结构。
 
 **关系**：
-- 入口：`docs/roadmap/completed/v0.4-evolution.md`
-- 依赖：`docs/project/module-index.md`（影响范围参考）、`docs/specs/`（具体 initiative 转化）
-- 被依赖：spec-talk 路由判断、产品演进负责人决策
+- 入口：`.ys_team/status.md`, `.ys_team/policy.md`
+- 记忆：`.ys_team/memory/roles/*.md`
+- 被依赖：本仓 specs、方法仓自身 rebuild
 
 ## `docs/project/`（方法论现实与结构说明）
-**职责**：`docs/project/` 记录 ys-team 仓库现状、结构和模块职责，是本仓文档权威入口。它负责解释方法论仓库当前承载了哪些能力、哪些目录是对外骨架、哪些是仓库自用配置。  
+**职责**：记录 ys-team 仓库现状和模块职责，是本仓文档权威入口。
 
 **关系**：
-- 入口：`docs/project/overview.md`, `docs/project/structure.md`, `docs/project/module-index.md`
-- 被依赖：`.ys_team/policy.md`, `skills/*/SKILL.md`, `README.md`
+- 入口：`docs/project/module-index.md`
+- 被依赖：`.ys_team/`, `skills/*/SKILL.md`, `README.md`
 
-## `README.md` / `AGENTS.md`（对外接入与协作口径）
-**职责**：`README.md` 面向用户解释 ys-team 的接入方式和公开心智，`AGENTS.md` 则约束仓库内 agent 协作规则。它们是方法仓从“定义”走向“使用”的外部表面。  
-
-**关系**：
-- 入口：`README.md`, `AGENTS.md`
-- 依赖：`skills/`, `examples/baseline/`, `docs/project/`
-- 被依赖：使用者、贡献者、仓库内协作流程
-
-## `CLAUDE.md` / `examples/baseline/AGENTS.md` / `examples/baseline/CLAUDE.md`（工作流可见标志下发面）
-**职责**：这一组文件把 `ys-team` 排他工作流和可见标志规则下发到仓库自身与 baseline 默认骨架中，让使用者能通过响应末尾标志判断当前是否真的处于 ys-team 工作流。  
+## `README.md` / `AGENTS.md`（对外接入口径）
+**职责**：`README.md` 面向用户解释接入方式，`AGENTS.md` 约束仓库内 agent 协作规则。
 
 **关系**：
-- 入口：`CLAUDE.md`, `AGENTS.md`, `examples/baseline/AGENTS.md`, `examples/baseline/CLAUDE.md`
-- 依赖：`skills/ys-team/SKILL.md`, `skills/ys-team-spec-talk/SKILL.md`, `skills/ys-team-spec-work/SKILL.md`, `skills/ys-team-status/SKILL.md`
-- 被依赖：本仓协作、下游仓库初始化后的默认工作流
+- 依赖：`skills/`, `examples/baseline/`, `docs/`
+- 被依赖：使用者、贡献者
 
-## `package.json` / `scripts/`（npm 分发与 CLI 面）
-**职责**：`package.json` 和 `scripts/` 提供 ys-team 的 npm 分发能力。CLI 提供三个命令：`install-skills`（全局安装 skills）、`init-project`（项目级初始化）、`check-update`（对比本地与 npm 最新版，版本落后时输出缺失版本的主要变化和迁移建议）。安装目标由 `--dest` 控制，支持 `--force`、`--dry-run`；其中 `install-skills --force` 会替换同名已安装 skill，并清理已不再由当前 npm 包提供的旧 ys-team skill。发版时，该模块负责承载发布线版本，并遵守 `release/<version>` → npm publish → merge main → git tag 的顺序。
+## `package.json` / `scripts/`（npm 分发与 CLI）
+**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`
-- 依赖：`README.md`, `skills/`, `examples/baseline/`, `registry/`
-- 被依赖：npm 包使用者（`npx ys-team`）、分发验证
+- 依赖：`skills/`, `examples/baseline/`
+- 被依赖：npm 包使用者

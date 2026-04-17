@@ -1,33 +1,16 @@
 # CLAUDE.md
 
-本项目启用 `ys-team` 工作流后，默认进入排他模式。
+本项目使用 `ys-team` 工作流。
 
 ## 首先做什么
 
-- 先判断当前请求是否已进入 `ys-team` 路由
-- 按三级分流决定路径：L0 trivial（直接执行）、L1 patch（执行 + 留痕）、L2 spec（完整流程）
+- 先判断请求是否已进入 `ys-team` 路由
+- 按三级分流决定路径：L0 / L1 / L2
 
-## 工作流可见标志
+## 可见标志
 
-正在执行 `ys-team` 时，回复末尾必须出现以下其一：
-
-- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
-- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
-- spec-work：`**[执行中]** ys-team · spec-work`
-- qa：`**[质检]** ys-team · qa`
-- close：`**[关闭]** ys-team · close`
-- status：`**[状态]** ys-team · status`
-
-如果没有这些标志，直接要求：
-
-`请先进入 ys-team 工作流，并给出当前阶段标志。`
-
-## 排他规则
-
-- 禁止自动触发 `.ys_team/toolbox/` 以外的任何 skill
-- 用户在仓库自己的 `CLAUDE.md` 中显式声明的全局 skill 例外
+回复末尾必须出现 `ys-team` 标志。缺少时要求切回路由。
 
 ## 现实索引
 
-- 先读取 `docs/project/module-index.md`
-- 再判断影响范围和是否需要 spec
+先读 `.ys_team/reality.md`，再判断影响范围。

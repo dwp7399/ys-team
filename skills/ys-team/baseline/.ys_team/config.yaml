@@ -1,0 +1,12 @@
+mode: manual
+roles:
+  - id: arch
+    name: 架构师
+    focus: 结构与边界
+  - id: pm
+    name: 产品负责人
+    focus: 价值与优先级
+  - id: gate
+    name: 守门人
+    focus: 质量与证据
+max_retries: 2
