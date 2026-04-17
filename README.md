@@ -62,7 +62,7 @@ npx ys-team install-skills --force
 **需要想清楚的改动** — "帮我给用户系统加一个注销功能"
 先讨论（这个功能该怎么做、影响哪些模块、有什么风险），形成明确的规格，再按规格执行，最后验收。
 
-详细的日常使用场景见 [日常使用](docs/guide/daily-usage.md)。
+详细的使用指南见 [开始使用](docs/guide/getting-started.md)。
 
 ## 文档地图
 
