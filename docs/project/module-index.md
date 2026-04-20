@@ -39,11 +39,13 @@
 - 同步副本：`skills/ys-team/baseline/`
 
 ## `.ys_team/`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。当前仍使用 0.4.x 旧结构（含 policy.md、team.md、delivery-flow.md），计划在 0.5.0 发布后迁移到新结构。
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。已迁移到 0.5.0 新结构。
 
 **关系**：
-- 入口：`.ys_team/status.md`, `.ys_team/policy.md`
-- 记忆：`.ys_team/memory/roles/*.md`
+- 入口：`.ys_team/status.md`, `.ys_team/rules.md`, `.ys_team/config.yaml`
+- 现实索引：`.ys_team/reality.md`（指向 `docs/project/module-index.md`）
+- 记忆：`.ys_team/memory/*.md`
+- 模板：`.ys_team/templates/checklist.md`, `.ys_team/templates/spec.md`
 - 被依赖：本仓 specs、方法仓自身 rebuild
 
 ## `docs/project/`（方法论现实与结构说明）

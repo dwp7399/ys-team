@@ -18,13 +18,9 @@
 
 ## Skill 排他规则
 
-**禁止自动触发 `.ys_team/toolbox/` 以外的任何 skill。**
-
-已内化的工具清单见 `.ys_team/toolbox/_sources.md`。
-仅这些工具的能力（以内化后的版本为准）在工作流中可用。
+**禁止自动触发 `.ys_team/` 以外的任何 skill。**
 
 用户如需临时使用未内化的 skill，必须显式指定（如 `/skill-name`）。
-此时 ys-team 记录该使用行为，作为下次 rebuild 的内化候选。
 
 ## 例外
 
