@@ -21,6 +21,10 @@ Verification: "见 ## Verification"
 
 要达成什么。
 
+## Integration Gate
+
+实现期间必须保持的轻量约束。
+
 ## Non-goals
 
 不做什么（可选）。
@@ -28,6 +32,10 @@ Verification: "见 ## Verification"
 ## Deliverables
 
 具体交付物。
+
+## Documentation Updates
+
+需要同步更新的文档与状态留痕（可选）。
 
 ## Acceptance Criteria
 
@@ -39,6 +47,10 @@ Verification: "见 ## Verification"
 ```bash
 # 可直接执行的验证命令
 ```
+
+## Acceptance Evidence
+
+记录 evidence/ 中应留下的验证产物（可选）。
 
 ## Risks
 

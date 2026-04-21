@@ -3,7 +3,7 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-04-16
+**Last Updated**: 2026-04-21
 
 ## `docs/methodology/`（方法论规范）
 **职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节。
@@ -47,6 +47,14 @@
 - 记忆：`.ys_team/memory/*.md`
 - 模板：`.ys_team/templates/checklist.md`, `.ys_team/templates/spec.md`
 - 被依赖：本仓 specs、方法仓自身 rebuild
+
+## `docs/specs/`（Spec 生命周期目录）
+**职责**：承载本仓 spec 的生命周期目录。`queued/` 放待审 spec，`active/` 放执行主链中的 spec，`completed/` 作为短暂停留区，`archive/` 放历史完成 spec，`cancelled/` 放终止 spec。
+
+**关系**：
+- 入口：`docs/specs/queued/`, `docs/specs/active/`, `docs/specs/archive/`
+- 被依赖：`.ys_team/status.md`, `docs/methodology/overview.md`, `docs/methodology/reference.md`
+- 当前约束：历史 completed spec 可直接迁入 `archive/`，不为归档补旧格式
 
 ## `docs/project/`（方法论现实与结构说明）
 **职责**：记录 ys-team 仓库现状和模块职责，是本仓文档权威入口。

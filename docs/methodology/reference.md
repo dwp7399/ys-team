@@ -17,6 +17,23 @@ L2 改动经过以下状态：
 | done | spec 已完成 | — |
 | halt | 重试耗尽，等待人工决策 | 用户 |
 
+## Spec 目录生命周期
+
+| 目录 | 语义 | 进入条件 | 离开条件 |
+|------|------|----------|----------|
+| `queued/` | 已起草、待独立审阅 | `spec-talk` 完成并写入 `spec.md` | `spec-review` 通过后迁入 `active/` |
+| `active/` | 当前正在推进的 spec | 审阅通过，进入执行主链 | `close` 完成后迁入 `completed/` 或直接迁入 `archive/` |
+| `completed/` | 已完成 close 的短暂停留区 | close 刚结束、尚未归档 | 归档整理后迁入 `archive/` |
+| `cancelled/` | 已明确终止 | 用户或流程明确放弃 | 通常不再流转 |
+| `archive/` | 历史长期归档 | 历史 spec 完成收口 | 长期保留，不再参与活跃流程 |
+
+规则：
+
+- 一个 spec 在任一时刻只应位于一个目录。
+- `queued -> active -> completed -> archive` 是默认正向路径；允许在 `close` 后直接进入 `archive/`。
+- 历史 spec 迁入 `archive/` 时不要求补齐旧模板或旧格式。
+- `cancelled/` 与 `archive/` 都不是可恢复执行队列；若需重启，应新建 spec。
+
 ### 状态转换
 
 ```
@@ -96,6 +113,7 @@ spec.md 使用 YAML frontmatter + Markdown body：
 
 - Background
 - Goals
+- Integration Gate
 - Deliverables
 - Acceptance Criteria
 - Verification
@@ -103,11 +121,19 @@ spec.md 使用 YAML frontmatter + Markdown body：
 ### Body 可选段落
 
 - Non-goals
+- Documentation Updates
+- Acceptance Evidence
 - Risks
 - Rollback Plan
 - 关键设计决策
 - 能力迁移矩阵（大规模重构时）
 - 执行顺序（多步骤时）
+
+### work.md 语义
+
+- `work.md` 是 `spec-work` 阶段的执行日志，记录关键决策、偏差处理和验证进度。
+- `work.md` 可以缺席于纯讨论阶段，但一旦进入 `spec-work`，应开始持续维护。
+- `work.md` 不替代 `review.md`、`qa-report.md` 或 `evidence/`。
 
 ## checklist.md 模板定义
 
@@ -130,6 +156,7 @@ Spec: <spec-id>
 - [ ] Write-Scope 无遗漏
 
 ## spec-work
+- [ ] spec 已从 queued 迁入 active
 - [ ] 按 Write-Scope 执行，无越界
 - [ ] work.md 记录关键决策
 - [ ] 代码变更与 spec 一致
@@ -140,11 +167,11 @@ Spec: <spec-id>
 - [ ] evidence/ 已存放证据
 
 ## close
-- [ ] 角色记忆回顾写入
 - [ ] status.md 更新
 - [ ] 文档同步完成
+- [ ] 最小 Git 收口完成
 - [ ] git commit（代码 + evidence）
-- [ ] spec 目录归档
+- [ ] spec 已迁入 completed 或 archive
 ```
 
 ## config.yaml Schema

@@ -87,7 +87,7 @@ description: "Initialize or rebuild a repository-local ys-team baseline. Generat
 - `delivery-flow.md` → 已替换为 `templates/checklist.md`
 - `toolbox/` → 已删除，不再需要
 - `evolution/` → 已删除，不再需要
-- `TEAM.md`（项目根目录）→ 配置已收进 `config.yaml`
+- 项目根目录的旧配置入口 → 配置已收进 `config.yaml`
 
 ### 版本检查
 

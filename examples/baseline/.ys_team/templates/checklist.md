@@ -14,6 +14,7 @@ Spec: <spec-id>
 - [ ] Write-Scope 无遗漏
 
 ## spec-work
+- [ ] spec 已从 queued 迁入 active
 - [ ] 按 Write-Scope 执行，无越界
 - [ ] work.md 记录关键决策
 - [ ] 代码变更与 spec 一致
@@ -24,8 +25,8 @@ Spec: <spec-id>
 - [ ] evidence/ 已存放证据
 
 ## close
-- [ ] 角色记忆回顾写入
 - [ ] status.md 更新
 - [ ] 文档同步完成
+- [ ] 最小 Git 收口完成
 - [ ] git commit（代码 + evidence）
-- [ ] spec 目录归档
+- [ ] spec 已迁入 completed 或 archive
