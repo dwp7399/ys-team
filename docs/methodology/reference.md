@@ -178,27 +178,74 @@ Spec: <spec-id>
 
 ```yaml
 mode: manual          # manual | semi-auto | full-auto
-roles:
-  - id: arch
-    name: 架构师
-    focus: 结构与边界
-  - id: pm
-    name: 产品负责人
-    focus: 价值与优先级
-  - id: gate
-    name: 守门人
-    focus: 质量与证据
+roles: []
+governance_slots:
+  - id: planner
+    stage: spec-talk
+    required: true
+    purpose: 收敛需求、提出边界和形成 spec 草案
+slot_bindings:
+  - slot: planner
+    role_id: agency-product-manager
+    source: agency-agents
+    binding_type: default
 max_retries: 2        # spec-review / qa REJECT 重试上限
 ```
 
 ### 字段说明
 
 - `mode`：编排模式，决定阶段间是否自动流转
-- `roles`：项目固定角色列表，每个角色 3 字段
+- `roles`：项目当前已绑定并启用的角色列表，每个角色 3 字段
   - `id`：角色标识（英文，用于记忆文件名）
   - `name`：显示名（可本地化）
   - `focus`：职责焦点（1 句话）
+- `governance_slots`：固定治理槽位
+  - `id`：槽位标识（如 `planner`、`spec_reviewer`）
+  - `stage`：该槽位主要服务的阶段
+  - `required`：是否为必备槽位
+  - `purpose`：槽位职责
+- `slot_bindings`：当前项目的槽位绑定结果
+  - `slot`：槽位标识
+  - `role_id`：绑定到的角色 id
+  - `source`：角色来源（如 `agency-agents` 或 `local`）
+  - `binding_type`：`default` / `project-shaped` / `temporary`
 - `max_retries`：REJECT 重试上限，耗尽进入 halt
+
+## role-pool.yaml Schema
+
+`role-pool.yaml` 是外部角色池来源的单一权威载体。它服务于 `init/rebuild`，不是运行时联网依赖。
+
+```yaml
+sources:
+  - id: agency-agents
+    repo: https://github.com/msitarzewski/agency-agents
+    ref: 783f6a7
+    license: MIT
+    default: true
+    runtime_network: false
+roles:
+  - id: agency-product-manager
+    name: Product Manager
+    focus: 发现、需求澄清、优先级与交付范围收敛
+    source: agency-agents
+    upstream_path: product/product-manager.md
+slots:
+  - id: planner
+    stage: spec-talk
+    required: true
+    purpose: 收敛需求、提出边界和形成 spec 草案
+mappings:
+  - project_type: frontend-react
+    slot: implementer
+    candidates: [agency-frontend-developer, agency-software-architect]
+```
+
+### 字段说明
+
+- `sources`：外部来源清单；必须记录 `repo`、`ref` 和 `runtime_network`
+- `roles`：从来源中筛选出的可用候选角色快照
+- `slots`：治理槽位定义；应与 `config.yaml.governance_slots` 保持同语义
+- `mappings`：按项目类型为槽位提供默认候选；`candidates` 必须是具体角色 id 的有序列表，不允许只写 division 名称
 
 ## 角色记忆格式
 
@@ -232,6 +279,8 @@ max_retries: 2        # spec-review / qa REJECT 重试上限
 
 ## 状态追踪（status.md）
 
+`status.md` 是当前快照，不是历史总账。它只保留活跃 spec、阻塞项、待办和最近 10 条判断。月度轻量统计写入 `.ys_team/history/YYYY-MM.md`。
+
 每个活跃 spec 在 status.md 中维护一行记录：
 
 | 列 | 说明 |
@@ -243,7 +292,7 @@ max_retries: 2        # spec-review / qa REJECT 重试上限
 | 重试次数 | REJECT 重试计数 |
 | 模式 | manual / semi-auto / full-auto |
 
-阶段转换时必须同步更新。
+阶段转换时必须同步更新。`最新判断` 固定只保留最近 10 条，超出窗口的内容不继续在 `status.md` 追记。
 
 ## 讨论协议
 
@@ -296,12 +345,14 @@ max_retries: 2        # spec-review / qa REJECT 重试上限
 
 扫描项目实际文件，生成最小 `.ys_team/` 结构：
 
-- config.yaml（角色、模式）
+- config.yaml（角色、模式、治理槽位、槽位绑定）
+- role-pool.yaml（外部角色池来源与默认映射）
 - rules.md（行为规则）
 - reality.md（现实索引）
-- status.md（状态追踪）
+- status.md（状态追踪快照）
 - VERSION
-- templates/（checklist + spec 模板）
+- templates/（checklist + spec + monthly-summary 模板）
+- history/（月度摘要目录）
 - memory/（空目录，init 时根据 roles 生成空记忆文件）
 
 ### 项目类型检测
@@ -313,6 +364,8 @@ max_retries: 2        # spec-review / qa REJECT 重试上限
 | package.json + React | frontend-react |
 | 前后端都有 | fullstack |
 | 以上都不匹配 | general |
+
+检测出项目类型后，`init/rebuild` 应使用 `role-pool.yaml.mappings` 为每个必备槽位挑选候选角色，并将结果写入 `.ys_team/config.yaml.slot_bindings`。
 
 ### 现实索引生成
 
@@ -333,6 +386,7 @@ max_retries: 2        # spec-review / qa REJECT 重试上限
 - 保留本地化：不覆盖项目已定制的内容
 - 版本对齐：检查项目版本与基线版本差异
 - 记忆健康：角色记忆与当前角色对齐，超限条目压缩
+- 槽位重算：项目类型或现实索引变化时，允许刷新 `slot_bindings`，但应保留用户手动定制的绑定
 
 ### 旧结构迁移
 

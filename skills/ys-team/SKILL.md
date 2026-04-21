@@ -59,7 +59,9 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 
 路由判断前加载 `.ys_team/config.yaml`（如存在）：
 - `mode`：工作模式（manual / semi-auto / full-auto）
-- `roles`：角色列表
+- `roles`：当前已绑定并启用的角色列表
+- `governance_slots`：固定治理槽位
+- `slot_bindings`：槽位到角色的绑定结果
 - `max_retries`：重试上限
 
 不存在时使用默认值（mode: manual, max_retries: 2）。
@@ -103,7 +105,7 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 
 ### 讨论流程
 
-1. 从 config.yaml 选择参与角色
+1. 从 `governance_slots` / `slot_bindings` 选择参与角色
 2. 各角色基于现实索引给出初始判断
 3. 识别分歧和风险
 4. 收敛讨论，形成结论
@@ -135,7 +137,7 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 
 1. 读取 `.ys_team/config.yaml`（获取 mode）
 2. 读取 `.ys_team/status.md`
-3. 格式化输出：当前模式、活跃 Spec、最新判断（最近 5 条）、阻塞项、待办
+3. 格式化输出：当前模式、活跃 Spec、最新判断（最近 10 条）、阻塞项、待办
 4. 检查 `.ys_team/VERSION` 与 baseline 版本对齐
 
 如果版本落后，追加：`ys-team baseline 有更新（当前 X → 最新 Y）。运行 ys-team-init --rebuild 同步。`

@@ -31,7 +31,7 @@
 - 被依赖：使用 ys-team 的外部仓库
 
 ## `examples/baseline/`（默认工作流骨架）
-**职责**：`ys-team-init` 的默认来源。提供最小 `.ys_team/` 结构：config.yaml、rules.md、reality.md、status.md、VERSION、templates/（checklist + spec）、memory/。
+**职责**：`ys-team-init` 的默认来源。提供最小 `.ys_team/` 结构：config.yaml、role-pool.yaml、rules.md、reality.md、status.md、history/、VERSION、templates/（checklist + spec + monthly-summary）、memory/。
 
 **关系**：
 - 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`

@@ -30,8 +30,9 @@ npx ys-team install-skills --dest /your/path --force
 init 会做这些事：
 
 - 扫描项目结构（识别 Python、Java、前端等类型）
-- 创建 `.ys_team/` 目录（config.yaml、rules.md、模板）
+- 创建 `.ys_team/` 目录（config.yaml、role-pool.yaml、rules.md、模板）
 - 生成现实索引（`.ys_team/reality.md`，记录项目模块关系）
+- 根据项目类型，从推荐角色池来源里为治理槽位挑角色并写入本地绑定
 - 如果没有 `AGENTS.md`，生成一份
 
 你不需要理解这些文件的内部结构。init 完成后直接开始工作。
@@ -76,6 +77,8 @@ ys-team · 判定为 L1 patch → 直接执行
 ```
 
 rebuild 会重新扫描项目，更新角色和现实索引，保留已有定制。
+
+`status.md` 只保留当前快照和最近 10 条判断；跨月统计进入 `.ys_team/history/YYYY-MM.md`。
 
 ## 更新 ys-team
 

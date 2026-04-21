@@ -1,4 +1,4 @@
-mode: manual
+mode: full-auto
 roles:
   - id: arch
     name: 方法论架构师
@@ -17,6 +17,48 @@ roles:
   - id: qa
     name: 质量保障守门人
     focus: 落地验收独立核查
+governance_slots:
+  - id: planner
+    stage: spec-talk
+    required: true
+    purpose: 收敛需求、提出边界和形成 spec 草案
+  - id: implementer
+    stage: spec-work
+    required: true
+    purpose: 按 spec 落地并维护执行日志
+  - id: spec_reviewer
+    stage: spec-review
+    required: true
+    purpose: 独立审阅 spec 的完整性和可执行性
+  - id: qa_reviewer
+    stage: qa
+    required: true
+    purpose: 独立验证实现结果和验收证据
+  - id: close_owner
+    stage: close
+    required: true
+    purpose: 负责状态收口、归档和交付闭环
+slot_bindings:
+  - slot: planner
+    role_id: pm
+    source: local
+    binding_type: project-shaped
+  - slot: implementer
+    role_id: arch
+    source: local
+    binding_type: project-shaped
+  - slot: spec_reviewer
+    role_id: reviewer
+    source: local
+    binding_type: project-shaped
+  - slot: qa_reviewer
+    role_id: qa
+    source: local
+    binding_type: project-shaped
+  - slot: close_owner
+    role_id: gate
+    source: local
+    binding_type: project-shaped
 role_selection:
   - 涉及方法论定义、skill 边界和原则改写 → 必须包含 arch
   - 涉及功能规划、用户体验、baseline 模板 → 必须包含 pm

@@ -43,16 +43,27 @@ description: "Initialize or rebuild a repository-local ys-team baseline. Generat
 
 从 baseline 复制并适配：
 
-- `.ys_team/config.yaml` — 根据项目类型调整角色列表
+- `.ys_team/config.yaml` — 根据项目类型写入角色列表、治理槽位和槽位绑定
+- `.ys_team/role-pool.yaml` — 从 baseline 复制外部角色池来源和默认映射
 - `.ys_team/rules.md` — 从 baseline 复制
 - `.ys_team/reality.md` — 生成现实索引（见下文）
 - `.ys_team/status.md` — 空模板
 - `.ys_team/VERSION` — 当前 baseline 版本
 - `.ys_team/templates/checklist.md` — 从 baseline 复制
 - `.ys_team/templates/spec.md` — 从 baseline 复制
+- `.ys_team/templates/monthly-summary.md` — 从 baseline 复制
+- `.ys_team/history/` — 从 baseline 复制
 - `.ys_team/memory/` — 根据 config.yaml roles 生成空记忆文件
 - `docs/specs/`（目录结构）
 - `AGENTS.md`（如不存在，从 baseline 适配生成）
+
+### 角色池与槽位绑定
+
+1. 读取 baseline `.ys_team/role-pool.yaml`
+2. 根据项目类型挑选每个必备槽位的候选角色
+3. 将选中的角色写入 `.ys_team/config.yaml.roles`
+4. 将对应槽位绑定写入 `.ys_team/config.yaml.slot_bindings`
+5. 不依赖运行时联网抓取外部仓库
 
 ### 记忆初始化
 
@@ -109,6 +120,7 @@ description: "Initialize or rebuild a repository-local ys-team baseline. Generat
    - 角色已移除但记忆存在 → 保留，标记 `archived: true`
 2. 条目超过 15 条 → 合并相似条目，重新生成摘要头
 3. 摘要头过时 → 从条目重新提炼
+4. 项目类型或现实索引变化时，可重算 `slot_bindings`；用户本地自定义绑定优先保留
 
 ## 现实索引生成（合并自 ys-team-doc-build）
 
@@ -171,6 +183,7 @@ Init 和 rebuild 完成后，自动生成或更新 `.ys_team/reality.md`。
 - 使用生成的 `.ys_team/` 作为项目 baseline
 - 正常工作不需要重新 init
 - 只在项目形态明显变化后 rebuild
+- `status.md` 继续只保留当前快照；跨月统计写入 `.ys_team/history/YYYY-MM.md`
 
 ## Success Criteria
 

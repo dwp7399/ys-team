@@ -88,9 +88,13 @@ docs/specs/<phase>/<id>/
 
 `work.md` 的语义固定为执行期日志：记录 `spec-work` 阶段的关键决策、偏差处理和验证进展。它不是讨论纪要，也不是每个阶段都要单独生成的新模板。
 
+`status.md` 的语义固定为当前快照：记录活跃 spec、阻塞项、待办和最近 10 条判断。跨月的轻量统计进入 `.ys_team/history/YYYY-MM.md`，不再继续堆在 `status.md`。
+
 ## 角色与记忆
 
-角色在 `.ys_team/config.yaml` 中定义，每个角色 3 个字段：`id`、`name`、`focus`。
+ys-team 固定的是治理槽位，不是固定角色名。默认槽位写在 `.ys_team/config.yaml` 的 `governance_slots` 中，项目当前启用的角色仍写在 `roles` 中，而槽位到角色的实际绑定写在 `slot_bindings` 中。
+
+默认外部角色池来源写在 `.ys_team/role-pool.yaml`。它是一个钉住版本的离线参考清单：记录来源仓库、候选角色、治理槽位和按项目类型的默认映射，供 `init/rebuild` 生成本地绑定时使用。
 
 角色的价值在于 **上下文隔离**：讨论时用独立 subagent 保证多视角，审阅和质检角色看不到讨论过程，只看制品。
 
@@ -105,7 +109,7 @@ docs/specs/<phase>/<id>/
 
 ### 临时角色
 
-config 里未列出但讨论中需要的角色，按需创建。如果被反复引入（rebuild 时检测），建议升级为固定角色。
+config 里未列出但讨论中需要的角色，按需创建，并以 `slot_bindings.binding_type: temporary` 标记。如果被反复引入（rebuild 时检测），建议升级为稳定绑定。
 
 ## 交付检查清单
 
