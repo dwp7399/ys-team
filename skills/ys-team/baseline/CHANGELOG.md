@@ -6,6 +6,33 @@
 
 （无）
 
+## [0.5.2] - 2026-04-21
+
+### What Changed
+
+- **入口补强**：baseline 的 `AGENTS.md` / `CLAUDE.md` 现在明确列出 ys-team 各阶段固定可见标志格式
+- **缺标志回退**：入口规则新增“缺少可见标志 = 未进入 ys-team 工作流，必须切回路由”
+- **副本对齐**：`skills/ys-team/baseline/` 与 `examples/baseline/` 的入口文件、CHANGELOG、VERSION 同步
+
+### Why
+
+- 仅要求“回复末尾必须出现 ys-team 标志”对部分 agent 约束不够强，容易漏掉固定尾标
+- baseline 是外部项目 `init` / `rebuild` 的真实来源，需要把本仓已验证的入口硬约束回流进去
+
+### Key Files
+
+- `examples/baseline/AGENTS.md`
+- `examples/baseline/CLAUDE.md`
+- `examples/baseline/.ys_team/VERSION`
+- `skills/ys-team/baseline/AGENTS.md`
+- `skills/ys-team/baseline/CLAUDE.md`
+- `skills/ys-team/baseline/.ys_team/VERSION`
+
+### Migration Hint
+
+- 已初始化项目若入口文件仍只写“回复末尾必须出现 ys-team 标志”，建议至少同步 `AGENTS.md`
+- 如需同时统一 Claude / Codex 两侧行为，下一次 `rebuild` 时一并同步 `CLAUDE.md`
+
 ## [0.5.0] - 2026-04-16
 
 ### What Changed
