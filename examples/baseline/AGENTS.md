@@ -22,3 +22,8 @@
 ## 现实索引
 
 先读 `.ys_team/reality.md`，再判断影响范围。
+
+## baseline 约定
+
+- `status.md` 是当前快照，不是历史总账；「最新判断」只保留最近 10 条。
+- 外部角色池来源定义在 `.ys_team/role-pool.yaml`；项目实际启用的槽位和绑定定义在 `.ys_team/config.yaml`。
