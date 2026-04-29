@@ -11,7 +11,7 @@ Spec: 20260429-release-first-close-workflow
 - status 标记 `20260429-external-skill-pattern-assimilation` 为 repo-close 但待 npm release 的缺口。
 - QA 发现 `status.md` 残留旧判断“本轮不涉及 npm publish，发布需另起 release spec”，已改为 REVISED 历史纠偏记录。
 - 修正 close checklist 顺序：先提交代码和 evidence，再执行发布 gate，最后归档并做 close commit。
-- close 阶段 `npm pack` 通过，但 `npm publish` 因 npm 认证失败阻塞；`npm whoami` 返回 401，远端 `ys-team` 当前版本仍为 `0.5.2`。
+- close 阶段 `npm pack` 通过。首次 `npm publish` 因 npm 认证失败阻塞；用户提供 npm token 后，publish 在提升网络权限下成功，registry 返回 `+ ys-team@0.5.3`，`npm view ys-team version` 返回 `0.5.3`。
 
 ## 偏差处理
 
