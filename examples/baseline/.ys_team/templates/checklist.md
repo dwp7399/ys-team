@@ -14,9 +14,11 @@ Spec: <spec-id>
 - [ ] AC 可验证、Verification 可执行
 - [ ] Write-Scope 无遗漏
 - [ ] 未把内部工作流外显为用户必须选择的命令
+- [ ] 已确认执行分支策略
 
 ## spec-work
 - [ ] spec 已从 queued 迁入 active
+- [ ] spec-review PASS 后已切到 release/work 分支
 - [ ] 按 Write-Scope 执行，无越界
 - [ ] work.md 记录关键决策
 - [ ] 高风险行为改动已按小步验证推进
@@ -30,6 +32,8 @@ Spec: <spec-id>
 ## close
 - [ ] status.md 更新
 - [ ] 文档同步完成
-- [ ] 最小 Git 收口完成
 - [ ] git commit（代码 + evidence）
-- [ ] spec 已迁入 completed 或 archive
+- [ ] 项目发布 gate 完成
+- [ ] 发布分支已合回主线
+- [ ] 主线和 tag 已 push（如项目使用 tag）
+- [ ] spec 已迁入 completed 或 archive，并完成 close commit

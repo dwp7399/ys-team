@@ -97,7 +97,7 @@ ys-team 方法论版本和 npm 发布版本不是同一条线：
 - npm 发布线：`package.json` + baseline `.ys_team/VERSION`
 - 方法论线：`docs/methodology/VERSION`
 
-本仓发版使用 `release/<version>` 分支。只有 `npm publish` 成功后，代码才会合并回 `main`，随后创建同版本 git tag。
+本仓所有非 trivial 可交付改动都按 release-first close 处理：spec-review 通过后先切到 `release/<version>` 或 `work/<spec-id>` 分支，spec-work 和 QA 在分支上完成。close 必须完成版本一致性检查、`npm pack`、`npm publish`、合回 `main`、创建并 push 同版本 git tag。未完成发布链路的 spec 不允许归档。
 
 ## 兼容性说明
 

@@ -41,6 +41,8 @@ L0 级别请求可跳过 #1 和 #2，但必须声明跳过原因。
 - 改动按三级分流：L0 trivial → L1 patch → L2 spec
 - L2 改动先有 spec，再按 spec 执行和验收
 - 用户不需要选择内部工作流；规格、测试、审阅、诊断和收口由 ys-team 路由决定
+- 非 trivial 可交付改动应在 spec-review PASS 后切到 release/work 分支，再进入 spec-work
+- close 前必须完成项目发布 gate；具体发布方式由项目本地规则定义
 - 文档必须反映项目当前真实状态
 - spec、实现和验收证据应保持同一次交付闭环
 

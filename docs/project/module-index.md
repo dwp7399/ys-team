@@ -71,7 +71,7 @@
 - 被依赖：使用者、贡献者
 
 ## `package.json` / `scripts/`（npm 分发与 CLI）
-**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill。
+**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill。本仓非 trivial 可交付改动采用 release-first close，发布线版本由 `package.json` 与 baseline `.ys_team/VERSION` 对齐。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`

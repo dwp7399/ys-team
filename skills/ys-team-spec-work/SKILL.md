@@ -19,6 +19,7 @@ description: "Silent internal execution capability for approved ys-team specs. E
 ## Rules
 
 - 不对模糊讨论执行，必须有 spec
+- spec-review PASS 后应位于 release/work 分支；未切分支不得继续执行非 trivial 可交付改动
 - 严格遵守 Write-Scope（禁止项 #4）
 - 实现、文档、证据同步交付
 - 遇到 scope 外修改需求 → 停止，回到讨论（禁止项 #5）

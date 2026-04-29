@@ -62,9 +62,11 @@ L0 级别请求可跳过 #1 和 #2，但必须声明跳过原因。
 
 - 发布线版本由 `package.json`、`examples/baseline/.ys_team/VERSION`、`.ys_team/VERSION` 共同组成
 - `docs/methodology/VERSION` 是方法论规范版本，独立于发布线
-- 发版工作必须在 `release/<version>` 分支完成
-- 只有在 `npm publish` 成功后，发布分支才允许合并回 `main`
-- 只有在合并回 `main` 并创建 git tag 后，发版类 spec 才允许 close
+- 本仓所有非 trivial 可交付改动都按 release-first 处理；不得自行降级为“只提交不发布”
+- spec-review PASS 后必须先切到 `release/<version>` 或 `work/<spec-id>` 分支，未切分支不得进入 spec-work
+- close 前必须完成 npm 发布链路：版本一致性检查、`npm pack` 验证、`npm publish` 成功
+- npm 发布成功后，发布分支必须合回 `main`，创建同版本 git tag，并 push main / tag
+- 未完成 npm publish、合回 main、tag、push 的 spec 不得 close 或 archive
 
 ### Spec-Review Gate
 
@@ -79,7 +81,7 @@ semi-auto / full-auto 模式下，spec-work 完成后自动触发独立验证。
 
 - PASS → 进入 close（semi-auto 暂停等确认）
 - REJECT → 回退到 spec-work，重试计数 +1
-- 发版类 spec：QA PASS 必须包含真实 `npm publish` 成功证据
+- 本仓 QA PASS 只表示实现可发布；真实 `npm publish` 成功证据由 close 阶段收集
 
 ### Quality Bar
 
