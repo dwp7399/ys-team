@@ -12,14 +12,17 @@ description: "Discuss a non-trivial change using the repository's local .ys_team
 1. `.ys_team/config.yaml`（角色、模式）
 2. `.ys_team/rules.md`（行为规则）
 3. `.ys_team/reality.md`（现实索引）
-4. 参与角色的记忆文件（`.ys_team/memory/<role>.md`）
-5. 当前 spec 的 `work.md`（如存在，接续上下文）
-6. 相关 active specs（如任务扩展已有工作）
+4. 项目文档、领域上下文、已有 spec/ADR（如存在且相关）
+5. 参与角色的记忆文件（`.ys_team/memory/<role>.md`）
+6. 当前 spec 的 `work.md`（如存在，接续上下文）
+7. 相关 active specs（如任务扩展已有工作）
 
 ## Loading Discipline
 
 - 只加载实际参与角色的记忆
 - 不保留完整讨论记录
+- 讨论追问必须基于已读取的现实索引、项目文档或代码事实
+- 没有依据的问题只作为假设标注，不当作结论
 
 ## Intent First
 
@@ -39,7 +42,7 @@ description: "Discuss a non-trivial change using the repository's local .ys_team
 ## Standard Flow
 
 1. 从 config.yaml 选择参与角色
-2. 各角色基于现实索引给出初始判断
+2. 各角色基于现实索引、项目文档、已有 spec/ADR 给出初始判断
 3. 识别分歧、风险、能力缺口
 4. 每轮检查是否仍在收敛（重复论点或扩大范围 → 停轮）
 5. 如需临时角色，暂停请求用户审批
@@ -62,6 +65,8 @@ description: "Discuss a non-trivial change using the repository's local .ys_team
 产出的 spec 必须包含：
 - Collaboration Summary（参与角色、轮次、关键分歧）
 - 完整的 Write-Scope 和 Verification
+- 已引用的现实依据（现实索引、项目文档、已有 spec/ADR）
+- 如涉及难逆转决策，说明是否需要 ADR；不满足标准时不强行产出 ADR
 
 ## 角色记忆回顾
 

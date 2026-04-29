@@ -83,6 +83,21 @@ idle ──→ spec-talk ──→ spec-review ──→ spec-work ──→ qa 
 
 三种模式共享同一状态机，区别仅在于阶段间是否自动流转。full-auto 重试耗尽时自动降级为 semi-auto。
 
+### 内部生命周期
+
+L2 的状态机可以吸收外部工程 workflow，但只能作为内部编排策略：
+
+| 生命周期 | ys-team 阶段 | 说明 |
+|----------|--------------|------|
+| Define | spec-talk | 澄清目标、约束、影响范围和阻塞 |
+| Plan | spec-talk / spec-review | 形成 spec，并独立审阅可执行性 |
+| Build | spec-work | 按 Write-Scope 执行 |
+| Verify | spec-work / qa | 执行测试、构建、静态检查、人工验证，收集 evidence |
+| Review | spec-review / qa | 独立审阅 spec 或落地结果 |
+| Ship | close | 更新状态、完成 Git 收口、归档 spec |
+
+这些名称不得作为要求用户主动选择的入口。用户只表达目标，ys-team 根据风险和范围自动选择内部策略。
+
 ## Ban Levels 详细定义
 
 | 级别 | 含义 | 违反时行为 | 适用场景 |
@@ -90,6 +105,17 @@ idle ──→ spec-talk ──→ spec-review ──→ spec-work ──→ qa 
 | Hard Ban | 硬 gate | 立即停止，必须先满足条件才能继续 | 流程完整性、证据要求 |
 | Confirmation Ban | 软 gate | 显式声明变更并获得用户确认后可继续 | scope 扩大、依赖变更 |
 | Style Ban | 默认禁止 | 用户明确要求时可以做 | 代码风格、额外重构 |
+
+## Anti-rationalization
+
+以下说法不能作为降级、越界或跳过验证的理由：
+
+- "这个很简单，所以不用路由"：除非明确满足 L0，否则仍需完成 L0/L1/L2 判断。
+- "先改完再补 spec"：L2 必须先有 spec，再进入 spec-work。
+- "测试之后再补"：能验证的改动必须在完成前留下 evidence；不能验证时必须说明原因。
+- "文档只是小事"：对外行为、方法论、baseline 或模块边界变化时，文档同步是 close 前置条件。
+- "顺手一起改了"：scope 外改动必须回到讨论或获得确认。
+- "用户没要求 TDD"：高风险行为改动默认优先小步验证，一个行为一个测试或等价证据。
 
 ## spec.md Schema
 
@@ -129,6 +155,27 @@ spec.md 使用 YAML frontmatter + Markdown body：
 - 能力迁移矩阵（大规模重构时）
 - 执行顺序（多步骤时）
 
+### Evidence 类型
+
+Verification 应尽量指向可复核证据，常见类型包括：
+
+- 测试：单元测试、集成测试、端到端测试
+- 构建：编译、打包、类型检查
+- 静态检查：lint、格式检查、安全扫描
+- 人工验证：明确步骤、输入、期望输出
+- 运行证据：日志、截图、命令输出、回调记录
+
+无法执行某类验证时，必须记录限制和替代证据。
+
+### ADR 与领域上下文
+
+项目可以维护领域语言说明、ADR 或 issue 约定。ys-team 只在需要时引用它们：
+
+- 领域语言说明用于解释业务词汇、系统边界和用户概念，不替代现实索引。
+- ADR 只记录难以回滚、未来会疑惑、存在真实 trade-off 的决策。
+- issue tracker 可作为来源材料，但本地 `docs/specs/` 仍是默认执行合约。
+- init/rebuild 可以提示缺口，但不得覆盖项目本地定制。
+
 ### work.md 语义
 
 - `work.md` 是 `spec-work` 阶段的执行日志，记录关键决策、偏差处理和验证进度。
@@ -159,12 +206,13 @@ Spec: <spec-id>
 - [ ] spec 已从 queued 迁入 active
 - [ ] 按 Write-Scope 执行，无越界
 - [ ] work.md 记录关键决策
+- [ ] 高风险行为改动已按小步验证推进
 - [ ] 代码变更与 spec 一致
 
 ## qa
 - [ ] AC 逐项验证
 - [ ] Verification 命令执行通过
-- [ ] evidence/ 已存放证据
+- [ ] evidence/ 已存放测试、构建、静态检查、人工验证或运行证据
 
 ## close
 - [ ] status.md 更新

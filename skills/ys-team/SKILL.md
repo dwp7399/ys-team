@@ -5,7 +5,7 @@ description: "Entry skill for the ys-team method. Route requests, explain the me
 
 # ys-team
 
-ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
+ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。用户正常对话，ys-team 在仓库本地自动判断复杂度并选择内部流程。
 
 > 方法论完整规范见 `docs/methodology/`。本文件是 Claude Code 平台适配器。
 
@@ -25,6 +25,8 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 2. 项目形态明显变化后，再执行 `ys-team-init --rebuild`
 
 默认工作流由 bundled baseline 承载：仓库内 `examples/baseline/`，npm 安装后 `ys-team/baseline/`。
+
+用户不需要选择内部工作流。规格、测试、审阅、诊断和收口都由 ys-team 路由决定；外部先进模式只能吸收到内部 routing、baseline 和文档口径中。
 
 ## Routing
 
@@ -47,6 +49,8 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 | L2 | spec | 跨模块、有风险、需讨论收敛 | 完整 spec 流程 | spec + evidence |
 
 **举证责任在"降级"：不确定时走 L2。**
+
+L2 内部生命周期：Define（澄清）→ Plan（spec）→ Build（执行）→ Verify（证据）→ Review（审阅/质检）→ Ship（收口）。这些是内部阶段，不要求用户主动选择。
 
 ### L1 流程
 
@@ -90,6 +94,7 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 - 阶段间通过 spec 目录下的文件通信，subagent prompt 只传文件路径
 - 每个 subagent 启动时读取角色记忆（`.ys_team/memory/<role>.md`），结束时回顾写入
 - 每个阶段结束后更新 status.md
+- full-auto 模式下，spec-review PASS 后继续 spec-work，spec-work 完成后继续 qa，qa PASS 后继续 close；只有 REJECT 重试耗尽或 scope 外变更才暂停。
 
 ## 讨论能力（合并自 ys-team-talk）
 
@@ -106,7 +111,7 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。
 ### 讨论流程
 
 1. 从 `governance_slots` / `slot_bindings` 选择参与角色
-2. 各角色基于现实索引给出初始判断
+2. 各角色基于现实索引、项目文档、已有 spec/ADR 给出初始判断
 3. 识别分歧和风险
 4. 收敛讨论，形成结论
 5. 如需临时角色，暂停请求用户审批

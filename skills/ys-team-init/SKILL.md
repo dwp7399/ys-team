@@ -12,6 +12,7 @@ description: "Initialize or rebuild a repository-local ys-team baseline. Generat
 - 首次使用：从 bundled baseline 生成最小 `.ys_team/` 结构
 - 重建（`--rebuild`）：项目形态变化后最小化更新
 - 两种模式共享同一 skill，通过是否已存在 `.ys_team/` 自动判断
+- init/rebuild 的目标是让用户安装后正常开发，不要求用户学习或选择内部工作流
 
 ## Baseline Source
 
@@ -112,6 +113,23 @@ description: "Initialize or rebuild a repository-local ys-team baseline. Generat
 - 改最小面：只更新确实需要变化的部分
 - 保留本地化：不覆盖项目已定制的内容
 - 版本对齐：更新 VERSION
+- 识别项目已有的领域说明、ADR、issue 约定和团队协作规则，并在输出中提示可作为讨论依据
+- 不强制生成重型文档；缺失领域说明或 ADR 时只提示是否值得补齐
+
+### 项目上下文与 ADR
+
+rebuild 可以识别这些材料：
+
+- `docs/project/context.md`、`CONTEXT.md`：领域语言、业务概念、系统边界
+- `docs/adr/`、`adr/`：架构决策记录
+- issue tracker 约定、label 约定、贡献约定：团队协作现实
+
+处理边界：
+
+- 现实索引继续记录模块结构和依赖关系
+- context 只记录业务语言和领域约定，不替代 reality
+- ADR 只建议用于难逆转、未来会疑惑、有真实 trade-off 的决策
+- 本地已有内容优先，rebuild 不覆盖用户定制
 
 ### 记忆健康检查
 

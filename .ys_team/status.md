@@ -1,11 +1,12 @@
 # 团队状态
 
-updated: 2026-04-21T00:00:00+08:00
+updated: 2026-04-29T10:56:18+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
+| 20260429-external-skill-pattern-assimilation | close | in-progress | gate | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -13,27 +14,26 @@ updated: 2026-04-21T00:00:00+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-04-29 | 20260429-external-skill-pattern-assimilation | qa | PASS | 用户命令外显、产品定位词、吸收机制词和本轮 baseline 同步文件均已验证；进入 close，剩余 Git 收口待处理 |
+| 2026-04-29 | 20260429-external-skill-pattern-assimilation | spec-work | PASS | README、guide、methodology、skills 和 baseline 已按吸收机制更新；baseline 源与 npm 安装副本已同步，进入 qa |
+| 2026-04-29 | 20260429-external-skill-pattern-assimilation | reviewer | PASS | Write-Scope、Non-goals、AC 和 Verification 能约束外部模式吸收到内部 routing / baseline / docs，并保持用户无需手动选择 workflow；进入 spec-work |
+| 2026-04-29 | 20260429-external-skill-pattern-assimilation | spec-talk | PASS | 对比 Addy agent-skills 与 Matt Pocock skills 后收敛：ys-team 保持安装后正常对话和内部自动路由，吸收外部模式到 routing、baseline、docs，而非暴露为用户命令 |
 | 2026-04-21 | 20260421-baseline-visible-marker-hardening | qa | PASS | baseline / 同步副本 / apostle 入口均已补齐固定可见标志格式，并验证关键文件已对齐；进入 close 等 Git 收口 |
 | 2026-04-21 | 20260421-baseline-visible-marker-hardening | spec-work | PASS | baseline `AGENTS.md` / `CLAUDE.md`、npm 同步副本与 apostle 入口已完成 hardening，并同步升级 VERSION / CHANGELOG |
 | 2026-04-21 | 20260421-baseline-visible-marker-hardening | spec-talk | PASS | 讨论收敛：baseline 必须显式列出固定尾标格式，并把“缺少可见标志即切回路由”回流到对外入口文件 |
 | 2026-04-21 | 20260421-baseline-status-and-role-pool-sourcing | qa | PASS | carrier、字段结构、对外口径和 `status.md` 固定窗口均已验证通过；自动进入 `close` |
 | 2026-04-21 | 20260421-baseline-status-and-role-pool-sourcing | spec-work | PASS | carrier、schema 和对外口径已按 Write-Scope 落地；进入 `qa` 做独立验收 |
 | 2026-04-21 | 20260421-baseline-status-and-role-pool-sourcing | reviewer | PASS | carrier、字段结构和 Verification 已补齐；spec-review Round 2 通过，目录迁入 `docs/specs/active/` 并自动进入 `spec-work` |
-| 2026-04-21 | 20260421-baseline-status-and-role-pool-sourcing | gate | PASS | 仓库本地 `.ys_team/config.yaml` 已切换到 `full-auto`，当前 initiative 继续按自动流转推进 |
-| 2026-04-21 | 20260421-baseline-status-and-role-pool-sourcing | reviewer | REJECT | `Write-Scope` 仍用 `examples/baseline/.ys_team/**` 兜底，且“来源文件/槽位载体/首批映射粒度”仍是开放问题；`Verification` 也还不足以验证固定窗口、月度摘要和 pinned source 结构 |
-| 2026-04-21 | 20260421-baseline-status-and-role-pool-sourcing | spec-talk | PASS | 讨论已收敛：`status.md` 改为有界快照并配月度轻量摘要；baseline 默认接入 `agency-agents` 作为外部角色池来源，固定治理槽位而非固定角色名 |
-| 2026-04-21 | 20260421-baseline-postrebuild-hardening | gate | PASS | spec 已迁入 `docs/specs/archive/`，本轮文档与模板 hardening 已完成；仅剩 Git 收口未执行 |
-| 2026-04-21 | 20260416-project-slim | gate | PASS | spec 已迁入 `docs/specs/archive/`，closeout 制品已补齐；历史 completed 不再回填旧格式 |
-| 2026-04-21 | 20260421-baseline-postrebuild-hardening | qa | PASS | Verification 已执行通过，evidence 已写入，进入 close 阶段等待 Git 收口与归档 |
-| 2026-04-21 | 20260421-baseline-postrebuild-hardening | reviewer | PASS | 补齐 `AC-06/07` 和 Verification 后，spec-review 通过，进入 spec-work |
 
 ## 阻塞项
 
 - `20260421-baseline-status-and-role-pool-sourcing`：工作区存在本轮无关的已修改文件，close 暂不自动执行 Git 收口
 - `20260421-baseline-visible-marker-hardening`：工作区存在本轮与历史改动混合，close 暂不自动执行 Git 收口
+- `20260429-external-skill-pattern-assimilation`：QA 已 PASS，close 阶段剩余 Git 收口未执行
 
 ## 待办
 
 - [ ] 决定 `20260421-baseline-status-and-role-pool-sourcing` 的 Git 收口方式（当前工作区含本轮无关改动）
 - [ ] 决定 `20260421-baseline-visible-marker-hardening` 的 Git 收口方式（当前工作区含本轮与历史改动）
 - [ ] 视需要执行 `20260421-baseline-postrebuild-hardening` 的 Git 收口（当前未 commit）
+- [ ] 决定 `20260429-external-skill-pattern-assimilation` 的 Git 收口方式

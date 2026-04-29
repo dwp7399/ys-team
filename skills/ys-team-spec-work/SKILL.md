@@ -22,13 +22,15 @@ description: "Silent internal execution capability for approved ys-team specs. E
 - 严格遵守 Write-Scope（禁止项 #4）
 - 实现、文档、证据同步交付
 - 遇到 scope 外修改需求 → 停止，回到讨论（禁止项 #5）
+- 高风险行为改动默认小步推进：一个行为、一个测试或等价验证、一个实现闭环
+- 不以"简单"、"之后补测试"、"文档不用同步"作为跳过验证或降级理由
 
 ## Execution
 
 1. 读取 spec.md 的 Write-Scope 和 AC
 2. 按 Deliverables 逐项执行
 3. 执行过程中更新 `work.md`（关键决策、阻塞、进度）
-4. 收集 evidence（Verification 命令输出、截图等）
+4. 收集 evidence（测试、构建、静态检查、人工验证、截图、日志或命令输出）
 5. 同步更新 Write-Scope 中的文档类文件
 
 ## 角色记忆回顾
