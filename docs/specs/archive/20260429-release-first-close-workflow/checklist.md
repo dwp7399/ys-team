@@ -34,6 +34,6 @@ Spec: 20260429-release-first-close-workflow
 - [x] 文档同步完成
 - [x] git commit（代码 + evidence）
 - [x] 项目发布 gate 完成
-- [ ] 发布分支已合回主线
-- [ ] 主线和 tag 已 push（如项目使用 tag）
-- [ ] spec 已迁入 completed 或 archive，并完成 close commit
+- [x] 发布分支已合回主线
+- [x] 主线和 tag 已 push（如项目使用 tag）
+- [x] spec 已迁入 completed 或 archive，并完成 close commit
