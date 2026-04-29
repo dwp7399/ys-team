@@ -30,6 +30,6 @@ Spec: 20260429-external-skill-pattern-assimilation
 ## close
 - [x] status.md 更新
 - [x] 文档同步完成
-- [ ] 最小 Git 收口完成
-- [ ] git commit（代码 + evidence）
-- [ ] spec 已迁入 completed 或 archive
+- [x] 最小 Git 收口完成
+- [x] git commit（代码 + evidence）
+- [x] spec 已迁入 completed 或 archive
