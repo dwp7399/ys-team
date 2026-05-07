@@ -1,9 +1,25 @@
 ---
 name: ys-team-spec-talk
-description: "Discuss a non-trivial change using the repository's local .ys_team setup, load roles from config.yaml, converge to spec output."
+description: "Multi-role discussion of a non-trivial change against repo reality; converge to spec output. Use when 用户说「起一个 spec」「为这件事开 spec-talk」「多角色讨论一下」「把刚才讨论的写成 spec」等。"
 ---
 
 # ys-team-spec-talk
+
+<what-to-do>
+
+被调用时按以下流程立即执行：
+
+1. 按下方「Read Order」加载 `.ys_team/config.yaml` / `rules.md` / `reality.md` / 项目文档 / 相关角色记忆。
+2. 按下方「Intent First」做三段判断（当前对象 / 当前目标 / 当前阻塞）；不清楚时先向用户确认。
+3. 按下方「Standard Flow」组织多角色讨论并按「收敛规则」每轮判断是否仍在收敛。
+4. 收敛后按「Spec 产出要求」使用 `.ys_team/templates/spec.md` 写入 `docs/specs/<phase>/<initiative-id>/spec.md`。
+5. 按「角色记忆回顾」检查是否需要写入新经验（写入即输出 `> **[记忆更新]**` 通知）。
+6. 按「Status 写入」更新 `.ys_team/status.md`。
+7. 按「Host Summary」格式输出响应末尾。
+
+</what-to-do>
+
+<supporting-info>
 
 内部委托 skill。由 ys-team 主入口在 L2 讨论需要产出正式 spec 时委托调用。
 
@@ -100,3 +116,5 @@ description: "Discuss a non-trivial change using the repository's local .ys_team
 - 下一步：[一个明确动作]
 ---
 ```
+
+</supporting-info>
