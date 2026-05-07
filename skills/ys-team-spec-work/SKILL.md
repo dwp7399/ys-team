@@ -33,6 +33,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 4. 当前 spec 的 `qa-report.md`（如存在，QA 打回后的重试）
 5. 执行角色的记忆文件（`.ys_team/memory/<role>.md`）
 6. `.ys_team/rules.md`
+7. spec.md 中的 `### Feedback Loop` 段（如存在）— 用于 step 4.5 复现成本校验
 
 ## Rules
 
@@ -43,6 +44,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 - 遇到 scope 外修改需求 → 停止，回到讨论（禁止项 #5）
 - 高风险行为改动默认小步推进：一个行为、一个测试或等价验证、一个实现闭环
 - 不以"简单"、"之后补测试"、"文档不用同步"作为跳过验证或降级理由
+- spec.md 必须含 `### Feedback Loop` 段（允许 `N/A — <理由>`）；缺失则停止并回到 spec-talk 补全
 
 ## Execution
 
@@ -50,6 +52,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 2. 按 Deliverables 逐项执行
 3. 执行过程中更新 `work.md`（关键决策、阻塞、进度）
 4. 收集 evidence（测试、构建、静态检查、人工验证、截图、日志或命令输出）
+4.5 **校验 Feedback Loop 复现成本** — 执行 spec.md `### Feedback Loop` 段声明的命令并记录耗时；若实际复现成本与声明显著偏离，记入 work.md 关键决策；N/A 时跳过本步并核对理由是否成立
 5. 同步更新 Write-Scope 中的文档类文件
 
 ## 角色记忆回顾
