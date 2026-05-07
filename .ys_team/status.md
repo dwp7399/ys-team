@@ -6,8 +6,8 @@ updated: 2026-05-07T00:30:00+08:00
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-| 20260507-context-and-feedback-loop | qa | pending | qa | 0 | full-auto |
-| 20260507-skill-structure-refactor | qa | PASS（held） | qa | 0 | full-auto |
+| 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
+| 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -34,7 +34,8 @@ updated: 2026-05-07T00:30:00+08:00
 
 ## 阻塞项
 
-- `20260507-skill-structure-refactor`：本 spec qa PASS 后停 `active/`，由 Spec B（0.6.0-context-and-feedback-loop）的 close 统一发 0.6.0 并同时归档双方
+- `20260507-skill-structure-refactor`：已归档（0.6.0 release 完成）
+- `20260507-context-and-feedback-loop`：已归档（0.6.0 release 完成）
 - `20260421-baseline-status-and-role-pool-sourcing`：工作区存在本轮无关的已修改文件，close 暂不自动执行 Git 收口
 - `20260421-baseline-visible-marker-hardening`：工作区存在本轮与历史改动混合，close 暂不自动执行 Git 收口
 
