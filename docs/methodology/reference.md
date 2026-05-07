@@ -167,11 +167,23 @@ Verification 应尽量指向可复核证据，常见类型包括：
 
 无法执行某类验证时，必须记录限制和替代证据。
 
+### Feedback Loop 子段
+
+`Verification` 段下必须含 `### Feedback Loop` 子段，回答"本 spec 改对了的最快 pass/fail 信号是什么"。
+
+| 字段 | 说明 |
+|------|------|
+| 命令或步骤 | 具体可执行命令或操作 |
+| 期望信号 | grep 行数、退出码、输出片段等可机械判断的信号 |
+| 复现成本 | 秒数估计（目标 < 30 秒）|
+
+允许 `N/A — <一句话理由>`。`spec-work` 必须执行该信号并记录实际耗时；与声明显著偏离时记入 `work.md`。`qa` 阶段挑战 N/A 理由是否成立、复现成本是否实际可达。
+
 ### ADR 与领域上下文
 
 项目可以维护领域语言说明、ADR 或 issue 约定。ys-team 只在需要时引用它们：
 
-- 领域语言说明用于解释业务词汇、系统边界和用户概念，不替代现实索引。
+- 领域语言说明用于解释业务词汇、系统边界和用户概念，不替代现实索引。推荐位置：`.ys_team/glossary.md`，由 ys-team-init 生成空骨架，spec-talk 加载并核对术语漂移。
 - ADR 只记录难以回滚、未来会疑惑、存在真实 trade-off 的决策。
 - issue tracker 可作为来源材料，但本地 `docs/specs/` 仍是默认执行合约。
 - init/rebuild 可以提示缺口，但不得覆盖项目本地定制。
@@ -415,9 +427,10 @@ mappings:
 - role-pool.yaml（外部角色池来源与默认映射）
 - rules.md（行为规则）
 - reality.md（现实索引）
+- glossary.md（项目术语词典；空骨架不阻塞，spec-talk 按需加载）
 - status.md（状态追踪快照）
 - VERSION
-- templates/（checklist + spec + monthly-summary 模板）
+- templates/（checklist + spec + glossary + monthly-summary 模板）
 - history/（月度摘要目录）
 - memory/（空目录，init 时根据 roles 生成空记忆文件）
 

@@ -78,6 +78,20 @@ Spec 是执行合约。一个 spec.md 必须包含：
 
 可选：Risks、Rollback Plan、Depends-On。
 
+## 反馈环纪律
+
+每个 spec 在 `## Verification` 段下必须含 `### Feedback Loop` 子段，回答："本 spec 改对了的最快 pass/fail 信号是什么？目标复现成本 < 30 秒。"
+
+字段允许 `N/A — <一句话理由>`，但理由必须经得起 qa 角色挑战。它强制 spec 在起草阶段就思考"能否快速判定改对了"，避免 spec 落地后才发现没有合适的反馈环。
+
+`spec-work` 阶段必须执行该信号并记录实际耗时；与声明显著偏离时记入 `work.md` 关键决策。
+
+## 领域语言层
+
+项目可选维护 `.ys_team/glossary.md`，登记会跨 spec / 文档 / 对话漂移的术语（"用户"、"账号"、"作业"）。空文件不阻塞任何流程；`ys-team-spec-talk` 加载 Read Order 时若 glossary 非空，则在 spec 写入前对照核对术语一致性。
+
+领域语言层与现实索引职责不同：`reality.md` 是模块结构索引，`glossary.md` 是项目术语词典。两者独立维护、独立加载，不互相替代。
+
 Spec 目录结构：
 
 ```

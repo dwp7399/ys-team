@@ -1,9 +1,23 @@
 ---
 name: ys-team-init
-description: "Initialize or rebuild a repository-local ys-team baseline. Generate the smallest useful .ys_team setup from project reality, rebuild when project shape changes, and maintain the reality index."
+description: "Initialize or rebuild a repository-local ys-team baseline; generate .ys_team from project reality and maintain reality index. Use when 用户说「初始化 ys-team」「rebuild baseline」「装一下方法论」「项目结构变了，重建一下」等。"
 ---
 
 # ys-team-init
+
+<what-to-do>
+
+被调用时按以下流程立即执行：
+
+1. 检查仓库根是否存在 `.ys_team/` 目录。
+2. **不存在 → Init 模式**：按下方「Init 模式」逐步执行（语言检测 → 项目类型检测 → 产出文件 → 角色池绑定 → 记忆初始化）→ 完成后按「现实索引生成」生成 `.ys_team/reality.md`。
+3. **已存在 → Rebuild 模式**：按下方「Rebuild 模式」执行（旧结构检测 → 版本检查 → 重估规则 → 项目上下文与 ADR → 记忆健康检查）→ 必要时按「现实索引生成」更新 reality.md。
+4. baseline 资源按下方「Baseline Source」顺序解析；都不存在则报错。
+5. 完成后按「Success Criteria」自检，并向用户简短确认产出文件清单。
+
+</what-to-do>
+
+<supporting-info>
 
 初始化或重建项目本地 ys-team baseline。
 
@@ -209,3 +223,5 @@ Init/rebuild 后项目可以立即使用 ys-team：
 - 讨论可以收敛为 spec
 - spec 可以指导执行
 - 执行可以用证据验收
+
+</supporting-info>
