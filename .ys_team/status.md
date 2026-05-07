@@ -1,11 +1,12 @@
 # 团队状态
 
-updated: 2026-05-07T00:00:00+08:00
+updated: 2026-05-07T00:30:00+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
+| 20260507-context-and-feedback-loop | spec-review | pending | reviewer | 0 | full-auto |
 | 20260507-skill-structure-refactor | qa | PASS（held） | qa | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
@@ -14,6 +15,7 @@ updated: 2026-05-07T00:00:00+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-05-07 | 20260507-context-and-feedback-loop | spec-talk | PASS | arch/pm/gate 三角色收敛 0.6.0 Spec B：领域语言层 + 反馈环纪律 + grill 子模式 + 0.6.0 release 收口；Depends-On Spec A；close 阶段同一 commit 归档双 spec |
 | 2026-05-07 | 20260507-skill-structure-refactor | qa | PASS | 独立 qa 复跑 Verification 全部命令 + 6 项额外审视全 OK；AC-07 硬约束触发"hold at active"，不进 close；2 项 gap 已记录，本 spec 风险极低 |
 | 2026-05-07 | 20260507-skill-structure-refactor | spec-work | PASS | 4 个 SKILL.md 完成 description 增强 + what-to-do/supporting-info 分块；自检 AC-01~06 全 PASS（AC-04 仅 4 个 `-` 行均为旧 description 替换）；evidence 含 diff-summary 与 reroute-cases；进入 qa |
 | 2026-05-07 | 20260507-skill-structure-refactor | spec-review | PASS | 独立审阅 8 项检查全 OK；强项是边界清晰、AC-04 反向 diff 约束、Rollback 干净；Note：spec-work 阶段需在 evidence 中记录 description 替换造成的 `-` 行来源、保留 reroute case 输入与结果。已切 release/0.6.0 分支，进入 spec-work |
