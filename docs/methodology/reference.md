@@ -430,7 +430,7 @@ mappings:
 - glossary.md（项目术语词典；空骨架不阻塞，spec-talk 按需加载）
 - status.md（状态追踪快照）
 - VERSION
-- templates/（checklist + spec + glossary + monthly-summary 模板）
+- templates/（checklist + spec + monthly-summary 模板）
 - history/（月度摘要目录）
 - memory/（空目录，init 时根据 roles 生成空记忆文件）
 
