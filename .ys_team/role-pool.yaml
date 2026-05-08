@@ -1,0 +1,143 @@
+sources:
+  - id: agency-agents
+    repo: https://github.com/msitarzewski/agency-agents
+    ref: 783f6a7
+    license: MIT
+    default: true
+    runtime_network: false
+
+roles:
+  - id: agency-product-manager
+    name: Product Manager
+    focus: 发现、需求澄清、优先级与交付范围收敛
+    source: agency-agents
+    upstream_path: product/product-manager.md
+  - id: agency-frontend-developer
+    name: Frontend Developer
+    focus: 前端实现、UI 性能与交互落地
+    source: agency-agents
+    upstream_path: engineering/engineering-frontend-developer.md
+  - id: agency-backend-architect
+    name: Backend Architect
+    focus: API、数据模型、服务边界与扩展性设计
+    source: agency-agents
+    upstream_path: engineering/engineering-backend-architect.md
+  - id: agency-software-architect
+    name: Software Architect
+    focus: 跨模块架构设计、系统演进与方案权衡
+    source: agency-agents
+    upstream_path: engineering/engineering-software-architect.md
+  - id: agency-code-reviewer
+    name: Code Reviewer
+    focus: 独立审阅、风险识别、可维护性和安全性检查
+    source: agency-agents
+    upstream_path: engineering/engineering-code-reviewer.md
+  - id: agency-model-qa
+    name: Model QA
+    focus: 结果核查、验收路径验证与边界缺陷发现
+    source: agency-agents
+    upstream_path: specialized/specialized-model-qa.md
+  - id: agency-project-shepherd
+    name: Project Shepherd
+    focus: 收口推进、状态同步、归档和交付闭环
+    source: agency-agents
+    upstream_path: project-management/project-management-project-shepherd.md
+
+slots:
+  - id: planner
+    stage: spec-talk
+    required: true
+    purpose: 收敛需求、提出边界和形成 spec 草案
+  - id: implementer
+    stage: spec-work
+    required: true
+    purpose: 按 spec 落地并维护执行日志
+  - id: spec_reviewer
+    stage: spec-review
+    required: true
+    purpose: 独立审阅 spec 的完整性和可执行性
+  - id: qa_reviewer
+    stage: qa
+    required: true
+    purpose: 独立验证实现结果和验收证据
+  - id: close_owner
+    stage: close
+    required: true
+    purpose: 负责状态收口、归档和交付闭环
+
+mappings:
+  - project_type: general
+    slot: planner
+    candidates: [agency-product-manager]
+  - project_type: general
+    slot: implementer
+    candidates: [agency-software-architect]
+  - project_type: general
+    slot: spec_reviewer
+    candidates: [agency-code-reviewer]
+  - project_type: general
+    slot: qa_reviewer
+    candidates: [agency-model-qa]
+  - project_type: general
+    slot: close_owner
+    candidates: [agency-project-shepherd]
+  - project_type: python-backend
+    slot: planner
+    candidates: [agency-product-manager]
+  - project_type: python-backend
+    slot: implementer
+    candidates: [agency-backend-architect, agency-software-architect]
+  - project_type: python-backend
+    slot: spec_reviewer
+    candidates: [agency-code-reviewer]
+  - project_type: python-backend
+    slot: qa_reviewer
+    candidates: [agency-model-qa]
+  - project_type: python-backend
+    slot: close_owner
+    candidates: [agency-project-shepherd]
+  - project_type: java-backend
+    slot: planner
+    candidates: [agency-product-manager]
+  - project_type: java-backend
+    slot: implementer
+    candidates: [agency-backend-architect, agency-software-architect]
+  - project_type: java-backend
+    slot: spec_reviewer
+    candidates: [agency-code-reviewer]
+  - project_type: java-backend
+    slot: qa_reviewer
+    candidates: [agency-model-qa]
+  - project_type: java-backend
+    slot: close_owner
+    candidates: [agency-project-shepherd]
+  - project_type: frontend-react
+    slot: planner
+    candidates: [agency-product-manager]
+  - project_type: frontend-react
+    slot: implementer
+    candidates: [agency-frontend-developer, agency-software-architect]
+  - project_type: frontend-react
+    slot: spec_reviewer
+    candidates: [agency-code-reviewer]
+  - project_type: frontend-react
+    slot: qa_reviewer
+    candidates: [agency-model-qa]
+  - project_type: frontend-react
+    slot: close_owner
+    candidates: [agency-project-shepherd]
+  - project_type: fullstack
+    slot: planner
+    candidates: [agency-product-manager]
+  - project_type: fullstack
+    slot: implementer
+    candidates: [agency-software-architect, agency-backend-architect, agency-frontend-developer]
+  - project_type: fullstack
+    slot: spec_reviewer
+    candidates: [agency-code-reviewer]
+  - project_type: fullstack
+    slot: qa_reviewer
+    candidates: [agency-model-qa]
+  - project_type: fullstack
+    slot: close_owner
+    candidates: [agency-project-shepherd]
