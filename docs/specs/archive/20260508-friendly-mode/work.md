@@ -18,3 +18,5 @@
 - Added `output_mode: technical` to this repo config and both baseline config files.
 - Updated skill and user docs so config is the stable switch; per-turn phrases are only temporary overrides.
 - Reran config enum, contract, governance-boundary, version alignment, and diff hygiene checks; all passed.
+- Published `ys-team@0.6.2` to npm and verified registry visibility.
+- Removed temporary npm token config and generated tarball after publish.

@@ -1,12 +1,11 @@
 # 团队状态
 
-updated: 2026-05-08T17:06:17+08:00
+updated: 2026-05-08T17:15:13+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-| 20260508-friendly-mode | close | pending-release | gate | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -14,6 +13,7 @@ updated: 2026-05-08T17:06:17+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-05-08 | 20260508-friendly-mode | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.2；spec 进入归档与 main/tag 推送收口 |
 | 2026-05-08 | 20260508-friendly-mode | close | REVISED | 混合改动已拆分为本地 baseline 补齐与 friendly output_mode 两组提交；当前剩余 close 工作是 npm publish、合回 main、tag 和 push main/tag |
 | 2026-05-08 | 20260508-friendly-mode | qa | PASS | 按用户修正改为配置驱动：`.ys_team/config.yaml`、baseline 双副本均新增 `output_mode: technical`；skill 和文档说明 `technical/friendly` 两种模式；配置枚举、契约关键词、治理边界、版本一致性和 diff hygiene 均通过 |
 | 2026-05-08 | 20260508-friendly-mode | spec-talk | REVISED | 用户澄清友好模式应通过配置选择技术模式/友好模式；spec 已改为 `output_mode: technical \| friendly`，关键词仅作为临时覆盖，不作为主机制 |
@@ -43,7 +43,6 @@ updated: 2026-05-08T17:06:17+08:00
 
 ## 阻塞项
 
-- `20260508-friendly-mode`：QA PASS（含 output_mode 配置修订）；工作区混合改动已拆分提交，剩余 release-first close 发布链路未执行
 - `20260507-skill-structure-refactor`：已归档（0.6.0 release 完成）
 - `20260507-context-and-feedback-loop`：已归档（0.6.0 release 完成）
 - `20260421-baseline-status-and-role-pool-sourcing`：工作区存在本轮无关的已修改文件，close 暂不自动执行 Git 收口
