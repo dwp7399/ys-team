@@ -129,6 +129,7 @@ description: "Initialize or rebuild a repository-local ys-team baseline; generat
 - 版本对齐：更新 VERSION
 - 识别项目已有的领域说明、ADR、issue 约定和团队协作规则，并在输出中提示可作为讨论依据
 - 不强制生成重型文档；缺失领域说明或 ADR 时只提示是否值得补齐
+- 保留项目本地 `output_mode`；缺失时使用 `technical`
 
 ### 项目上下文与 ADR
 
@@ -216,6 +217,7 @@ Init 和 rebuild 完成后，自动生成或更新 `.ys_team/reality.md`。
 - 正常工作不需要重新 init
 - 只在项目形态明显变化后 rebuild
 - `status.md` 继续只保留当前快照；跨月统计写入 `.ys_team/history/YYYY-MM.md`
+- 项目可以在 `.ys_team/config.yaml` 设置 `output_mode: friendly`，让 ys-team 在技术输出后追加人话版总结；默认 `technical`
 
 ## Success Criteria
 

@@ -1,4 +1,5 @@
 mode: manual
+output_mode: technical
 roles: []
 governance_slots:
   - id: planner

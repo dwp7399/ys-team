@@ -13,6 +13,7 @@ description: "Entry skill for the ys-team method: routing, status, lightweight d
 2. **状态查询**（"ys-team 状态"等）→ 按下方「状态查询」流程读 `.ys_team/status.md` 并格式化输出 → 末尾 `**[状态]** ys-team · status`。
 3. **讨论澄清**（边界、理念、要不要做 X）→ 按下方「讨论能力」做意图三段判断和轻量讨论；如需正式 spec 委托 `ys-team-spec-talk` → 末尾 `**[主持人]** ys-team · spec-talk`。
 4. **方法论解释**（"ys-team 是什么"等）→ 直接解释「The Zen of ys-team」与「Public Model」，不强行进流程。
+5. **输出模式**（`.ys_team/config.yaml` 中 `output_mode: technical | friendly`）→ 按下方「输出模式」决定是否在原始技术输出后追加友好总结。
 
 任何响应末尾必须出现下方「Response Markers」之一；缺失即视为未进入工作流，立刻回到路由判断。
 
@@ -42,6 +43,25 @@ ys-team 是一组让 AI agent 在帮你写代码时不乱来的纪律约束。�
 默认工作流由 bundled baseline 承载：仓库内 `examples/baseline/`，npm 安装后 `ys-team/baseline/`。
 
 用户不需要选择内部工作流。规格、测试、审阅、诊断和收口都由 ys-team 路由决定；外部先进模式只能吸收到内部 routing、baseline 和文档口径中。
+
+## 输出模式
+
+`output_mode` 写在 `.ys_team/config.yaml` 中：
+
+- `technical`：默认技术模式。只输出原始技术内容和 ys-team 必需的可见标志。
+- `friendly`：友好模式。原始技术输出仍然保留，然后追加一段面向非程序背景用户的友好总结。
+
+友好模式是输出的二次解释层。它不是新工作流，不改变 L0/L1/L2，不降低治理要求，也不替代 evidence、scope、verification 或可见标志。
+
+用户本轮明确要求 `用人话总结`、`说得简单一点`、`给没有编程经验的人看` 时，可以临时按友好模式输出；稳定行为以 config 的 `output_mode` 为准。
+
+输出要求：
+
+- 不强制结构；可以是一句话、一个短段落，或少量要点。
+- 少用内部阶段名、英文缩写和专业术语；必须出现时，用括号解释。
+- 把技术动作翻译成项目影响，说明用户是否需要处理。
+- 有阻塞、验证失败、范围扩大时，用直白语言说明严重性，不能淡化。
+- 原始输出已经足够短且没有专业术语时，可以只补一句或省略友好总结。
 
 ## Routing
 
@@ -78,12 +98,13 @@ L2 内部生命周期：Define（澄清）→ Plan（spec）→ Build（执行�
 
 路由判断前加载 `.ys_team/config.yaml`（如存在）：
 - `mode`：工作模式（manual / semi-auto / full-auto）
+- `output_mode`：输出模式（technical / friendly，默认 technical）
 - `roles`：当前已绑定并启用的角色列表
 - `governance_slots`：固定治理槽位
 - `slot_bindings`：槽位到角色的绑定结果
 - `max_retries`：重试上限
 
-不存在时使用默认值（mode: manual, max_retries: 2）。
+不存在时使用默认值（mode: manual, output_mode: technical, max_retries: 2）。
 
 ## 编排模式
 
@@ -159,7 +180,8 @@ L2 内部生命周期：Define（澄清）→ Plan（spec）→ Build（执行�
 1. 读取 `.ys_team/config.yaml`（获取 mode）
 2. 读取 `.ys_team/status.md`
 3. 格式化输出：当前模式、活跃 Spec、最新判断（最近 10 条）、阻塞项、待办
-4. 检查 `.ys_team/VERSION` 与 baseline 版本对齐
+4. 如 `output_mode: friendly` 或本轮临时要求友好总结，在技术状态后追加一段友好总结，用非程序背景用户也能理解的语言说明当前项目是否正常推进、是否有阻塞、是否需要用户决策
+5. 检查 `.ys_team/VERSION` 与 baseline 版本对齐
 
 如果版本落后，追加：`ys-team baseline 有更新（当前 X → 最新 Y）。运行 ys-team-init --rebuild 同步。`
 
@@ -167,6 +189,7 @@ L2 内部生命周期：Define（澄清）→ Plan（spec）→ Build（执行�
 
 - 少解释内部结构，多解释稳定原则
 - 少输出流程感，多输出边界、结果和下一步
+- `output_mode: friendly` 下追加人话版总结，不强制结构，不替代技术细节
 - 允许项目本地化
 
 ## Response Markers

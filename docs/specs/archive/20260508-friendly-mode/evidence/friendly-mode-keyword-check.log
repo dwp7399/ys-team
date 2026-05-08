@@ -1,0 +1,87 @@
+# friendly-mode keyword check
+
+Date: 2026-05-08
+Branch: work/20260508-friendly-mode
+
+## Command 1
+
+```bash
+rg -n "友好模式|友好总结|二次解释|非程序|不强制结构" skills/ys-team/SKILL.md skills/ys-team-spec-talk/SKILL.md skills/ys-team-spec-work/SKILL.md docs/methodology/overview.md docs/methodology/reference.md docs/guide/getting-started.md README.md .ys_team/glossary.md
+```
+
+Result: PASS.
+
+Observed hits:
+
+- `skills/ys-team/SKILL.md`: trigger phrases, second explanation layer, non-programmer summary, no forced structure, status summary behavior.
+- `skills/ys-team-spec-talk/SKILL.md`: Host Summary may append friendly summary without replacing technical fields.
+- `skills/ys-team-spec-work/SKILL.md`: Visible Marker may append friendly summary; evidence / verification / scope remain required.
+- `docs/methodology/overview.md`: friendly mode defined as output presentation layer.
+- `docs/methodology/reference.md`: friendly mode reference rules added.
+- `docs/guide/getting-started.md`: user-facing example added.
+- `README.md`: user-facing explanation and daily-use example added.
+- `.ys_team/glossary.md`: `友好模式` term registered.
+
+## Command 2
+
+```bash
+rg -n "不改变 L0/L1/L2|不降低治理|evidence|可见标志" skills docs/methodology README.md docs/guide/getting-started.md
+```
+
+Result: PASS.
+
+Observed hits include:
+
+- `skills/ys-team/SKILL.md`: friendly mode does not change L0/L1/L2, does not lower governance, and does not replace evidence / scope / verification / visible markers.
+- `skills/ys-team-spec-work/SKILL.md`: same execution guard repeated for spec-work.
+- `docs/methodology/overview.md` and `docs/methodology/reference.md`: methodology-level boundary documented.
+
+## Command 3
+
+```bash
+node -e 'const fs=require("fs"); const p=require("./package.json").version; for (const f of [".ys_team/VERSION","examples/baseline/.ys_team/VERSION","skills/ys-team/baseline/.ys_team/VERSION"]) { const v=fs.readFileSync(f,"utf8").trim(); if (v!==p) throw new Error(f+"="+v+" package="+p); } console.log("versions aligned", p);'
+```
+
+Result: PASS.
+
+Observed output:
+
+```text
+versions aligned 0.6.2
+```
+
+## Feedback Loop
+
+```bash
+rg -n "友好模式|友好总结|二次解释|非程序|不强制结构" skills/ys-team/SKILL.md docs/methodology/overview.md README.md
+```
+
+Result: PASS. The three user-facing entry points all contain friendly mode language and explicitly include non-forced structure / second explanation layer framing.
+
+## Configuration-mode revision
+
+After user clarification, friendly mode is configuration-driven.
+
+Command:
+
+```bash
+rg -n "output_mode|technical|friendly|友好模式|友好总结|二次解释|非程序|不强制结构" skills/ys-team/SKILL.md skills/ys-team-spec-talk/SKILL.md skills/ys-team-spec-work/SKILL.md docs/methodology/overview.md docs/methodology/reference.md docs/guide/getting-started.md README.md .ys_team/glossary.md .ys_team/config.yaml examples/baseline/.ys_team/config.yaml skills/ys-team/baseline/.ys_team/config.yaml
+```
+
+Result: PASS. Expected hits include `output_mode`, `technical`, and `friendly` across the main skill, docs, glossary, and all three config files.
+
+Command:
+
+```bash
+rg -n "^output_mode: (technical|friendly)$" .ys_team/config.yaml examples/baseline/.ys_team/config.yaml skills/ys-team/baseline/.ys_team/config.yaml
+```
+
+Result: PASS.
+
+Observed output:
+
+```text
+.ys_team/config.yaml:2:output_mode: technical
+examples/baseline/.ys_team/config.yaml:2:output_mode: technical
+skills/ys-team/baseline/.ys_team/config.yaml:2:output_mode: technical
+```
