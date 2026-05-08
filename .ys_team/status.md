@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-05-08T17:15:13+08:00
+updated: 2026-05-08T19:35:12+08:00
 
 ## 活跃 Spec
 
@@ -13,6 +13,7 @@ updated: 2026-05-08T17:15:13+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-05-08 | local-output-mode | patch | PASS | 本仓 ys-team baseline 已是 npm 最新 0.6.2；按用户要求将 `.ys_team/config.yaml` 的 `output_mode` 从 `technical` 改为 `friendly` |
 | 2026-05-08 | 20260508-friendly-mode | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.2；spec 进入归档与 main/tag 推送收口 |
 | 2026-05-08 | 20260508-friendly-mode | close | REVISED | 混合改动已拆分为本地 baseline 补齐与 friendly output_mode 两组提交；当前剩余 close 工作是 npm publish、合回 main、tag 和 push main/tag |
 | 2026-05-08 | 20260508-friendly-mode | qa | PASS | 按用户修正改为配置驱动：`.ys_team/config.yaml`、baseline 双副本均新增 `output_mode: technical`；skill 和文档说明 `technical/friendly` 两种模式；配置枚举、契约关键词、治理边界、版本一致性和 diff hygiene 均通过 |

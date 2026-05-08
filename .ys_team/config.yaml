@@ -1,5 +1,5 @@
 mode: full-auto
-output_mode: technical
+output_mode: friendly
 roles:
   - id: arch
     name: 方法论架构师
