@@ -15,7 +15,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 4. 执行过程中按下方「Status 写入」节点更新 `.ys_team/status.md`，并实时维护 `work.md`。
 5. 收集 evidence（测试 / 构建 / 静态检查 / 人工验证 / 截图 / 命令输出）写入 spec 目录的 `evidence/`。
 6. 完成后按「角色记忆回顾」检查是否需要写入新经验（写入即输出 `> **[记忆更新]**` 通知）。
-7. 按下方「Visible Marker」格式输出响应末尾。
+7. 按下方「Visible Marker」格式输出响应末尾；如 `output_mode: friendly` 或本轮临时要求友好总结，追加友好总结。
 
 遇到 scope 外修改需求 → 立刻停止，回到讨论（禁止项 #5）。
 
@@ -45,6 +45,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 - 高风险行为改动默认小步推进：一个行为、一个测试或等价验证、一个实现闭环
 - 不以"简单"、"之后补测试"、"文档不用同步"作为跳过验证或降级理由
 - spec.md 必须含 `### Feedback Loop` 段（允许 `N/A — <理由>`）；缺失则停止并回到 spec-talk 补全
+- 友好模式由 `output_mode: friendly` 启用，只追加给非程序背景用户看的二次解释，不改变 L0/L1/L2，不降低治理要求，不替代 evidence、verification、scope 或状态标记
 
 ## Execution
 
@@ -84,5 +85,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 - 下一步：[一个明确动作]
 ---
 ```
+
+如 `.ys_team/config.yaml` 配置 `output_mode: friendly`，或用户本轮临时要求用人话总结，在保留上述技术状态后追加一段友好总结。它应把当前进展、项目影响、是否需要用户介入讲清楚；不强制结构。遇到阻塞、验证失败或范围扩大时，必须直说，不得用友好措辞淡化问题。
 
 </supporting-info>

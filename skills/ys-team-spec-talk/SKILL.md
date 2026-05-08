@@ -15,7 +15,7 @@ description: "Multi-role discussion of a non-trivial change against repo reality
 4. 收敛后按「Spec 产出要求」使用 `.ys_team/templates/spec.md` 写入 `docs/specs/<phase>/<initiative-id>/spec.md`。
 5. 按「角色记忆回顾」检查是否需要写入新经验（写入即输出 `> **[记忆更新]**` 通知）。
 6. 按「Status 写入」更新 `.ys_team/status.md`。
-7. 按「Host Summary」格式输出响应末尾。
+7. 按「Host Summary」格式输出响应末尾；如 `output_mode: friendly` 或本轮临时要求友好总结，追加友好总结。
 
 </what-to-do>
 
@@ -120,6 +120,8 @@ spec 写入前先检查 glossary：spec.md 中出现的项目特定术语，若 
 - 下一步：[一个明确动作]
 ---
 ```
+
+如 `.ys_team/config.yaml` 配置 `output_mode: friendly`，或用户本轮临时要求用人话总结，Host Summary 前可追加一段“友好总结”。它是对原始技术输出的二次解释，面向非程序背景用户；不强制结构，可以是一句话、短段落或少量要点。友好总结不能替代上面的参与角色、决策、产出、下一步，也不能弱化 BLOCKED / REJECT / scope 扩大等严重信号。
 
 ## Grill 子模式
 

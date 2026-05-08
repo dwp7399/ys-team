@@ -1,4 +1,5 @@
 mode: full-auto
+output_mode: technical
 roles:
   - id: arch
     name: 方法论架构师

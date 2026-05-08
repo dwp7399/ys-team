@@ -1,13 +1,12 @@
 # 团队状态
 
-updated: 2026-05-07T00:30:00+08:00
+updated: 2026-05-08T17:06:17+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-| 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
-| 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
+| 20260508-friendly-mode | close | pending-release | gate | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -15,6 +14,16 @@ updated: 2026-05-07T00:30:00+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-05-08 | 20260508-friendly-mode | close | REVISED | 混合改动已拆分为本地 baseline 补齐与 friendly output_mode 两组提交；当前剩余 close 工作是 npm publish、合回 main、tag 和 push main/tag |
+| 2026-05-08 | 20260508-friendly-mode | qa | PASS | 按用户修正改为配置驱动：`.ys_team/config.yaml`、baseline 双副本均新增 `output_mode: technical`；skill 和文档说明 `technical/friendly` 两种模式；配置枚举、契约关键词、治理边界、版本一致性和 diff hygiene 均通过 |
+| 2026-05-08 | 20260508-friendly-mode | spec-talk | REVISED | 用户澄清友好模式应通过配置选择技术模式/友好模式；spec 已改为 `output_mode: technical \| friendly`，关键词仅作为临时覆盖，不作为主机制 |
+| 2026-05-08 | 20260508-friendly-mode | close | BLOCKED | QA 已 PASS，但 close 需要 commit / npm publish / 合回 / tag；当前工作区存在本轮开始前已有的 .ys_team 混合改动，不能安全自动收口 |
+| 2026-05-08 | 20260508-friendly-mode | qa | PASS | QA 复跑关键词、治理边界、版本一致性、固定模板回归和 diff hygiene 检查，全部通过；实现未把友好模式固化为“结论/风险/下一步”模板 |
+| 2026-05-08 | 20260508-friendly-mode | spec-work | PASS | 友好模式已落地为“原输出 + 人话版总结”的二次解释层；4 个 skill、README、Getting Started、方法论文档、glossary、版本文件已更新；关键词、治理边界、版本一致性和 Feedback Loop 验证均通过 |
+| 2026-05-08 | 20260508-friendly-mode | spec-work | STARTED | 用户确认后进入 spec-work；已切到 work/20260508-friendly-mode，并将 spec 从 queued 迁入 active |
+| 2026-05-08 | 20260508-friendly-mode | spec-review | PASS | spec 已按用户确认修正为“原输出 + 友好总结”的二次解释层；不强制结构、不降低治理、不替代技术细节；Write-Scope 和 Verification 可执行 |
+| 2026-05-08 | 20260508-friendly-mode | spec-talk | REVISED | 用户澄清友好模式不是固定“结论/风险/下一步”结构，而是把原始技术输出再做一遍面向非程序背景用户的友好总结；spec 已修订为二次解释层，不强制结构和字段 |
+| 2026-05-08 | 20260508-friendly-mode | spec-talk | PASS | 用户反馈当前输出可信但信息过多、专业名词偏重；三角色收敛为“友好模式”呈现层 spec：先给结论/风险/下一步，保留技术细节和治理 gate，不新增独立 workflow |
 | 2026-05-07 | 20260507-context-and-feedback-loop | spec-work | PASS | 3 处 spec.md 加 Feedback Loop / 3 处 glossary.md 创建 / 3 处 reality.md 加领域语言段 / 2 个 SKILL.md 在 supporting-info 内追加（wrapper 保持）/ 方法论 overview+reference 加 2 概念 / VERSION 1.0.0→1.1.0；AC-01~09 自检全 PASS；进入 qa |
 | 2026-05-07 | 20260507-context-and-feedback-loop | spec-review | PASS | 独立审阅 12 项检查全 OK + 4 个 Note；强项是边界清晰、release-first close 链路与 Release Gate 完全对齐、wrapper-only 原则在 D3/D4 显式声明、本 spec 自吃狗粮（Feedback Loop 写明 60 秒）；进入 spec-work |
 | 2026-05-07 | 20260507-context-and-feedback-loop | spec-talk | PASS | arch/pm/gate 三角色收敛 0.6.0 Spec B：领域语言层 + 反馈环纪律 + grill 子模式 + 0.6.0 release 收口；Depends-On Spec A；close 阶段同一 commit 归档双 spec |
@@ -34,6 +43,7 @@ updated: 2026-05-07T00:30:00+08:00
 
 ## 阻塞项
 
+- `20260508-friendly-mode`：QA PASS（含 output_mode 配置修订）；工作区混合改动已拆分提交，剩余 release-first close 发布链路未执行
 - `20260507-skill-structure-refactor`：已归档（0.6.0 release 完成）
 - `20260507-context-and-feedback-loop`：已归档（0.6.0 release 完成）
 - `20260421-baseline-status-and-role-pool-sourcing`：工作区存在本轮无关的已修改文件，close 暂不自动执行 Git 收口
@@ -41,9 +51,5 @@ updated: 2026-05-07T00:30:00+08:00
 
 ## 待办
 
-- [ ] Spec A 进入 spec-review（reviewer 独立审阅）
-- [ ] Spec A 通过 spec-review 后切到 `release/0.6.0` 或 `work/20260507-skill-structure-refactor` 分支再进 spec-work
-- [ ] Spec B（0.6.0-context-and-feedback-loop）在 Spec A qa PASS 后启动 spec-talk
 - [ ] 决定 `20260421-baseline-status-and-role-pool-sourcing` 的 Git 收口方式（当前工作区含本轮无关改动）
 - [ ] 决定 `20260421-baseline-visible-marker-hardening` 的 Git 收口方式（当前工作区含本轮与历史改动）
-- [ ] 视需要执行 `20260421-baseline-postrebuild-hardening` 的 Git 收口（当前未 commit）
