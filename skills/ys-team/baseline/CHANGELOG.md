@@ -4,7 +4,18 @@
 
 ## [Unreleased]
 
-（无）
+### What Changed
+
+- **记忆回顾检查项**：baseline checklist 在 spec-talk 和 spec-work 阶段补充角色记忆回顾确认项
+
+### Why
+
+- skill 已有角色记忆回顾与 `[记忆更新]` 通知逻辑，checklist 需要同步承载验收提醒，避免执行链路漏检
+
+### Key Files
+
+- `examples/baseline/.ys_team/templates/checklist.md`
+- `skills/ys-team/baseline/.ys_team/templates/checklist.md`
 
 ## [0.5.2] - 2026-04-21
 
