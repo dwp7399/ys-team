@@ -407,6 +407,22 @@ mappings:
 - 每轮讨论必须收敛到明确结论、现状和下一步
 - 重复出现前轮论点、扩大范围而非收窄 → 停轮，输出当前状态
 - 讨论产出 spec 时，spec.md 中记录协作摘要（参与角色、轮次、关键分歧）
+- 待确认问题超过 5 个或横跨 3 个以上维度时，进入文件化 Grill，生成 `questions.md`
+
+### 文件化 Grill
+
+`questions.md` 是 spec-talk Define 阶段的结构化问卷制品，适用于聊天式追问会拖慢收敛的复杂需求澄清。它不替代 `spec.md`，也不替代 QA 阶段的 `qa-report.md`。
+
+问卷格式固定为：
+
+- `Section`：问题维度，例如目标、范围、行为、验收、风险
+- `Q`：具体问题
+- `Type`：`open` / `single-choice` / `multi-choice` / `checklist`
+- `Required`：是否必答
+- `Options` 或 `Items`：选择题或检查清单内容
+- `Answer`：用户答案，允许 `Unknown` 或 `Out of scope`
+
+进入 spec 前必须达到 `Ready For Spec`：目标清楚、不做什么清楚、关键行为清楚、验收方式清楚、Write-Scope 可估计。
 
 ### 结果卡
 

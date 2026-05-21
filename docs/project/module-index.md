@@ -31,7 +31,7 @@
 - 被依赖：使用 ys-team 的外部仓库
 
 ## `examples/baseline/`（默认工作流骨架）
-**职责**：`ys-team-init` 的默认来源。提供最小 `.ys_team/` 结构：config.yaml、role-pool.yaml、rules.md、reality.md、glossary.md、status.md、history/、VERSION、templates/（checklist + spec + monthly-summary）、memory/。
+**职责**：`ys-team-init` 的默认来源。提供最小 `.ys_team/` 结构：config.yaml、role-pool.yaml、rules.md、reality.md、glossary.md、status.md、history/、VERSION、templates/（checklist + spec + questions + monthly-summary）、memory/。
 
 **关系**：
 - 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`
@@ -45,7 +45,7 @@
 - 入口：`.ys_team/status.md`, `.ys_team/rules.md`, `.ys_team/config.yaml`
 - 现实索引：`.ys_team/reality.md`（指向 `docs/project/module-index.md`）
 - 记忆：`.ys_team/memory/*.md`
-- 模板：`.ys_team/templates/checklist.md`, `.ys_team/templates/spec.md`
+- 模板：`.ys_team/templates/checklist.md`, `.ys_team/templates/spec.md`, `.ys_team/templates/questions.md`
 - 被依赖：本仓 specs、方法仓自身 rebuild
 
 ## `docs/specs/`（Spec 生命周期目录）

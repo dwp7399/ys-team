@@ -59,7 +59,7 @@ description: "Multi-role discussion of a non-trivial change against repo reality
 ## Standard Flow
 
 1. 从 config.yaml 选择参与角色
-1.5 **grill 检查** — 若用户显式声明（"先 grill 我"/"访谈我"/"我也没想清楚，问我"）或主持人意图三段判断为「对象=idea, 阻塞=边界不清」，进入下方「## Grill 子模式」，收口后再继续步骤 2
+1.5 **grill 检查** — 若用户显式声明（"先 grill 我"/"访谈我"/"我也没想清楚，问我"）或主持人意图三段判断为「对象=idea, 阻塞=边界不清」，进入下方「## Grill 子模式」；若待确认问题超过 5 个或问题维度过多，改用「## 文件化 Grill 子模式」生成 `questions.md`，收口后再继续步骤 2
 2. 各角色基于现实索引、项目文档、已有 spec/ADR 给出初始判断
 3. 识别分歧、风险、能力缺口
 4. 每轮检查是否仍在收敛（重复论点或扩大范围 → 停轮）
@@ -152,5 +152,51 @@ spec 写入前先检查 glossary：spec.md 中出现的项目特定术语，若 
 - 一次只问一个问题
 - 不在 grill 阶段做多角色讨论
 - grill 收口后必须进入 fan-out，不直接产出 spec
+
+## 文件化 Grill 子模式
+
+适用于待确认问题过多、聊天式追问会拖慢收敛的场景。它是 spec-talk Define 阶段的结构化问卷制品，不是新的用户可见工作流。
+
+### 触发
+
+- 待确认问题超过 5 个
+- 问题横跨 3 个以上维度，例如目标、范围、行为、验收、迁移、风险
+- 用户需要批量回答，而不是一问一答
+- 继续聊天追问会导致问题树丢失或选项覆盖不足
+
+### 产物
+
+- 路径：`docs/specs/queued/<initiative-id>/questions.md`
+- 模板：优先使用 `.ys_team/templates/questions.md`
+- 格式：问卷调查式结构，使用 `Section`、`Q`、`Type`、`Required`、`Options` / `Items`、`Answer`
+- 题型：至少支持 `open`、`single-choice`、`multi-choice`、`checklist`
+- 答案允许：`Unknown`、`Out of scope`
+
+### 流程
+
+1. 主持人先写 1 段 `Context`，说明当前理解和为什么需要文件化澄清
+2. 按维度拆成多个 `Section`
+3. 每题必须服务后续 spec 的目标、边界、行为、验收或风险判断
+4. 单选/多选题应提供足够选项；不确定时提供 `Other:` 填写位
+5. 写入 `questions.md` 后暂停，等待用户填写或在对话中回答
+6. 用户回答后，主持人整理 `Decisions` 与 `Ready For Spec`
+7. `Ready For Spec` 达成后，fan-out 到多角色 Standard Flow（步骤 2 起）
+
+### Ready For Spec
+
+`questions.md` 进入 spec 前必须至少确认：
+
+- 目标清楚
+- 不做什么清楚
+- 关键行为清楚
+- 验收方式清楚
+- Write-Scope 可估计
+
+### 边界
+
+- `questions.md` 不替代 `spec.md`
+- `questions.md` 不替代 QA 阶段的 `qa-report.md`
+- 不为少量澄清强制生成文件
+- 不把普通满意度调查或泛泛偏好问题写入 `questions.md`
 
 </supporting-info>

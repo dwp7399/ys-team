@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-05-08T19:35:12+08:00
+updated: 2026-05-21T15:50:50+08:00
 
 ## 活跃 Spec
 
@@ -13,6 +13,12 @@ updated: 2026-05-08T19:35:12+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-05-21 | 20260521-questions-md-grill | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.3；spec 已归档，继续 commit、合回 main、tag 和 push 收口 |
+| 2026-05-21 | 20260521-questions-md-grill | close | BLOCKED | QA 已 PASS；本仓 release-first close 需要 npm publish，但当前 Write-Scope 未包含 package/version 发布文件，需用户确认是否扩 scope |
+| 2026-05-21 | 20260521-questions-md-grill | qa | PASS | 关键词检查、三份 questions.md 模板 diff、模板结构检查和 AC 逐项验证均通过；share/ 为无关未跟踪文件，未纳入本 spec |
+| 2026-05-21 | 20260521-questions-md-grill | spec-work | PASS | 文件化 Grill 行为、主入口升级说明、三份 questions.md 模板、方法论文档和现实索引已按 spec 落地；evidence 已记录验证结果 |
+| 2026-05-21 | 20260521-questions-md-grill | spec-review | PASS | spec 目标、边界、Write-Scope、AC 和 Verification 可执行；已切到 work/20260521-questions-md-grill 并迁入 active |
+| 2026-05-21 | 20260521-questions-md-grill | spec-talk | PASS | 用户确认采用 `questions.md` 命名，并要求使用问卷调查式格式；已产出 queued spec，约束文件化 Grill 的触发、模板和 Ready For Spec 退出条件 |
 | 2026-05-08 | local-output-mode | patch | PASS | 本仓 ys-team baseline 已是 npm 最新 0.6.2；按用户要求将 `.ys_team/config.yaml` 的 `output_mode` 从 `technical` 改为 `friendly` |
 | 2026-05-08 | 20260508-friendly-mode | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.2；spec 进入归档与 main/tag 推送收口 |
 | 2026-05-08 | 20260508-friendly-mode | close | REVISED | 混合改动已拆分为本地 baseline 补齐与 friendly output_mode 两组提交；当前剩余 close 工作是 npm publish、合回 main、tag 和 push main/tag |

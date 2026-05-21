@@ -105,6 +105,7 @@ docs/specs/<phase>/<id>/
 ├── spec.md          # 执行合约（必须）
 ├── checklist.md     # 交付检查清单（必须）
 ├── evidence/        # 验收证据（必须）
+├── questions.md     # 需求澄清问卷（可选，spec-talk Define 阶段）
 ├── work.md          # 执行日志（spec-work 维护）
 ├── work-XX.md       # 多步拆分子合约（可选）
 ├── review.md        # 审阅结论（semi-auto/full-auto）
@@ -120,6 +121,8 @@ docs/specs/<phase>/<id>/
 - `archive/`：历史已完成 spec 的长期归档位置，保留原制品，不为归档补格式。
 
 `work.md` 的语义固定为执行期日志：记录 `spec-work` 阶段的关键决策、偏差处理和验证进展。它不是讨论纪要，也不是每个阶段都要单独生成的新模板。
+
+`questions.md` 的语义固定为 spec-talk Define 阶段的结构化问卷：当待确认问题超过 5 个或问题维度过多时，用它批量澄清目标、边界、行为、验收和风险。它不替代 `spec.md`，也不替代 QA 阶段的 `qa-report.md`。
 
 `status.md` 的语义固定为当前快照：记录活跃 spec、阻塞项、待办和最近 10 条判断。跨月的轻量统计进入 `.ys_team/history/YYYY-MM.md`，不再继续堆在 `status.md`。
 
