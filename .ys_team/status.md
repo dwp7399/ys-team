@@ -13,7 +13,7 @@ updated: 2026-05-21T15:50:50+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
-| 2026-05-21 | 20260521-questions-md-grill | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.3；spec 已归档，继续 commit、合回 main、tag 和 push 收口 |
+| 2026-05-21 | 20260521-questions-md-grill | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.4；0.6.4 为对齐归档状态的修正发布 |
 | 2026-05-21 | 20260521-questions-md-grill | close | BLOCKED | QA 已 PASS；本仓 release-first close 需要 npm publish，但当前 Write-Scope 未包含 package/version 发布文件，需用户确认是否扩 scope |
 | 2026-05-21 | 20260521-questions-md-grill | qa | PASS | 关键词检查、三份 questions.md 模板 diff、模板结构检查和 AC 逐项验证均通过；share/ 为无关未跟踪文件，未纳入本 spec |
 | 2026-05-21 | 20260521-questions-md-grill | spec-work | PASS | 文件化 Grill 行为、主入口升级说明、三份 questions.md 模板、方法论文档和现实索引已按 spec 落地；evidence 已记录验证结果 |

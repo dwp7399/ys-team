@@ -20,3 +20,4 @@ Implementer: 方法论架构师
 - Published `ys-team@0.6.3` to npm and verified registry reports `0.6.3`.
 - Reviewed role memory. No new long-term memory was written; existing delivery memory already covers recording publish/auth/cache gaps in evidence.
 - Archived spec to `docs/specs/archive/20260521-questions-md-grill`.
+- Prepared corrective release `0.6.4` so npm package contents and git tag include the archived spec state.

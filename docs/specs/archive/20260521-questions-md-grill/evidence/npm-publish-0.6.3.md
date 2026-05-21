@@ -1,7 +1,7 @@
 # npm Publish Evidence
 
 Date: 2026-05-21
-Package: `ys-team@0.6.3`
+Package: `ys-team@0.6.3` and corrective `ys-team@0.6.4`
 
 ## Pre-publish Checks
 
@@ -37,4 +37,21 @@ Result:
 
 ```text
 0.6.3
+```
+
+## Corrective Publish
+
+`0.6.3` was published before the archive commit, so the npm package contained the spec under `docs/specs/active/` while the git tag pointed at the archived state. To keep npm package contents and the git tag aligned, close performed a corrective patch release:
+
+```bash
+rg -n '"version": "0.6.4"|^0.6.4$' package.json .ys_team/VERSION examples/baseline/.ys_team/VERSION
+npm pack --dry-run
+npm publish
+npm view ys-team version
+```
+
+Final registry result:
+
+```text
+0.6.4
 ```

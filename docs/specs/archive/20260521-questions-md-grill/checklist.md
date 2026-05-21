@@ -29,10 +29,10 @@ Spec: 20260521-questions-md-grill
 - [x] 角色记忆回顾写入
 - [x] status.md 更新
 - [x] 文档同步完成
-- [ ] git commit（代码 + evidence）
+- [x] git commit（代码 + evidence）
 - [x] 发布线版本一致
 - [x] npm pack 验证通过
 - [x] npm publish 成功
-- [ ] 发布分支已合回 main
-- [ ] main 和 git tag 已 push
+- [x] 发布分支已合回 main
+- [x] main 和 git tag 已 push
 - [x] spec 目录归档并完成 close commit
