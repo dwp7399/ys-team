@@ -58,4 +58,4 @@ Results:
 
 ## Conclusion
 
-The package content is ready, but close is blocked by npm authentication. Re-authenticate npm, then rerun `npm publish` from the current branch and continue close.
+This attempt was blocked by npm authentication. The blocker was later resolved with a temporary npm user config and a successful publish; see `npm-publish-0.6.5.md`.

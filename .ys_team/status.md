@@ -1,12 +1,11 @@
 # 团队状态
 
-updated: 2026-06-02T11:41:25+08:00
+updated: 2026-06-02T13:40:57+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-| 20260602-project-local-sop-assimilation | close | blocked | gate | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -14,6 +13,7 @@ updated: 2026-06-02T11:41:25+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-06-02 | 20260602-project-local-sop-assimilation | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.5；发布阻塞已解除，spec 归档并进入 main/tag 推送收口 |
 | 2026-06-02 | 20260602-project-local-sop-assimilation | close | BLOCKED | npm pack 通过，但 npm publish 因本机 npm 认证失效失败；npm whoami 返回 E401，远端 ys-team 最新仍为 0.6.4 |
 | 2026-06-02 | 20260602-project-local-sop-assimilation | qa | PASS | QA 复跑关键词、反向业务词、版本一致性、方法论版本和 npm pack dry-run 均通过；AC-01~12 全部 PASS，可进入 release-first close |
 | 2026-06-02 | 20260602-project-local-sop-assimilation | spec-work | READY_FOR_QA | 项目本地 SOP 概念、baseline 双副本、本仓模板、skills、用户文档和版本线已按 spec 落地；关键词、反向业务词、版本一致性和 npm pack dry-run 验证均通过 |
@@ -57,7 +57,6 @@ updated: 2026-06-02T11:41:25+08:00
 
 ## 阻塞项
 
-- `20260602-project-local-sop-assimilation`：npm publish 被本机 npm 认证阻塞；需要重新登录 npm 后继续 close
 - `20260507-skill-structure-refactor`：已归档（0.6.0 release 完成）
 - `20260507-context-and-feedback-loop`：已归档（0.6.0 release 完成）
 - `20260421-baseline-status-and-role-pool-sourcing`：工作区存在本轮无关的已修改文件，close 暂不自动执行 Git 收口
