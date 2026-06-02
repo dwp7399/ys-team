@@ -169,6 +169,7 @@ spec.md 使用 YAML frontmatter + Markdown body：
 - Acceptance Evidence
 - Risks
 - Rollback Plan
+- Project Local SOP Gate
 - 关键设计决策
 - 能力迁移矩阵（大规模重构时）
 - 执行顺序（多步骤时）
@@ -184,6 +185,10 @@ Verification 应尽量指向可复核证据，常见类型包括：
 - 运行证据：日志、截图、命令输出、回调记录
 
 无法执行某类验证时，必须记录限制和替代证据。
+
+### Project Local SOP Gate
+
+如本 spec 命中项目本地 SOP，`Integration Gate` 或 `Acceptance Evidence` 应写明该 SOP 的条件式验收项。常见项包括：二次现实对照、最小成本验证、文档质量确认、readiness/evidence 对齐，以及是否需要更新 SOP references 或记录“已有总结覆盖，无需更新”。
 
 ### Feedback Loop 子段
 
@@ -205,6 +210,40 @@ Verification 应尽量指向可复核证据，常见类型包括：
 - ADR 只记录难以回滚、未来会疑惑、存在真实 trade-off 的决策。
 - issue tracker 可作为来源材料，但本地 `docs/specs/` 仍是默认执行合约。
 - init/rebuild 可以提示缺口，但不得覆盖项目本地定制。
+
+### 项目本地 SOP
+
+项目本地 SOP 用于承接项目高频、领域强、漏项成本高的重复工作。它是项目自己的交付约定，不是 ys-team 核心方法论的一部分。
+
+适合沉淀为项目本地 SOP 的信号：
+
+- 同类任务反复出现，且每次都容易漏同一类交付面。
+- 需要固定读取项目内 references、合同、官方资料或历史 evidence。
+- close 前需要额外确认结果责任，例如二次现实对照、最小成本验证、文档质量或 readiness 证据。
+- 角色记忆已经不足以约束执行路径，需要可复用的 checklist、references 或本地 skill。
+
+推荐承载位置：
+
+- `.agents/skills/<domain-sop>/SKILL.md`：短入口，只写触发场景、分流和必须读取的 references。
+- `.agents/skills/<domain-sop>/references/`：稳定模式、反模式、结果责任 gate；只写可复用规则，不写事件流水账。
+- `.ys_team/rules.md`：声明该 SOP 的触发条件和边界。
+- `.ys_team/templates/checklist.md`：在 close 阶段加入条件式 gate，例如“如本 spec 命中某本地 SOP，close 前确认该 SOP 的结果责任项”。
+- 项目权威文档：记录领域合同和现实状态，不用角色记忆代替项目文档。
+
+边界：
+
+- 项目本地 SOP 不改变 L0/L1/L2；它只在路由判断后补充项目内交付约束。
+- 不要求所有项目创建 SOP；没有高频领域风险时，保持 baseline 默认形态。
+- 不把项目业务知识写进 ys-team 通用 baseline。
+- 不恢复旧 toolbox/evolution 机制。
+- close 阶段只归纳可复用模式；如果已有总结覆盖，记录“已有总结覆盖，无需更新”，不要追加流水账。
+
+项目本地 SOP 与角色记忆的区别：
+
+| 机制 | 记录什么 | 服务对象 | 典型使用 |
+|------|----------|----------|----------|
+| 角色记忆 | 错误模式、正确做法、适用场景 | 某个角色的判断质量 | 下次 spec-talk/spec-work 时少犯同类判断错误 |
+| 项目本地 SOP | 触发场景、交付面、references、close gate | 一类重复项目工作 | 每次同类工作都按同一结果责任链交付 |
 
 ### work.md 语义
 
@@ -249,6 +288,7 @@ Spec: <spec-id>
 ## close
 - [ ] status.md 更新
 - [ ] 文档同步完成
+- [ ] 如本 spec 命中项目本地 SOP，已完成该 SOP 的条件式 close gate，并更新经验总结或说明已有总结覆盖
 - [ ] git commit（代码 + evidence）
 - [ ] 项目发布 gate 完成
 - [ ] 发布分支已合回主线
@@ -443,6 +483,12 @@ mappings:
 - AC 涵盖主要验收路径
 - 回滚方案可执行（如适用）
 - 文档同步项已列入 Write-Scope
+- Depends-On / Absorbs / Supersedes 没有状态机冲突；被吸收的旧 spec 必须有明确目录流转
+- 涉及结构化数据或协议时，Data Contract 的字段、枚举、fallback 规则足够固定，不能留到 spec-work 临时决定
+- 涉及多执行者或分批产物时，必须定义单写入或聚合协议，避免多人直接覆盖同一最终文件
+- evidence 不能只写“人工观察通过”，关键 AC 应有命令、拦截记录、截图、日志或等价可复核材料
+- rollback 覆盖实际发布产物，不只覆盖源码
+- 大范围工作有可停止边界，避免 spec-work 变成无底洞
 
 ## QA 验收项
 

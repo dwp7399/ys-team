@@ -45,6 +45,7 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 - 高风险行为改动默认小步推进：一个行为、一个测试或等价验证、一个实现闭环
 - 不以"简单"、"之后补测试"、"文档不用同步"作为跳过验证或降级理由
 - spec.md 必须含 `### Feedback Loop` 段（允许 `N/A — <理由>`）；缺失则停止并回到 spec-talk 补全
+- 若 spec 命中项目本地 SOP，必须执行该 SOP 声明的条件式 gate；无新经验时记录“已有总结覆盖，无需更新”
 - 友好模式由 `output_mode: friendly` 启用，只追加给非程序背景用户看的二次解释，不改变 L0/L1/L2，不降低治理要求，不替代 evidence、verification、scope 或状态标记
 
 ## Execution
@@ -54,7 +55,8 @@ description: "Execute an approved ys-team spec against its contract; keep docs a
 3. 执行过程中更新 `work.md`（关键决策、阻塞、进度）
 4. 收集 evidence（测试、构建、静态检查、人工验证、截图、日志或命令输出）
 4.5 **校验 Feedback Loop 复现成本** — 执行 spec.md `### Feedback Loop` 段声明的命令并记录耗时；若实际复现成本与声明显著偏离，记入 work.md 关键决策；N/A 时跳过本步并核对理由是否成立
-5. 同步更新 Write-Scope 中的文档类文件
+5. 若命中项目本地 SOP，执行其条件式 close gate 的执行侧准备：现实对照、最小成本验证、文档质量确认或经验总结判断
+6. 同步更新 Write-Scope 中的文档类文件
 
 ## 角色记忆回顾
 

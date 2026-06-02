@@ -130,6 +130,7 @@ description: "Initialize or rebuild a repository-local ys-team baseline; generat
 - 识别项目已有的领域说明、ADR、issue 约定和团队协作规则，并在输出中提示可作为讨论依据
 - 不强制生成重型文档；缺失领域说明或 ADR 时只提示是否值得补齐
 - 保留项目本地 `output_mode`；缺失时使用 `technical`
+- 保留项目本地 SOP 定制，包括本地 `.agents/skills/`、rules 中的触发条件、checklist 的条件式 gate 和项目 references；rebuild 不把它们覆盖成默认 baseline
 
 ### 项目上下文与 ADR
 
@@ -145,6 +146,7 @@ rebuild 可以识别这些材料：
 - context 只记录业务语言和领域约定，不替代 reality
 - ADR 只建议用于难逆转、未来会疑惑、有真实 trade-off 的决策
 - 本地已有内容优先，rebuild 不覆盖用户定制
+- 项目本地 SOP 属于本地定制；rebuild 可以提示版本差异，但不得静默删除或重写
 
 ### 记忆健康检查
 

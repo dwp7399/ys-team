@@ -29,6 +29,7 @@ Spec: <spec-id>
 - [ ] 角色记忆回顾写入
 - [ ] status.md 更新
 - [ ] 文档同步完成
+- [ ] 如本 spec 命中项目本地 SOP，已完成该 SOP 的条件式 close gate，并更新经验总结或说明已有总结覆盖
 - [ ] git commit（代码 + evidence）
 - [ ] 发布线版本一致
 - [ ] npm pack 验证通过

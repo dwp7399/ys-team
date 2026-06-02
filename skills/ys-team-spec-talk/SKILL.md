@@ -63,9 +63,10 @@ description: "Multi-role discussion of a non-trivial change against repo reality
 2. 各角色基于现实索引、项目文档、已有 spec/ADR 给出初始判断
 3. 识别分歧、风险、能力缺口
 4. 每轮检查是否仍在收敛（重复论点或扩大范围 → 停轮）
-5. 如需临时角色，暂停请求用户审批
-6. 收敛后输出结果卡 + 角色简报
-7. 如需 spec，使用 `.ys_team/templates/spec.md` 模板写入
+5. 若讨论发现项目内高频、领域强、漏项成本高的重复工作，建议用项目本地 SOP 承载触发条件、references 和条件式 close gate；不要把项目业务知识写进 ys-team 核心
+6. 如需临时角色，暂停请求用户审批
+7. 收敛后输出结果卡 + 角色简报
+8. 如需 spec，使用 `.ys_team/templates/spec.md` 模板写入
 
 ## Result Card
 
@@ -83,6 +84,7 @@ description: "Multi-role discussion of a non-trivial change against repo reality
 产出的 spec 必须包含：
 - Collaboration Summary（参与角色、轮次、关键分歧）
 - 完整的 Write-Scope 和 Verification
+- 如命中项目本地 SOP，写明 Project Local SOP Gate；不适用时可写 N/A
 - 已引用的现实依据（现实索引、项目文档、已有 spec/ADR）
 - 如涉及难逆转决策，说明是否需要 ADR；不满足标准时不强行产出 ADR
 

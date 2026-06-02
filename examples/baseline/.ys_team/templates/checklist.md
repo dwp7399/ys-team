@@ -34,6 +34,7 @@ Spec: <spec-id>
 ## close
 - [ ] status.md 更新
 - [ ] 文档同步完成
+- [ ] 如本 spec 命中项目本地 SOP，已完成该 SOP 的条件式 close gate，并更新经验总结或说明已有总结覆盖
 - [ ] git commit（代码 + evidence）
 - [ ] 项目发布 gate 完成
 - [ ] 发布分支已合回主线

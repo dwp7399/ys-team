@@ -43,6 +43,10 @@ Verification: "见 ## Verification"
 
 需要同步更新的文档与状态留痕（可选）。
 
+## Project Local SOP Gate
+
+如本 spec 命中项目本地 SOP，在这里写明该 SOP 的条件式 close gate；不适用时写 `N/A`。
+
 ## Acceptance Criteria
 
 - AC-01: ...

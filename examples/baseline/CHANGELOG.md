@@ -2,20 +2,32 @@
 
 记录 `examples/baseline/` 及其直接配套接入面的结构化变化，供用户迁移、rebuild 判断和后续 `check-update` 摘要提取使用。
 
-## [Unreleased]
+## [0.6.5] - 2026-06-02
 
 ### What Changed
 
 - **记忆回顾检查项**：baseline checklist 在 spec-talk 和 spec-work 阶段补充角色记忆回顾确认项
+- **项目本地 SOP**：rules/spec/checklist 增加项目本地 SOP 的通用占位，支持项目把高频领域工作沉淀为本地 references、条件式 close gate 和结果责任检查
+- **本地化保留**：init/rebuild 口径明确保留项目本地 SOP 定制，不覆盖项目自己的 rules、checklist gate 或本地 skill
 
 ### Why
 
 - skill 已有角色记忆回顾与 `[记忆更新]` 通知逻辑，checklist 需要同步承载验收提醒，避免执行链路漏检
+- 真实项目实践表明，高频领域工作不应写进 ys-team 核心，而应留在项目本地；baseline 需要提供承载位置和边界
 
 ### Key Files
 
 - `examples/baseline/.ys_team/templates/checklist.md`
+- `examples/baseline/.ys_team/templates/spec.md`
+- `examples/baseline/.ys_team/rules.md`
 - `skills/ys-team/baseline/.ys_team/templates/checklist.md`
+- `skills/ys-team/baseline/.ys_team/templates/spec.md`
+- `skills/ys-team/baseline/.ys_team/rules.md`
+
+### Migration Hint
+
+- 已初始化项目若已有本地 SOP、项目内 skill 或 checklist gate，rebuild 时应保留这些定制
+- 没有高频领域风险的项目不需要新增 SOP，继续使用默认 L0/L1/L2 即可
 
 ## [0.5.2] - 2026-04-21
 

@@ -1,11 +1,12 @@
 # 团队状态
 
-updated: 2026-05-21T15:50:50+08:00
+updated: 2026-06-02T11:41:25+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
+| 20260602-project-local-sop-assimilation | close | in-progress | gate | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -13,6 +14,11 @@ updated: 2026-05-21T15:50:50+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-06-02 | 20260602-project-local-sop-assimilation | qa | PASS | QA 复跑关键词、反向业务词、版本一致性、方法论版本和 npm pack dry-run 均通过；AC-01~12 全部 PASS，可进入 release-first close |
+| 2026-06-02 | 20260602-project-local-sop-assimilation | spec-work | READY_FOR_QA | 项目本地 SOP 概念、baseline 双副本、本仓模板、skills、用户文档和版本线已按 spec 落地；关键词、反向业务词、版本一致性和 npm pack dry-run 验证均通过 |
+| 2026-06-02 | 20260602-project-local-sop-assimilation | spec-work | STARTED | 已切到 work/20260602-project-local-sop-assimilation，并将 spec 从 queued 迁入 active；开始按合同更新方法论文档、用户文档、baseline 双副本、skills 和发布线版本 |
+| 2026-06-02 | 20260602-project-local-sop-assimilation | spec-review | PASS | spec 已约束项目本地 SOP 的通用边界、Write-Scope 覆盖发布线和 baseline 双副本，Verification 含正向/反向关键词、版本和 npm pack 检查，可进入 spec-work |
+| 2026-06-02 | 20260602-project-local-sop-assimilation | spec-talk | PASS | 已基于 ai-gateway 落地实践收敛为项目本地 SOP 吸收机制 spec；边界是不复制业务知识，只吸收 repo-local SOP、条件式 close gate 和 spec-review 合同检查 |
 | 2026-05-21 | 20260521-questions-md-grill | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.4；0.6.4 为对齐归档状态的修正发布 |
 | 2026-05-21 | 20260521-questions-md-grill | close | BLOCKED | QA 已 PASS；本仓 release-first close 需要 npm publish，但当前 Write-Scope 未包含 package/version 发布文件，需用户确认是否扩 scope |
 | 2026-05-21 | 20260521-questions-md-grill | qa | PASS | 关键词检查、三份 questions.md 模板 diff、模板结构检查和 AC 逐项验证均通过；share/ 为无关未跟踪文件，未纳入本 spec |

@@ -3,10 +3,10 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-04-21
+**Last Updated**: 2026-06-02
 
 ## `docs/methodology/`（方法论规范）
-**职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节。
+**职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节；当前包含项目本地 SOP、领域语言、Feedback Loop、状态机和 release-first close 等规则。
 
 **关系**：
 - 入口：`docs/methodology/overview.md`、`docs/methodology/reference.md`
@@ -14,7 +14,7 @@
 - 版本：`docs/methodology/VERSION`
 
 ## `docs/guide/`（用户向使用指南）
-**职责**：面向个人开发者，解释”为什么需要 ys-team”（含反模式案例）和”怎么用”。
+**职责**：面向个人开发者，解释”为什么需要 ys-team”（含反模式案例）和”怎么用”，并说明项目实践如何低成本沉淀为本地 SOP。
 
 **关系**：
 - 入口：`docs/guide/why-ys-team.md`、`docs/guide/getting-started.md`
