@@ -27,12 +27,12 @@ Spec: 20260602-project-local-sop-assimilation
 
 ## close
 - [ ] 角色记忆回顾写入
-- [ ] status.md 更新
-- [ ] 文档同步完成
-- [ ] git commit（代码 + evidence）
-- [ ] 发布线版本一致
-- [ ] npm pack 验证通过
-- [ ] npm publish 成功
+- [x] status.md 更新
+- [x] 文档同步完成
+- [x] git commit（代码 + evidence）
+- [x] 发布线版本一致
+- [x] npm pack 验证通过
+- [ ] npm publish 成功（BLOCKED：npm whoami E401）
 - [ ] 发布分支已合回 main
 - [ ] main 和 git tag 已 push
 - [ ] spec 目录归档并完成 close commit
