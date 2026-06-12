@@ -1,0 +1,28 @@
+2026-06-12 keyword checks
+
+1. Removed old hard marker / exclusive workflow phrases
+
+Command:
+rg -n "缺失即视为未进入工作流|立刻回到路由|禁止自动触发|缺少标记 → 视为未进入|排他工作流|缺 marker" AGENTS.md CLAUDE.md scripts/ys-team.mjs skills/ examples/baseline/ skills/ys-team/baseline/
+
+Result:
+exit 1, no matches.
+
+2. Removed old file-count routing from shipped entrypoints
+
+Command:
+rg -n "single file|≤3 files|单文件|文件数/模块数|single module" scripts/ys-team.mjs skills/ys-team/SKILL.md docs/methodology/overview.md docs/methodology/reference.md
+
+Result:
+exit 1, no matches.
+
+3. Positive v1 mechanism checks
+
+Commands:
+rg -n "验收保真度|人等价验收|不可逆性|verifier" docs/methodology/overview.md docs/methodology/reference.md
+rg -n "L3|L2|L1|L0" docs/methodology/overview.md docs/methodology/reference.md
+rg -n "入口闸|出口闸|可见性" docs/methodology/overview.md
+rg -n "verifier 卡|两个真决策点|不再排他" README.md docs/guide/
+
+Result:
+all commands exited 0 with matches in methodology, README, and guide docs.

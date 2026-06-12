@@ -1,6 +1,6 @@
 # 团队状态
 
-updated: 2026-06-02T13:40:57+08:00
+updated: 2026-06-12T00:00:00+08:00
 
 ## 活跃 Spec
 
@@ -13,6 +13,12 @@ updated: 2026-06-02T13:40:57+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-06-12 | 20260611-loop-era-redesign | gate | close PASS | npm legacy tag 已指向 0.6.5，ys-team@1.0.0 已发布为 latest；spec 已归档，roadmap 已迁 completed；准备完成 git commit、合回 main、tag 与 push |
+| 2026-06-12 | 20260611-loop-era-redesign | gate | close BLOCKED | spec-work 与 QA 已完成，Verification 和 npm pack dry-run 通过；进入 close 时 `npm whoami` 返回 E401 Unauthorized，本机 npm 未认证，未执行 npm publish、legacy tag、git tag 或 push |
+| 2026-06-12 | 20260611-loop-era-redesign | qa | PASS | AC-01~18 已逐项验证；反向关键词、正向机制、baseline 全量 diff、版本一致性、结构 lint、npm pack dry-run 均通过；dist-tags 预检查显示当前 latest=0.6.5，legacy/latest 更新留到 close |
+| 2026-06-12 | 20260611-loop-era-redesign | implementer | spec-work STARTED | 用户确认验收分级、UI < L2 默认 REJECT、迁移估计和 v1 原地替换 skill 策略；独立 spec-review findings 已修订，Write-Scope/Delete-Scope/AC/Verification 补齐；已切到 work/20260611-loop-era-redesign 并将 spec 迁入 active |
+| 2026-06-12 | 20260611-loop-era-redesign | reviewer | spec-review PASS | 独立子代理审阅给出 CONDITIONAL PASS 后，已解决新老共存语义、Write-Scope 漏项、root AGENTS/CLAUDE 与 CLI 入口、Delete-Scope、AC/Verification 覆盖和结构 lint 可执行性；可进入 spec-work |
+| 2026-06-11 | 20260611-loop-era-redesign | planner | spec-talk PASS | 五轮讨论收敛为 v1.0 loop era 换代 spec：核心是把工程重量从流程仪式搬到人类级 verifier；保真度分级(L3/L2/L1/L0)、三道闸替代排他、verifier 卡塌缩四制品、跨模型审阅替代五角圆桌、.ys_team 瘦身为跨会话记忆层。已先产出设计文档经用户过目，再起 queued spec。本 spec 自身验收保真度诚实声明为 L1(文档契约)，真实通过率验证在下游试点 |
 | 2026-06-02 | 20260602-project-local-sop-assimilation | close | PASS | npm publish 成功，registry 返回 ys-team@0.6.5；发布阻塞已解除，spec 归档并进入 main/tag 推送收口 |
 | 2026-06-02 | 20260602-project-local-sop-assimilation | close | BLOCKED | npm pack 通过，但 npm publish 因本机 npm 认证失效失败；npm whoami 返回 E401，远端 ys-team 最新仍为 0.6.4 |
 | 2026-06-02 | 20260602-project-local-sop-assimilation | qa | PASS | QA 复跑关键词、反向业务词、版本一致性、方法论版本和 npm pack dry-run 均通过；AC-01~12 全部 PASS，可进入 release-first close |

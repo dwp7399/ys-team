@@ -1,99 +1,102 @@
 # ys-team
 
-给项目装一层 AI 协作纪律。安装一次，正常开发。
+给 AI coding agent 装一层 verifier-first 的项目纪律。安装一次，正常开发。
 
-## 你为什么会需要它
+## 为什么需要它
 
-用 AI agent 写代码很爽，但你大概遇到过这些情况：
+AI agent 已经会自己循环读代码、改代码、跑命令。但它经常败在退出条件：
 
-- AI 改了不该改的文件，你事后才发现
-- 一个"简单需求"越改越大，最后不知道改了什么
-- 出了 bug 回头看，找不到当时为什么这样改
-- 你说"加个接口"，AI 直接动手，没人讨论过这个接口该长什么样
+- 编译绿了，真实交互仍然坏
+- 测试跑了，但没覆盖用户真正会做的操作
+- 改动范围越扩越大，最后没人能说清验收标准
+- 交付后才发现文档、发布或迁移步骤漏了
 
-ys-team 不是要让你记住一堆命令，也不是把工作流拆成需要手动选择的工具箱。它的目标是：你照常描述需求，ys-team 在仓库本地自动判断复杂度，简单事直接做，复杂事先讨论成规格，再执行、验证和收口。
-
-> AI 没有约束时会怎样？看 [反模式案例](docs/guide/why-ys-team.md#反模式案例)。
+ys-team v1 的核心是把流程重量搬到 verifier：复杂改动先写一张 verifier 卡，说明怎么用接近真人的方式判断成败；agent 在 loop 里跑到 verifier 真绿，才算完成。
 
 ## 它怎么工作
 
 四个原则：
 
-- 现实先于生成 — AI 先看你的项目长什么样，再决定怎么改
-- 规格先于执行 — 复杂改动先写清楚要做什么，再动手
-- 讨论归于收敛 — 多个角色审视同一个问题，但目标是形成结论，不是无限展开
-- 证据胜于感觉 — 改完了要能验证，不是"我觉得改好了"
+- 现实先于生成：先读项目事实和硬约束
+- 规格先于执行：非 trivial 改动先写 verifier 卡
+- 讨论归于收敛：先 grill 澄清意图，必要时独立审阅
+- 证据胜于感觉：验收不真绿，不声明完成
 
-实际路径：你发一个请求 → ys-team 判断这件事有多复杂 → 简单的直接改 → 小范围改动留痕 → 高风险改动自动进入讨论、规格、执行、验证和收口。
+v1 不再排他，也不靠强制尾标证明“进入流程”。真正的 gate 是三道闸：
 
-默认 baseline 还会根据项目类型帮你选一套角色绑定。ys-team 不自己维护一个巨大的角色池，而是把治理槽位固定下来，再从推荐来源里挑合适角色落到本地配置。
+- 入口闸：没有合格 verifier 卡，复杂改动不进入实现
+- 出口闸：verifier 不真绿，不算完成
+- 可见性闸：用 todo、status 和结果状态说明进度
 
-`.ys_team/` 是项目本地基线，里面保存规则、现实索引、角色绑定、状态、模板和记忆。项目结构变化后运行 rebuild，ys-team 会在保留本地定制的前提下重估基线。
+## 你只需要理解 5 个概念
 
-如果某类项目工作反复出现，而且每次都容易漏同一类交付面，ys-team 可以把它沉淀成项目本地 SOP。通用治理仍在 ys-team，领域细节留在项目本地；用户不用多记一个命令，正常描述需求即可。
+1. **规则**：AI 的行为边界
+2. **约束地图**：项目硬约束和风险
+3. **术语表**：避免领域语言漂移
+4. **错题本**：跨任务复用的失败模式
+5. **verifier 卡**：复杂改动的执行与验收合约
 
-如果你觉得技术输出太密，可以在 `.ys_team/config.yaml` 里配置输出模式：
+两个真决策点：
+
+1. 看 spec 卡，尤其验收是否足够像真人会做的检查。
+2. 看最终证据，确认 verifier 真绿或人工剩余项已诚实标注。
+
+## 30 秒开始
+
+```bash
+npx ys-team install-skills --force
+```
+
+然后在你的项目里对 agent 说：
+
+```text
+用 ys-team-init 初始化这个项目
+```
+
+Python / Java 项目低成本开始方式：
+
+1. 先 init，生成 `.ys_team/` 骨架。
+2. 第一次复杂改动用 verifier 卡收敛。
+3. 等同类任务重复出现、且每次容易漏同类验收时，再沉淀项目本地 SOP。
+
+## 日常使用
+
+照常描述需求。
+
+简单、可逆、验收显然的改动会直接做，并说明最小验证。
+
+非 trivial 改动会先进入：
+
+```text
+grill → verifier 卡 → loop 自跑 → 抽检证据
+```
+
+verifier 卡会写清：
+
+- 意图和非目标
+- Write-Scope / Delete-Scope
+- 验收保真度等级 L3/L2/L1/L0
+- 人等价验收脚本或降级理由
+- Feedback Loop
+- 项目交付清单
+
+UI/交互类改动低于 L2 默认不通过。也就是说，不能只靠单测或编译来证明一个真实交互已经好用。
+
+## 输出模式
+
+默认是技术输出：
+
+```yaml
+output_mode: technical
+```
+
+如果希望保留技术细节的同时追加一段普通语言说明：
 
 ```yaml
 output_mode: friendly
 ```
 
-`technical` 是默认技术模式；`friendly` 会保留原始技术信息，再追加一段更容易读的友好总结，方便没有编程经验的人也能看懂当前发生了什么。
-
-## 适用范围
-
-ys-team 更适合：
-- 个人开发者用 AI coding agent 写代码，想让 AI 更靠谱
-- 小团队多人共用 AI agent 协作，需要基本的治理约束
-- 希望给 AI 编码建立最低纪律的任何团队
-
-对已有成熟工程治理的大团队，ys-team 不一定直接替代现有流程，更适合作为 AI 协作层的补充。
-
-不适用于不涉及代码改动的纯对话场景。
-
-## 30 秒开始
-
-```bash
-# 安装（默认装到 ~/.claude/skills）
-npx ys-team install-skills --force
-
-# 在你的项目里，对 Claude 说：
-# "用 ys-team-init 初始化这个项目"
-```
-
-装好之后，在项目里执行 `ys-team-init`，工作流就启用了。详细的首次使用指南见 [开始使用](docs/guide/getting-started.md)。
-
-默认外部角色池来源是 `agency-agents`，但 `init/rebuild` 使用的是 baseline 里钉住的离线来源描述，不要求运行时联网。
-
-## 日常怎么用
-
-装好之后，你正常和 AI 对话就行。ys-team 会自动判断每个请求该走什么路径：
-
-**小修小补** — "帮我修一下这个拼写错误"
-直接改，不需要任何流程。和没装 ys-team 一样。
-
-**明确的小范围改动** — "帮我把这三个文件的日志格式统一一下"
-直接改，但会在状态记录里留一笔，方便以后追溯。
-
-**需要想清楚的改动** — "帮我给用户系统加一个注销功能"
-先讨论（这个功能该怎么做、影响哪些模块、有什么风险），形成明确的规格，再按规格执行，最后验收。
-
-**想看简单解释** — 在 `.ys_team/config.yaml` 里设置 `output_mode: friendly`
-技术输出仍然保留，但每次会多一段自然语言总结。这个总结不强制结构，重点是把专业名词翻译成普通人能理解的状态和影响。需要临时解释时，也可以直接说“这次用人话总结一下”。
-
-详细的使用指南见 [开始使用](docs/guide/getting-started.md)。
-
-ys-team 会持续吸收外部 agent workflow 的好模式，但吸收位置在内部路由、baseline 规则、模板和文档口径里。用户不需要决定什么时候该启动某个具体工作流。
-
-项目自己的稳定实践也可以这样吸收：高频、领域强、漏项成本高的工作沉淀为 repo-local SOP，写在项目本地规则、模板、references 或本地 skill 里。ys-team 只负责识别和执行这些本地约定，不把某个项目的业务知识塞进通用方法论。
-
-## 文档地图
-
-| 文档 | 说明 |
-|------|------|
-| [为什么需要 ys-team](docs/guide/why-ys-team.md) | 问题、解法、反模式案例 |
-| [开始使用](docs/guide/getting-started.md) | 安装、初始化、日常使用、常见问题 |
-| [方法论规范](docs/methodology/) | 形式化的规则和协议定义（深入阅读） |
+友好总结不改变验收门槛，也不替代 evidence。
 
 ## CLI 参考
 
@@ -103,24 +106,27 @@ npx ys-team init-project [--dir <project-dir>] [--force] [--dry-run]
 npx ys-team check-update
 ```
 
-`install-skills --force` 会替换当前 ys-team 已安装的同名 skill，并清理已经不再由当前 npm 包提供的旧 ys-team skill。`check-update` 在版本落后时，会额外展示缺失版本的主要变化、关键文件和迁移建议；如果远程摘要提取失败，则会降级为提示查看 `CHANGELOG.md` 链接。
+`install-skills --force` 会替换当前 ys-team 已安装的同名 skill，并清理当前 npm 包不再提供的旧 ys-team skill。
 
 ## 仓库发版约束
 
-ys-team 方法论版本和 npm 发布版本不是同一条线：
+ys-team 本仓是 npm 分发产品。本仓所有非 trivial 可交付改动都按 release-first close：
+
+1. spec-review 通过后切到 `release/<version>` 或 `work/<spec-id>` 分支。
+2. spec-work 和 QA 在分支上完成。
+3. close 完成版本一致性检查、`npm pack`、`npm publish`、合回 `main`、创建并 push 同版本 git tag。
+
+版本线：
 
 - npm 发布线：`package.json` + baseline `.ys_team/VERSION`
 - 方法论线：`docs/methodology/VERSION`
 
-本仓所有非 trivial 可交付改动都按 release-first close 处理：spec-review 通过后先切到 `release/<version>` 或 `work/<spec-id>` 分支，spec-work 和 QA 在分支上完成。close 必须完成版本一致性检查、`npm pack`、`npm publish`、合回 `main`、创建并 push 同版本 git tag。未完成发布链路的 spec 不允许归档。
+v1 原地替换现有 `ys-team` skill；旧版 npm 包通过 `legacy` tag 保留。
 
-## 兼容性说明
+## 文档地图
 
-0.5.0 对 baseline 结构做了不兼容变更（config.yaml 替代 TEAM.md + team.md，rules.md 替代 policy.md，checklist 替代 delivery-flow）。已接入 0.4.x 的项目执行 `ys-team-init --rebuild` 时会收到迁移提示。
-
-## The Zen of ys-team
-
-- 现实先于生成。
-- 规格先于执行。
-- 讨论归于收敛。
-- 证据胜于感觉。
+| 文档 | 说明 |
+|------|------|
+| [为什么需要 ys-team](docs/guide/why-ys-team.md) | 问题、解法、反模式案例 |
+| [开始使用](docs/guide/getting-started.md) | 安装、初始化、日常使用、常见问题 |
+| [方法论规范](docs/methodology/) | 形式化规则与协议 |

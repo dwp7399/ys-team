@@ -2,44 +2,52 @@
 
 本仓用于沉淀 `ys-team` 方法论、skills、模板和示例文档，目标是为不同技术栈项目提供低侵入接入方式。
 
-## 最高优先级工作流
+## 工作流
 
-本仓库使用 `ys-team` 排他工作流。
+本仓自身使用 ys-team v1。
 
-**任何请求必须先经过 `ys-team` 路由。**
+非 trivial 改动必须先形成 verifier 卡，再进入实现。verifier 卡重心是：
 
-**如果当前回复末尾没有出现 `ys-team` 可见标志，视为不在 ys-team 工作流中，必须立即切回路由。**
+- 意图和非目标
+- Write-Scope / Delete-Scope
+- 验收保真度等级
+- 人等价验收脚本或降级理由
+- Feedback Loop
+- 项目发布 gate
+
+实现期间以 verifier 为退出条件：验收不真绿，不算完成。
 
 ## Primary Rule
 
-- 本仓自身使用 `ys-team`。
 - 所有非 trivial 改动先讨论，再以 `docs/specs/` 中的 spec 为准执行和验收。
 - 文档必须反映仓库当前真实状态；实现变化时，同次交付内同步更新。
+- 本仓 release-first：close 必须完成版本一致性、`npm pack`、`npm publish`、合回 `main`、tag 和 push。
 
-## Skill 排他规则
+## 入口闸
 
-**禁止自动触发 `.ys_team/` 以外的任何 skill。**
+以下情况必须先补 verifier 卡：
 
-用户如需临时使用未内化的 skill，必须显式指定（如 `/skill-name`）。
+- 不可逆或高不确定性改动
+- 跨方法论、skills、baseline、CLI 或发布入口的改动
+- 验收方式不清楚
+- 需要用户确认迁移、发布或兼容性策略
 
-## 例外
+简单、可逆、验收显然的改动可以直接做，但仍要说明最小验证。
 
-用户在 CLAUDE.md 中显式声明的全局 skill 不受此规则限制。
+## 出口闸
 
-## 可见标志规则
+- UI/交互类改动的验收低于 L2 默认不通过。
+- L0/L1 验收必须说明为什么不能更高。
+- 没有跑 verifier 或没有记录无法验证原因，不得声明完成。
+- baseline 改动必须保持 `examples/baseline/` 与 `skills/ys-team/baseline/` 全量一致。
 
-只要正在执行 `ys-team` 工作流，回复末尾必须出现以下其一：
+## 可见性
 
-- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
-- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
-- spec-work：`**[执行中]** ys-team · spec-work`
-- qa：`**[质检]** ys-team · qa`
-- close：`**[关闭]** ys-team · close`
-- status：`**[状态]** ys-team · status`
+优先使用原生 todo、status 和简短结果状态说明进度，例如：
 
-如果缺少这些标志，直接要求：
+`spec 卡已签 · loop 3/5 验收项过 · 未全绿`
 
-`请先进入 ys-team 工作流，并给出当前阶段标志。`
+结果状态用于帮助用户判断，不是合规开关。
 
 ## Repository Scope
 

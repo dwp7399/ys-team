@@ -1,204 +1,139 @@
 ---
 name: ys-team-spec-talk
-description: "Multi-role discussion of a non-trivial change against repo reality; converge to spec output. Use when 用户说「起一个 spec」「为这件事开 spec-talk」「多角色讨论一下」「把刚才讨论的写成 spec」等。"
+description: "Create or review a ys-team verifier card for a non-trivial change. Use when 用户说「起一个 spec」「为这件事开 spec-talk」「grill 我」「把刚才讨论写成 spec」等。"
 ---
 
 # ys-team-spec-talk
 
 <what-to-do>
 
-被调用时按以下流程立即执行：
+被调用时立即执行：
 
-1. 按下方「Read Order」加载 `.ys_team/config.yaml` / `rules.md` / `reality.md` / 项目文档 / 相关角色记忆。
-2. 按下方「Intent First」做三段判断（当前对象 / 当前目标 / 当前阻塞）；不清楚时先向用户确认。
-3. 按下方「Standard Flow」组织多角色讨论并按「收敛规则」每轮判断是否仍在收敛。
-4. 收敛后按「Spec 产出要求」使用 `.ys_team/templates/spec.md` 写入 `docs/specs/<phase>/<initiative-id>/spec.md`。
-5. 按「角色记忆回顾」检查是否需要写入新经验（写入即输出 `> **[记忆更新]**` 通知）。
-6. 按「Status 写入」更新 `.ys_team/status.md`。
-7. 按「Host Summary」格式输出响应末尾；如 `output_mode: friendly` 或本轮临时要求友好总结，追加友好总结。
+1. 读取 `.ys_team/config.yaml`、`.ys_team/rules.md`、`.ys_team/reality.md`、`.ys_team/glossary.md` 和相关项目文档。
+2. 做意图三段判断：当前对象、当前目标、当前阻塞。
+3. 如果边界不清，先 grill；问题过多时生成 `questions.md`。
+4. 收敛后写 verifier 卡到 `docs/specs/queued/<initiative-id>/spec.md`。
+5. 运行结构 lint；不通过则继续澄清或标记 BLOCKED。
+6. 对关键、不可逆、多模块工作，可请求跨模型对抗审阅。
+7. 更新 `.ys_team/status.md`。
 
 </what-to-do>
 
 <supporting-info>
 
-内部委托 skill。由 ys-team 主入口在 L2 讨论需要产出正式 spec 时委托调用。
-
 ## Read Order
 
-1. `.ys_team/config.yaml`（角色、模式）
-2. `.ys_team/rules.md`（行为规则）
-3. `.ys_team/reality.md`（现实索引）
-4. 项目文档、领域上下文、已有 spec/ADR（如存在且相关）
-5. 参与角色的记忆文件（`.ys_team/memory/<role>.md`）
-6. 当前 spec 的 `work.md`（如存在，接续上下文）
-7. 相关 active specs（如任务扩展已有工作）
-8. `.ys_team/glossary.md`（如存在且非空；空文件跳过术语对齐环节）
+1. `.ys_team/config.yaml`
+2. `.ys_team/rules.md`
+3. `.ys_team/reality.md`
+4. `.ys_team/glossary.md`
+5. 相关项目文档、ADR、已有 spec
+6. `.ys_team/memory/` 中相关领域错题本
+7. `.ys_team/templates/spec.md` 与 `questions.md`
 
-## Loading Discipline
-
-- 只加载实际参与角色的记忆
-- 不保留完整讨论记录
-- 讨论追问必须基于已读取的现实索引、项目文档或代码事实
-- 没有依据的问题只作为假设标注，不当作结论
+只读取与任务相关的错题本，不加载无关历史。
 
 ## Intent First
 
-不假设每次讨论都要产出 spec。先判断：
+先判断：
 
-- 当前对象是什么
-- 当前目标是什么
-- 当前阻塞是什么
+- 当前对象：idea / requirement / existing spec / implementation gap
+- 当前目标：澄清 / 起草 verifier 卡 / 审阅 / 执行准备
+- 当前阻塞：边界不清 / 验收不清 / scope 不清 / 无阻塞
 
-不清楚时先确认。
+阻塞不清时先问用户。
 
-## Output Routing
+## Grill
 
-- initiative 级别 → `docs/specs/`
-- 讨论澄清 → 无文件输出
+适用于需求模糊、验收不清或用户明确要求“问我”。
 
-## Standard Flow
+规则：
 
-1. 从 config.yaml 选择参与角色
-1.5 **grill 检查** — 若用户显式声明（"先 grill 我"/"访谈我"/"我也没想清楚，问我"）或主持人意图三段判断为「对象=idea, 阻塞=边界不清」，进入下方「## Grill 子模式」；若待确认问题超过 5 个或问题维度过多，改用「## 文件化 Grill 子模式」生成 `questions.md`，收口后再继续步骤 2
-2. 各角色基于现实索引、项目文档、已有 spec/ADR 给出初始判断
-3. 识别分歧、风险、能力缺口
-4. 每轮检查是否仍在收敛（重复论点或扩大范围 → 停轮）
-5. 若讨论发现项目内高频、领域强、漏项成本高的重复工作，建议用项目本地 SOP 承载触发条件、references 和条件式 close gate；不要把项目业务知识写进 ys-team 核心
-6. 如需临时角色，暂停请求用户审批
-7. 收敛后输出结果卡 + 角色简报
-8. 如需 spec，使用 `.ys_team/templates/spec.md` 模板写入
+- 一次只问一个问题。
+- 优先问会影响验收和 Write-Scope 的问题。
+- 5-7 轮内收口。
+- 收口后形成“已澄清命题”，再写 verifier 卡。
 
-## Result Card
+## 文件化 Grill
 
-| 字段 | 必需 |
-|------|------|
-| Decision | 是（PASS / BLOCKED / REJECT） |
-| Current State | 是 |
-| Why | 是 |
-| Next Step | 是 |
+触发：
 
-附 Role Brief：每个角色 1-2 句结论，使用本地化角色名。
+- 待确认问题超过 5 个。
+- 横跨目标、范围、行为、验收、迁移、风险多个维度。
+- 聊天追问会丢失问题树。
 
-## Spec 产出要求
+产物：`docs/specs/queued/<initiative-id>/questions.md`，优先使用 `.ys_team/templates/questions.md`。
 
-产出的 spec 必须包含：
-- Collaboration Summary（参与角色、轮次、关键分歧）
-- 完整的 Write-Scope 和 Verification
-- 如命中项目本地 SOP，写明 Project Local SOP Gate；不适用时可写 N/A
-- 已引用的现实依据（现实索引、项目文档、已有 spec/ADR）
-- 如涉及难逆转决策，说明是否需要 ADR；不满足标准时不强行产出 ADR
-
-spec 写入前先检查 glossary：spec.md 中出现的项目特定术语，若 `.ys_team/glossary.md` 存在但未登记该术语，提示用户是否登记到 glossary。
-
-## 角色记忆回顾
-
-讨论收敛后：
-1. 每个参与角色读取自己的记忆文件
-2. 判断是否有跨任务经验值得记录
-3. 如有，写入（超限则压缩后写回）
-4. 如有写入，输出通知：`> **[记忆更新]** <角色名>：<一句话>`
-
-## Status 写入
-
-讨论收敛后必须更新 `.ys_team/status.md`：
-- `updated` 时间戳
-- `活跃 Spec` 表
-- `最新判断` 表（保留最近 10 条）
-- `阻塞项` / `待办`
-
-## Host Summary
-
-响应末尾必须有：
-
-```
----
-**[主持人]** ys-team · spec-talk
-
-[1-2 句决策描述]
-
-- 参与角色：[角色名列表]
-- 决策：PASS / BLOCKED / REJECT
-- 产出：[文件路径或"无文件输出"]
-- 下一步：[一个明确动作]
----
-```
-
-如 `.ys_team/config.yaml` 配置 `output_mode: friendly`，或用户本轮临时要求用人话总结，Host Summary 前可追加一段“友好总结”。它是对原始技术输出的二次解释，面向非程序背景用户；不强制结构，可以是一句话、短段落或少量要点。友好总结不能替代上面的参与角色、决策、产出、下一步，也不能弱化 BLOCKED / REJECT / scope 扩大等严重信号。
-
-## Grill 子模式
-
-适用于用户原始需求模糊、多角色横向讨论会过早分叉的场景。
-
-### 触发
-
-- 用户显式：`先 grill 我` / `访谈我` / `我也没想清楚，问我`
-- 主持人自动：意图三段判断 `对象=idea, 阻塞=边界不清` 时
-
-### 流程
-
-1. 主持人识别 3-5 个核心待澄清问题，构成问题树
-2. 选第一个分支问 1 个问题，等用户回答
-3. 根据回答深入追问或切下一分支
-4. **最多 5-7 轮强制收口**
-5. 收口产物：1 段「已澄清的命题」清单
-6. 收口后 fan-out 到多角色 Standard Flow（步骤 2 起）
-
-### 退出
-
-- 用户说 `够了` / `够清楚了` → 立即收口
-- 5-7 轮上限到 → 强制收口
-- 主持人判断"已能形成可讨论命题" → 主动收口
-
-### 边界
-
-- 一次只问一个问题
-- 不在 grill 阶段做多角色讨论
-- grill 收口后必须进入 fan-out，不直接产出 spec
-
-## 文件化 Grill 子模式
-
-适用于待确认问题过多、聊天式追问会拖慢收敛的场景。它是 spec-talk Define 阶段的结构化问卷制品，不是新的用户可见工作流。
-
-### 触发
-
-- 待确认问题超过 5 个
-- 问题横跨 3 个以上维度，例如目标、范围、行为、验收、迁移、风险
-- 用户需要批量回答，而不是一问一答
-- 继续聊天追问会导致问题树丢失或选项覆盖不足
-
-### 产物
-
-- 路径：`docs/specs/queued/<initiative-id>/questions.md`
-- 模板：优先使用 `.ys_team/templates/questions.md`
-- 格式：问卷调查式结构，使用 `Section`、`Q`、`Type`、`Required`、`Options` / `Items`、`Answer`
-- 题型：至少支持 `open`、`single-choice`、`multi-choice`、`checklist`
-- 答案允许：`Unknown`、`Out of scope`
-
-### 流程
-
-1. 主持人先写 1 段 `Context`，说明当前理解和为什么需要文件化澄清
-2. 按维度拆成多个 `Section`
-3. 每题必须服务后续 spec 的目标、边界、行为、验收或风险判断
-4. 单选/多选题应提供足够选项；不确定时提供 `Other:` 填写位
-5. 写入 `questions.md` 后暂停，等待用户填写或在对话中回答
-6. 用户回答后，主持人整理 `Decisions` 与 `Ready For Spec`
-7. `Ready For Spec` 达成后，fan-out 到多角色 Standard Flow（步骤 2 起）
-
-### Ready For Spec
-
-`questions.md` 进入 spec 前必须至少确认：
+Ready For Spec：
 
 - 目标清楚
-- 不做什么清楚
+- 非目标清楚
 - 关键行为清楚
 - 验收方式清楚
 - Write-Scope 可估计
 
-### 边界
+## Verifier Card
 
-- `questions.md` 不替代 `spec.md`
-- `questions.md` 不替代 QA 阶段的 `qa-report.md`
-- 不为少量澄清强制生成文件
-- 不把普通满意度调查或泛泛偏好问题写入 `questions.md`
+必须包含：
+
+- 意图
+- 非目标
+- Write-Scope
+- 验收
+  - 保真度等级 L3/L2/L1/L0
+  - 人等价验收脚本，或降级理由
+  - Feedback Loop
+- 交付清单
+- 依赖 / 风险
+
+兼容仓库旧 spec 模板时，也必须让这些信息可追溯。
+
+## Structure Lint
+
+进入 spec-review / spec-work 前必检：
+
+- Write-Scope 非空。
+- Delete-Scope 覆盖删除行为。
+- 每个交付项能追溯到 Write-Scope。
+- 验收声明 L3/L2/L1/L0。
+- UI/交互类验收低于 L2 时 REJECT。
+- Feedback Loop 存在且可运行，或 N/A 理由成立。
+- 文档同步、发布 gate、本地 SOP 交付项已列入。
+
+v1.0 采用文档化必检规则，不默认生成脚本。
+
+## Adversarial Review
+
+关键改动可启用跨模型对抗审阅。审阅者只看 verifier 卡、代码 diff 和验证结果，不看起草推理过程。
+
+触发建议：
+
+- 不可逆发布或数据迁移
+- 安全、权限、支付、计费
+- 多模块协议变化
+- 用户明确要求独立审
+
+trivial / 低风险 patch 可跳过。
+
+## Status
+
+写入 `.ys_team/status.md`：
+
+- active spec
+- 当前阶段
+- 最新判断
+- 阻塞项或待确认问题
+
+## Output
+
+输出应包含：
+
+- 决策：PASS / BLOCKED / REJECT
+- 当前状态
+- 为什么
+- 产出路径
+- 下一步
+
+可追加结果状态尾缀；尾缀不是完成条件。
 
 </supporting-info>

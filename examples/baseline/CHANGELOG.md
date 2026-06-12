@@ -2,6 +2,38 @@
 
 记录 `examples/baseline/` 及其直接配套接入面的结构化变化，供用户迁移、rebuild 判断和后续 `check-update` 摘要提取使用。
 
+## [1.0.0] - 2026-06-12
+
+### What Changed
+
+- **Loop-era 换代**：baseline 从流程约束转为 verifier-first，复杂改动先写 verifier 卡，再由 agent loop 自跑到验收真绿
+- **验收分级**：新增 L3/L2/L1/L0 保真度标准，UI/交互类低于 L2 默认不通过
+- **三道闸**：用入口闸、出口闸、可见性闸替代旧的硬尾标和流程仪式
+- **结构瘦身**：移除 `role-pool.yaml`、治理槽位绑定和月报模板，`memory/` 改为项目错题本
+- **模板更新**：`templates/spec.md` 改为 verifier 卡，`templates/checklist.md` 改为交付清单模板
+- **现实索引改性**：`reality.md` 改为约束与风险地图，不再复述目录结构
+
+### Why
+
+- 实测显示流程合规不能保证交付质量，真正决定一次通过率的是验收信号保真度
+- agent 已具备 loop 能力，baseline 应供给高质量退出条件，而不是重复驱动流程
+
+### Key Files
+
+- `examples/baseline/.ys_team/config.yaml`
+- `examples/baseline/.ys_team/templates/spec.md`
+- `examples/baseline/.ys_team/templates/checklist.md`
+- `examples/baseline/.ys_team/reality.md`
+- `examples/baseline/.ys_team/rules.md`
+- `examples/baseline/AGENTS.md`
+- `examples/baseline/CLAUDE.md`
+
+### Migration Hint
+
+- v1 原地替换现有 `ys-team` skill；旧版包通过 npm `legacy` tag 保留
+- 已初始化项目可先只同步入口文件，去掉旧流程负担；再逐步把 reality、spec 模板和记忆瘦身
+- Python / Java 项目可低成本开始：先 init，第一次复杂改动用 verifier 卡，等同类任务重复出现后再沉淀项目本地 SOP
+
 ## [0.6.5] - 2026-06-02
 
 ### What Changed

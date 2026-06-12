@@ -1,403 +1,245 @@
 # ys-team 规则参考
 
-本文档是 ys-team 方法论的完整规则参考。面向"查规则细节"，不重复 overview.md 的理念阐述。
+本文档是 ys-team v1.0 的规则细节。overview.md 讲理念，本文件讲执行判据。
 
-## 状态机
+## 状态模型
 
-L2 改动经过以下状态：
+ys-team 仍保留 spec 生命周期目录，但阶段语义更轻：
 
-| 状态 | 含义 | 负责方 |
-|------|------|--------|
-| idle | 无活跃 spec | — |
-| spec-talk | 多角色讨论，收敛需求 | 讨论角色组 |
-| spec-review | 独立审阅 spec 质量 | 审阅角色 |
-| spec-work | 按 spec 执行实现 | 执行角色 |
-| qa | 独立验证落地效果 | 质检角色 |
-| close | 提交、发布、更新状态、归档 | 编排层 |
-| done | spec 已完成 | — |
-| halt | 重试耗尽，等待人工决策 | 用户 |
+| 目录 | 语义 |
+|------|------|
+| `queued/` | verifier 卡已起草，等待结构 lint 或独立审阅 |
+| `active/` | 已进入执行主链，承载 spec-work、qa、close |
+| `completed/` | close 刚完成后的短暂停留区 |
+| `archive/` | 历史长期归档 |
+| `cancelled/` | 明确终止 |
 
-## Spec 目录生命周期
+默认流转：
 
-| 目录 | 语义 | 进入条件 | 离开条件 |
-|------|------|----------|----------|
-| `queued/` | 已起草、待独立审阅 | `spec-talk` 完成并写入 `spec.md` | `spec-review` 通过后迁入 `active/` |
-| `active/` | 当前正在推进的 spec | 审阅通过，进入执行主链 | `close` 完成后迁入 `completed/` 或直接迁入 `archive/` |
-| `completed/` | 已完成 close 的短暂停留区 | close 刚结束、尚未归档 | 归档整理后迁入 `archive/` |
-| `cancelled/` | 已明确终止 | 用户或流程明确放弃 | 通常不再流转 |
-| `archive/` | 历史长期归档 | 历史 spec 完成收口 | 长期保留，不再参与活跃流程 |
-
-规则：
-
-- 一个 spec 在任一时刻只应位于一个目录。
-- `queued -> active -> completed -> archive` 是默认正向路径；允许在 `close` 后直接进入 `archive/`。
-- 历史 spec 迁入 `archive/` 时不要求补齐旧模板或旧格式。
-- `cancelled/` 与 `archive/` 都不是可恢复执行队列；若需重启，应新建 spec。
-
-### 状态转换
-
-```
-idle ──→ spec-talk ──→ spec-review ──→ spec-work ──→ qa ──→ close ──→ done
-              ↑ REJECT       │              ↑ REJECT  │
-              └──────────────┘              └─────────┘
-                                    重试耗尽 → halt
+```text
+grill / spec-talk -> spec-review -> spec-work loop -> qa -> close
 ```
 
-| 从 | 到 | 触发条件 | 产出 |
-|----|-----|----------|------|
-| idle | spec-talk | 路由判断为 L2 | — |
-| spec-talk | spec-review | 讨论收敛，角色组 PASS | spec.md |
-| spec-review | spec-work | 审阅 PASS | review.md (PASS) |
-| spec-review | spec-talk | 审阅 REJECT，重试 < 上限 | review.md (REJECT) |
-| spec-work | qa | 执行完成 | work.md |
-| qa | close | 质检 PASS | qa-report.md (PASS) |
-| qa | spec-work | 质检 REJECT，重试 < 上限 | qa-report.md (REJECT) |
-| close | done | 提交完成 | — |
-| spec-review | halt | REJECT，重试 ≥ 上限 | — |
-| qa | halt | REJECT，重试 ≥ 上限 | — |
+阶段名称只服务内部编排。用户不需要选择阶段。
 
-### 重试语义
+## 路由规则
 
-- spec-review REJECT → 回到 spec-talk，将 review.md 作为输入
-- qa REJECT → 回到 spec-work，将 qa-report.md 作为输入
-- 每次 REJECT 重试计数 +1，上限由 config.yaml `max_retries` 决定（默认 2）
-- 重试耗尽 → halt，等待用户决策
+路由按“不可逆性 × 不确定性”判断。
 
-### 上下文隔离
+| 类型 | 判定 | 要求 |
+|------|------|------|
+| trivial | 可逆、低风险、意图明确、验收显然 | 直接执行；说明最小验证 |
+| patch | 范围清楚、影响有限、快速 verifier 足够 | 执行并留痕；跑验证 |
+| spec | 不可逆、高不确定性、跨边界、验收不清 | 先产出 verifier 卡 |
 
-阶段间通过制品文件通信，不共享对话历史：
+降级必须能说明：
 
-- spec-review 角色只看到 spec.md，看不到讨论过程
-- qa 角色只看到 spec 制品和实现结果，不参与执行决策
-- 每个角色启动时读取自己的角色记忆，不读取其他角色的记忆
+- 为什么风险可逆
+- 为什么 Write-Scope 清楚
+- 为什么现有 verifier 足够判断成败
 
-## 编排模式
+无法说明时走 spec。
 
-由 config.yaml `mode` 字段决定：
+## Verifier 卡 Schema
 
-| 模式 | spec-work 前 | close 前 | 重试耗尽 |
-|------|-------------|----------|----------|
-| manual | 用户手动推进 | 用户手动推进 | 用户决策 |
-| semi-auto | 暂停等确认 | 暂停等确认 | 暂停（降级） |
-| full-auto | 自动继续 | 自动继续 | 暂停（降级） |
+spec.md 使用 YAML frontmatter + Markdown body。
 
-三种模式共享同一状态机，区别仅在于阶段间是否自动流转。full-auto 重试耗尽时自动降级为 semi-auto。
-
-### 内部生命周期
-
-L2 的状态机可以吸收外部工程 workflow，但只能作为内部编排策略：
-
-| 生命周期 | ys-team 阶段 | 说明 |
-|----------|--------------|------|
-| Define | spec-talk | 澄清目标、约束、影响范围和阻塞 |
-| Plan | spec-talk / spec-review | 形成 spec，并独立审阅可执行性 |
-| Build | spec-work | 按 Write-Scope 执行 |
-| Verify | spec-work / qa | 执行测试、构建、静态检查、人工验证，收集 evidence |
-| Review | spec-review / qa | 独立审阅 spec 或落地结果 |
-| Ship | close | 更新状态、完成项目发布 gate、归档 spec |
-
-这些名称不得作为要求用户主动选择的入口。用户只表达目标，ys-team 根据风险和范围自动选择内部策略。
-
-## 友好模式
-
-输出模式由 `.ys_team/config.yaml` 的 `output_mode` 控制：
-
-- `technical`：默认技术模式，只输出原始技术内容和 ys-team 必需的可见标志。
-- `friendly`：友好模式，在原始技术输出后追加友好总结。
-
-用户本轮要求“用人话总结”“给没有编程经验的人看”时，可以临时按友好模式输出；稳定行为以配置为准。
-
-规则：
-
-- 原始技术输出仍保留，友好总结不替代可审计内容。
-- 不强制结构；可以是一句话、短段落或少量要点。
-- 面向非程序背景用户，少用内部阶段名、英文缩写和专业术语；必须出现时要解释。
-- 不改变 L0/L1/L2，不降低治理，不跳过 evidence、verification、scope 或可见标志。
-- 原始输出已经足够短且没有专业术语时，可以只补一句或省略友好总结。
-- 阻塞、验证失败、scope 扩大、发布失败等严重信号必须直说，不能被友好总结淡化。
-
-## Ban Levels 详细定义
-
-| 级别 | 含义 | 违反时行为 | 适用场景 |
-|------|------|------------|----------|
-| Hard Ban | 硬 gate | 立即停止，必须先满足条件才能继续 | 流程完整性、证据要求 |
-| Confirmation Ban | 软 gate | 显式声明变更并获得用户确认后可继续 | scope 扩大、依赖变更 |
-| Style Ban | 默认禁止 | 用户明确要求时可以做 | 代码风格、额外重构 |
-
-## Anti-rationalization
-
-以下说法不能作为降级、越界或跳过验证的理由：
-
-- "这个很简单，所以不用路由"：除非明确满足 L0，否则仍需完成 L0/L1/L2 判断。
-- "先改完再补 spec"：L2 必须先有 spec，再进入 spec-work。
-- "测试之后再补"：能验证的改动必须在完成前留下 evidence；不能验证时必须说明原因。
-- "文档只是小事"：对外行为、方法论、baseline 或模块边界变化时，文档同步是 close 前置条件。
-- "顺手一起改了"：scope 外改动必须回到讨论或获得确认。
-- "用户没要求 TDD"：高风险行为改动默认优先小步验证，一个行为一个测试或等价证据。
-
-## spec.md Schema
-
-spec.md 使用 YAML frontmatter + Markdown body：
-
-### Frontmatter 字段
+### Frontmatter
 
 | 字段 | 必需 | 说明 |
 |------|------|------|
-| Spec-Type | 是 | `control`（默认）或 `patch` |
-| Initiative | 是 | spec 标识（格式：`YYYYMMDD-name`） |
+| Spec-Type | 是 | `control` 或 `patch` |
+| Initiative | 是 | `YYYYMMDD-name` |
 | Status | 是 | `draft` / `reviewed` / `in-progress` / `done` / `cancelled` |
-| Owner-Session | 否 | 负责的会话标识 |
-| Write-Scope | 是 | 允许修改的文件/目录列表 |
-| Delete-Scope | 否 | 允许删除的文件/目录列表 |
-| Depends-On | 否 | 依赖的其他 spec |
-| Absorbs | 否 | 被本 spec 吸收的其他 spec |
-| Verification | 是 | 指向 Verification 段落 |
+| Write-Scope | 是 | 允许修改的文件或目录 |
+| Delete-Scope | 否 | 允许删除的文件或目录 |
+| Depends-On | 否 | 依赖的 spec |
+| Verification | 是 | 指向 Verification 段 |
 
-### Body 必需段落
+### Body
 
-- Background
-- Goals
-- Integration Gate
-- Deliverables
-- Acceptance Criteria
-- Verification
+必需段落：
 
-### Body 可选段落
+- 意图
+- 非目标
+- Write-Scope
+- 验收
+- 交付清单
+- 依赖 / 风险
 
-- Non-goals
-- Documentation Updates
-- Acceptance Evidence
-- Risks
-- Rollback Plan
-- Project Local SOP Gate
-- 关键设计决策
-- 能力迁移矩阵（大规模重构时）
-- 执行顺序（多步骤时）
+验收段必须包含：
 
-### Evidence 类型
+- 保真度等级
+- 人等价验收脚本，或无法达到 L3/L2 的理由
+- Feedback Loop
 
-Verification 应尽量指向可复核证据，常见类型包括：
+兼容旧 spec 时，可以保留 Background、Goals、Deliverables、Acceptance Criteria 等标题，但必须能映射到 verifier 卡字段。
 
-- 测试：单元测试、集成测试、端到端测试
-- 构建：编译、打包、类型检查
-- 静态检查：lint、格式检查、安全扫描
-- 人工验证：明确步骤、输入、期望输出
-- 运行证据：日志、截图、命令输出、回调记录
+## 验收保真度
 
-无法执行某类验证时，必须记录限制和替代证据。
+| 级别 | 定义 | 可接受证据 |
+|------|------|------------|
+| L3 人等价 | 真实输入、点击、上游调用或运行环境 + 断言 | Playwright、真实 CLI 探针、真实服务调用加事件断言 |
+| L2 行为测试 | 覆盖真实业务路径，但不完全等价真人操作 | API 集成测试、服务级端到端、adapter 行为测试 |
+| L1 单测+编译 | 单元测试、类型检查、构建、静态检查 | test、build、lint、typecheck |
+| L0 人工抽检 | 无充分自动信号，明确人工验证剩余项 | 人工步骤、截图、录屏、抽检记录 |
 
-### Project Local SOP Gate
+规则：
 
-如本 spec 命中项目本地 SOP，`Integration Gate` 或 `Acceptance Evidence` 应写明该 SOP 的条件式验收项。常见项包括：二次现实对照、最小成本验证、文档质量确认、readiness/evidence 对齐，以及是否需要更新 SOP references 或记录“已有总结覆盖，无需更新”。
+- 每个 spec 必须声明 L3/L2/L1/L0。
+- L0/L1 必须写明降级理由和剩余风险。
+- **UI/交互类 < L2 默认 REJECT**。
+- 关键业务流、支付、权限、数据迁移、发布链路等高风险场景优先追求 L3 或 L2。
+- 文档/模板类改动通常可以是 L1，但不能夸大为真实业务通过率。
 
-### Feedback Loop 子段
+## Feedback Loop
 
-`Verification` 段下必须含 `### Feedback Loop` 子段，回答"本 spec 改对了的最快 pass/fail 信号是什么"。
+`Feedback Loop` 是 agent 在 spec-work 中最频繁运行的 pass/fail 信号。
+
+字段：
 
 | 字段 | 说明 |
 |------|------|
-| 命令或步骤 | 具体可执行命令或操作 |
-| 期望信号 | grep 行数、退出码、输出片段等可机械判断的信号 |
-| 复现成本 | 秒数估计（目标 < 30 秒）|
+| 命令或步骤 | 可直接执行的命令或明确操作 |
+| 期望信号 | 退出码、输出片段、断言结果 |
+| 复现成本 | 目标 < 30 秒 |
 
-允许 `N/A — <一句话理由>`。`spec-work` 必须执行该信号并记录实际耗时；与声明显著偏离时记入 `work.md`。`qa` 阶段挑战 N/A 理由是否成立、复现成本是否实际可达。
+如果写 `N/A`，必须说明为什么没有快速信号，以及最终验收如何兜底。
 
-### ADR 与领域上下文
+## 结构 Lint
 
-项目可以维护领域语言说明、ADR 或 issue 约定。ys-team 只在需要时引用它们：
+进入 spec-work 前检查：
 
-- 领域语言说明用于解释业务词汇、系统边界和用户概念，不替代现实索引。推荐位置：`.ys_team/glossary.md`，由 ys-team-init 生成空骨架，spec-talk 加载并核对术语漂移。
-- ADR 只记录难以回滚、未来会疑惑、存在真实 trade-off 的决策。
-- issue tracker 可作为来源材料，但本地 `docs/specs/` 仍是默认执行合约。
-- init/rebuild 可以提示缺口，但不得覆盖项目本地定制。
+- Write-Scope 非空。
+- Delete-Scope 覆盖所有删除行为。
+- 每个 Deliverable / 交付清单项能追溯到 Write-Scope。
+- 验收声明 L3/L2/L1/L0。
+- UI/交互类没有低于 L2。
+- Feedback Loop 可运行，或 N/A 理由成立。
+- 文档同步项已列入 Write-Scope。
+- 发布、迁移、数据、权限等不可逆风险已写入。
 
-### 项目本地 SOP
+v1.0 的结构 lint 是文档化必检规则。审阅者发现不满足时直接 REJECT，不需要五角色圆桌补漏。
 
-项目本地 SOP 用于承接项目高频、领域强、漏项成本高的重复工作。它是项目自己的交付约定，不是 ys-team 核心方法论的一部分。
+## Spec-Review
 
-适合沉淀为项目本地 SOP 的信号：
+审阅者只看制品，不看实现推理过程。
 
-- 同类任务反复出现，且每次都容易漏同一类交付面。
-- 需要固定读取项目内 references、合同、官方资料或历史 evidence。
-- close 前需要额外确认结果责任，例如二次现实对照、最小成本验证、文档质量或 readiness 证据。
-- 角色记忆已经不足以约束执行路径，需要可复用的 checklist、references 或本地 skill。
+必须检查：
 
-推荐承载位置：
+- 意图与非目标清楚
+- Write-Scope / Delete-Scope 完整
+- 验收保真度等级合理
+- Feedback Loop 真实可运行
+- 交付清单覆盖项目本地 SOP
+- AC / Verification 能挡住主要失败模式
+- 对高风险工作是否需要跨模型对抗审阅
 
-- `.agents/skills/<domain-sop>/SKILL.md`：短入口，只写触发场景、分流和必须读取的 references。
-- `.agents/skills/<domain-sop>/references/`：稳定模式、反模式、结果责任 gate；只写可复用规则，不写事件流水账。
-- `.ys_team/rules.md`：声明该 SOP 的触发条件和边界。
-- `.ys_team/templates/checklist.md`：在 close 阶段加入条件式 gate，例如“如本 spec 命中某本地 SOP，close 前确认该 SOP 的结果责任项”。
-- 项目权威文档：记录领域合同和现实状态，不用角色记忆代替项目文档。
+关键、不可逆、安全、多模块改动建议跨模型审阅。trivial 和低风险 patch 可跳过。
 
-边界：
+## Spec-Work Loop
 
-- 项目本地 SOP 不改变 L0/L1/L2；它只在路由判断后补充项目内交付约束。
-- 不要求所有项目创建 SOP；没有高频领域风险时，保持 baseline 默认形态。
-- 不把项目业务知识写进 ys-team 通用 baseline。
-- 不恢复旧 toolbox/evolution 机制。
-- close 阶段只归纳可复用模式；如果已有总结覆盖，记录“已有总结覆盖，无需更新”，不要追加流水账。
+执行规则：
 
-项目本地 SOP 与角色记忆的区别：
+1. 读取 spec.md，确认已通过审阅且当前在 release/work 分支。
+2. 建立原生 todo，按一个原则或一个机制推进。
+3. 每个小闭环先跑 Feedback Loop，红了继续改。
+4. 最终跑 Verification，未全绿不得声明完成。
+5. 维护 `work.md`：关键决策、偏差、验证进度。
+6. 收集 evidence：命令输出、日志、截图、人工抽检记录或发布证据。
 
-| 机制 | 记录什么 | 服务对象 | 典型使用 |
-|------|----------|----------|----------|
-| 角色记忆 | 错误模式、正确做法、适用场景 | 某个角色的判断质量 | 下次 spec-talk/spec-work 时少犯同类判断错误 |
-| 项目本地 SOP | 触发场景、交付面、references、close gate | 一类重复项目工作 | 每次同类工作都按同一结果责任链交付 |
+scope 外改动必须停下，回到 spec-talk 或请求用户确认。
 
-### work.md 语义
+## QA
 
-- `work.md` 是 `spec-work` 阶段的执行日志，记录关键决策、偏差处理和验证进度。
-- `work.md` 可以缺席于纯讨论阶段，但一旦进入 `spec-work`，应开始持续维护。
-- `work.md` 不替代 `review.md`、`qa-report.md` 或 `evidence/`。
+QA 不重复实现过程，只验证结果：
 
-## checklist.md 模板定义
+- AC 逐项检查
+- Verification 命令执行
+- evidence 完整性
+- L0/L1 降级理由是否诚实
+- UI/交互是否达到至少 L2
+- 文档、baseline、版本线是否同步
 
-交付检查清单绑定 5 个核心流程，每个 spec 从模板复制一份：
+QA 可以 PASS、REJECT 或 BLOCKED。REJECT 回到 spec-work；BLOCKED 需要用户或外部条件。
 
-```markdown
-# 交付检查清单
+## Close
 
-Spec: <spec-id>
+close 是项目本地发布 gate。ys-team 本仓使用 release-first：
 
-## spec-talk
-- [ ] 路由判断完成（L0/L1/L2）
-- [ ] 参与角色已选定
-- [ ] 讨论收敛，spec.md 已写入
-- [ ] Write-Scope 明确到文件级
+1. 三条版本线检查：npm `package.json`、baseline `.ys_team/VERSION`、`docs/methodology/VERSION`。
+2. baseline 双副本全量一致。
+3. `npm pack --dry-run`。
+4. `npm publish`，并维护 npm dist-tag。
+5. 合回 `main`，打 git tag，push main + tag。
+6. 更新 status，归档 spec。
 
-## spec-review
-- [ ] 独立审阅完成
-- [ ] AC 可验证、Verification 可执行
-- [ ] Write-Scope 无遗漏
-- [ ] 已确认执行分支策略
+外部项目应在 verifier 卡的交付清单里写自己的发布 gate。
 
-## spec-work
-- [ ] spec 已从 queued 迁入 active
-- [ ] spec-review PASS 后已切到 release/work 分支
-- [ ] 按 Write-Scope 执行，无越界
-- [ ] work.md 记录关键决策
-- [ ] 高风险行为改动已按小步验证推进
-- [ ] 代码变更与 spec 一致
+## `.ys_team/` 文件语义
 
-## qa
-- [ ] AC 逐项验证
-- [ ] Verification 命令执行通过
-- [ ] evidence/ 已存放测试、构建、静态检查、人工验证或运行证据
+| 文件 | 语义 |
+|------|------|
+| `config.yaml` | 轻量策略开关：模式、输出模式、默认验收门槛、是否启用跨模型审阅 |
+| `rules.md` | 项目行为边界 |
+| `reality.md` | 约束与风险地图，不复述目录树 |
+| `glossary.md` | 术语表 |
+| `status.md` | 当前快照 |
+| `templates/spec.md` | verifier 卡模板 |
+| `templates/checklist.md` | 项目交付清单模板 |
+| `templates/questions.md` | 文件化 grill 问卷模板 |
+| `memory/` | 项目错题本 |
+| `history/` | 低频历史归档 |
 
-## close
-- [ ] status.md 更新
-- [ ] 文档同步完成
-- [ ] 如本 spec 命中项目本地 SOP，已完成该 SOP 的条件式 close gate，并更新经验总结或说明已有总结覆盖
-- [ ] git commit（代码 + evidence）
-- [ ] 项目发布 gate 完成
-- [ ] 发布分支已合回主线
-- [ ] 主线和 tag 已 push（如项目使用 tag）
-- [ ] spec 已迁入 completed 或 archive，并完成 close commit
-```
-
-### Release-first close
-
-ys-team 本仓是 npm 分发产品，因此本仓所有非 trivial 可交付改动都必须在 close 完成发布链路：
-
-1. spec-review PASS 后切到 `release/<version>` 或 `work/<spec-id>` 分支。
-2. spec-work 和 QA 在该分支完成。
-3. close 前检查 `package.json`、`.ys_team/VERSION`、baseline VERSION 一致。
-4. 执行 `npm pack` 验证包内容。
-5. 执行 `npm publish`。
-6. 合回 `main`，创建并 push 同版本 tag。
-7. 更新 status 并归档 spec。
-
-外部项目不要求使用 npm，但必须把自己的发布 gate 写入本地规则和 checklist；没有完成发布 gate 的可交付改动不得 close。
+不再默认生成 `role-pool.yaml`、治理槽位绑定或按人格拆分的角色记忆。
 
 ## config.yaml Schema
 
 ```yaml
-mode: manual          # manual | semi-auto | full-auto
-roles: []
-governance_slots:
-  - id: planner
-    stage: spec-talk
-    required: true
-    purpose: 收敛需求、提出边界和形成 spec 草案
-slot_bindings:
-  - slot: planner
-    role_id: agency-product-manager
-    source: agency-agents
-    binding_type: default
-max_retries: 2        # spec-review / qa REJECT 重试上限
+mode: manual
+output_mode: technical
+verification:
+  default_min_level: L1
+  ui_min_level: L2
+  require_feedback_loop: true
+  allow_l0_with_reason: true
+review:
+  cross_model_adversarial: optional
+  trivial_skip: true
+max_retries: 2
 ```
 
-### 字段说明
+字段说明：
 
-- `mode`：编排模式，决定阶段间是否自动流转
-- `roles`：项目当前已绑定并启用的角色列表，每个角色 3 字段
-  - `id`：角色标识（英文，用于记忆文件名）
-  - `name`：显示名（可本地化）
-  - `focus`：职责焦点（1 句话）
-- `governance_slots`：固定治理槽位
-  - `id`：槽位标识（如 `planner`、`spec_reviewer`）
-  - `stage`：该槽位主要服务的阶段
-  - `required`：是否为必备槽位
-  - `purpose`：槽位职责
-- `slot_bindings`：当前项目的槽位绑定结果
-  - `slot`：槽位标识
-  - `role_id`：绑定到的角色 id
-  - `source`：角色来源（如 `agency-agents` 或 `local`）
-  - `binding_type`：`default` / `project-shaped` / `temporary`
-- `max_retries`：REJECT 重试上限，耗尽进入 halt
+- `mode`：`manual` / `semi-auto` / `full-auto`，只影响阶段是否自动继续。
+- `output_mode`：`technical` / `friendly`。
+- `verification.default_min_level`：默认最低验收等级。
+- `verification.ui_min_level`：UI/交互最低验收等级，默认 L2。
+- `verification.require_feedback_loop`：是否要求 Feedback Loop。
+- `review.cross_model_adversarial`：`off` / `optional` / `required`。
+- `max_retries`：REJECT 后最多重试次数。
 
-## role-pool.yaml Schema
+## 项目错题本
 
-`role-pool.yaml` 是外部角色池来源的单一权威载体。它服务于 `init/rebuild`，不是运行时联网依赖。
+路径：`.ys_team/memory/`
 
-```yaml
-sources:
-  - id: agency-agents
-    repo: https://github.com/msitarzewski/agency-agents
-    ref: 783f6a7
-    license: MIT
-    default: true
-    runtime_network: false
-roles:
-  - id: agency-product-manager
-    name: Product Manager
-    focus: 发现、需求澄清、优先级与交付范围收敛
-    source: agency-agents
-    upstream_path: product/product-manager.md
-slots:
-  - id: planner
-    stage: spec-talk
-    required: true
-    purpose: 收敛需求、提出边界和形成 spec 草案
-mappings:
-  - project_type: frontend-react
-    slot: implementer
-    candidates: [agency-frontend-developer, agency-software-architect]
-```
+推荐按领域命名：
 
-### 字段说明
+- `verification.md`
+- `release.md`
+- `ui-interaction.md`
+- `data-migration.md`
 
-- `sources`：外部来源清单；必须记录 `repo`、`ref` 和 `runtime_network`
-- `roles`：从来源中筛选出的可用候选角色快照
-- `slots`：治理槽位定义；应与 `config.yaml.governance_slots` 保持同语义
-- `mappings`：按项目类型为槽位提供默认候选；`candidates` 必须是具体角色 id 的有序列表，不允许只写 division 名称
-
-## 角色记忆格式
-
-文件路径：`.ys_team/memory/<role-id>.md`
+格式：
 
 ```markdown
-# <角色名> 经验记忆
+# <领域> 错题本
 
-## 当前核心原则
+## 当前高风险模式
 
-> rebuild 时从条目自动提炼，角色启动时优先读取此段。
+- ...
 
-1. ...
-2. ...
-
-## 经验条目
+## 条目
 
 ### <日期> <简述>
 
@@ -406,177 +248,71 @@ mappings:
 - 适用场景：...
 ```
 
-### 记忆规则
+只记录可复用模式，不写流水账，不按人格分文件。
 
-- 每个角色只读写自己的记忆文件
-- 写入判断：是否发现非显而易见的陷阱或模式？
-- 条目超过 15 条时，rebuild 时合并相似条目并重新生成摘要头
-- 不记录 PII、密钥、token
+## 初始化与 Rebuild
 
-## 状态追踪（status.md）
+init 生成最小 baseline：
 
-`status.md` 是当前快照，不是历史总账。它只保留活跃 spec、阻塞项、待办和最近 10 条判断。月度轻量统计写入 `.ys_team/history/YYYY-MM.md`。
+- `.ys_team/config.yaml`
+- `.ys_team/rules.md`
+- `.ys_team/reality.md`
+- `.ys_team/glossary.md`
+- `.ys_team/status.md`
+- `.ys_team/VERSION`
+- `.ys_team/templates/`
+- `.ys_team/history/`
+- `.ys_team/memory/`
+- `docs/specs/`
+- `AGENTS.md` / `CLAUDE.md`（如不存在）
 
-每个活跃 spec 在 status.md 中维护一行记录：
+rebuild 原则：
 
-| 列 | 说明 |
-|----|------|
-| Spec | spec 标识 |
-| 阶段 | 当前状态机状态 |
-| 状态 | draft / in-progress / done / halt |
-| 负责角色 | 当前阶段的负责角色 |
-| 重试次数 | REJECT 重试计数 |
-| 模式 | manual / semi-auto / full-auto |
-
-阶段转换时必须同步更新。`最新判断` 固定只保留最近 10 条，超出窗口的内容不继续在 `status.md` 追记。
+- 保留本地定制。
+- 只更新确实需要变化的模板和版本。
+- reality 从结构地图瘦身为约束与风险地图。
+- 检测旧 `role-pool.yaml`、`governance_slots`、`slot_bindings`、按角色记忆文件时提示迁移到 v1。
+- 不把项目业务知识写回通用 baseline。
 
 ## 讨论协议
 
-### 意图三段判断
+### Grill
 
-讨论开始前：
+需求模糊时先问用户，不急着产出 spec。
 
-1. **当前对象** — idea / spec / requirement / 已有制品
-2. **当前目标** — 澄清 / 起草 / 审阅 / 执行准备
-3. **当前阻塞** — 边界不清 / 缺少验证 / 依赖未完成 / 无阻塞
+文件化 grill 使用 `questions.md`，适用于问题超过 5 个或横跨多个维度。进入 spec 前必须达到：
 
-三段判断不清楚时，先向用户确认。
+- 目标清楚
+- 非目标清楚
+- 关键行为清楚
+- 验收方式清楚
+- Write-Scope 可估计
 
-### 收敛规则
+### 结果状态
 
-- 每轮讨论必须收敛到明确结论、现状和下一步
-- 重复出现前轮论点、扩大范围而非收窄 → 停轮，输出当前状态
-- 讨论产出 spec 时，spec.md 中记录协作摘要（参与角色、轮次、关键分歧）
-- 待确认问题超过 5 个或横跨 3 个以上维度时，进入文件化 Grill，生成 `questions.md`
+响应可以用结果状态尾缀帮助用户判断：
 
-### 文件化 Grill
+```text
+spec 卡已签 · loop 3/5 验收项过 · 未全绿
+```
 
-`questions.md` 是 spec-talk Define 阶段的结构化问卷制品，适用于聊天式追问会拖慢收敛的复杂需求澄清。它不替代 `spec.md`，也不替代 QA 阶段的 `qa-report.md`。
+尾缀不是强制合规标记。真正的完成条件是 verifier 和 evidence。
 
-问卷格式固定为：
+## 文档同步
 
-- `Section`：问题维度，例如目标、范围、行为、验收、风险
-- `Q`：具体问题
-- `Type`：`open` / `single-choice` / `multi-choice` / `checklist`
-- `Required`：是否必答
-- `Options` 或 `Items`：选择题或检查清单内容
-- `Answer`：用户答案，允许 `Unknown` 或 `Out of scope`
+实现变化时，相关文档必须同次更新：
 
-进入 spec 前必须达到 `Ready For Spec`：目标清楚、不做什么清楚、关键行为清楚、验收方式清楚、Write-Scope 可估计。
-
-### 结果卡
-
-重要讨论输出结果卡：
-
-| 字段 | 必需 | 说明 |
-|------|------|------|
-| Decision | 是 | PASS / BLOCKED / REJECT |
-| Current State | 是 | 当前状态描述 |
-| Why | 是 | 决策原因 |
-| Next Step | 是 | 下一步行动 |
-
-## 审阅检查项（spec-review）
-
-- 目标和 Non-goals 清晰无歧义
-- Write-Scope 明确到文件或目录
-- Verification 命令可直接执行
-- AC 涵盖主要验收路径
-- 回滚方案可执行（如适用）
-- 文档同步项已列入 Write-Scope
-- Depends-On / Absorbs / Supersedes 没有状态机冲突；被吸收的旧 spec 必须有明确目录流转
-- 涉及结构化数据或协议时，Data Contract 的字段、枚举、fallback 规则足够固定，不能留到 spec-work 临时决定
-- 涉及多执行者或分批产物时，必须定义单写入或聚合协议，避免多人直接覆盖同一最终文件
-- evidence 不能只写“人工观察通过”，关键 AC 应有命令、拦截记录、截图、日志或等价可复核材料
-- rollback 覆盖实际发布产物，不只覆盖源码
-- 大范围工作有可停止边界，避免 spec-work 变成无底洞
-
-## QA 验收项
-
-- AC 逐项验证结果
-- Verification 命令执行输出
-- evidence/ 文件存在性和完整性
-- 未通过项的具体失败原因和修复建议
-
-## 初始化与重估
-
-### 初始化
-
-扫描项目实际文件，生成最小 `.ys_team/` 结构：
-
-- config.yaml（角色、模式、治理槽位、槽位绑定）
-- role-pool.yaml（外部角色池来源与默认映射）
-- rules.md（行为规则）
-- reality.md（现实索引）
-- glossary.md（项目术语词典；空骨架不阻塞，spec-talk 按需加载）
-- status.md（状态追踪快照）
-- VERSION
-- templates/（checklist + spec + monthly-summary 模板）
-- history/（月度摘要目录）
-- memory/（空目录，init 时根据 roles 生成空记忆文件）
-
-### 项目类型检测
-
-| 检测信号 | 项目类型 |
-|----------|----------|
-| requirements.txt / pyproject.toml | python-backend |
-| pom.xml / build.gradle | java-backend |
-| package.json + React | frontend-react |
-| 前后端都有 | fullstack |
-| 以上都不匹配 | general |
-
-检测出项目类型后，`init/rebuild` 应使用 `role-pool.yaml.mappings` 为每个必备槽位挑选候选角色，并将结果写入 `.ys_team/config.yaml.slot_bindings`。
-
-### 现实索引生成
-
-- 关系优先：先建立模块间的依赖关系图
-- 摘要辅助：每个模块 2-3 句业务职责摘要
-- 规模自适应：小项目用核心模块索引，大项目分层
-
-### 重估触发条件
-
-- 项目技术栈发生变化
-- 新增或移除主要模块
-- 现有角色不再匹配交付现实
-- 基线版本有重大更新
-
-### 重估规则
-
-- 改最小面：只更新确实需要变化的部分
-- 保留本地化：不覆盖项目已定制的内容
-- 版本对齐：检查项目版本与基线版本差异
-- 记忆健康：角色记忆与当前角色对齐，超限条目压缩
-- 槽位重算：项目类型或现实索引变化时，允许刷新 `slot_bindings`，但应保留用户手动定制的绑定
-
-### 旧结构迁移
-
-rebuild 时检测到旧结构文件（`policy.md`、`team.md`、`delivery-flow.md`）时，输出迁移提示而非静默覆盖。
+- 方法论变化 → `docs/methodology/`、skills、baseline、README/guide
+- 发布入口变化 → root `AGENTS.md` / `CLAUDE.md`、CLI help
+- baseline 变化 → `examples/baseline/` 与 `skills/ys-team/baseline/` 全量一致
+- 项目现实变化 → `docs/project/module-index.md` 或项目本地 reality
 
 ## 版本管理
 
-| 版本 | 文件 | 追踪什么 |
-|------|------|----------|
-| 基线版本 | `.ys_team/VERSION` | 项目本地基线 |
-| 方法论版本 | `docs/methodology/VERSION` | 方法论规范 |
+| 版本 | 文件 | 语义 |
+|------|------|------|
+| npm | `package.json` | 发布包版本 |
+| baseline | `.ys_team/VERSION` | 项目本地基线版本 |
+| methodology | `docs/methodology/VERSION` | 方法论规范版本 |
 
-rebuild 时对比项目版本与基线版本，决定是否需要更新。
-
-## 文档同步规则
-
-实现变化时，相关文档必须同步更新：
-
-- 模块边界变化 → 更新现实索引
-- 对外行为变化 → 更新用户文档
-- 方法论定义变化 → 更新方法论文档和 skill
-- 模板变化 → 更新模板文件
-
-同步更新应在同一次交付中完成。
-
-## 并行策略
-
-### Spec 级并行
-
-多个不相关的 spec 可同时执行。Write-Scope 涉及同一模块时降级为串行。
-
-### 默认关闭
-
-并行能力默认关闭，项目确认模块边界清晰后可开启。
+v1.0 本仓三条线分别为 npm 1.0.0、baseline 1.0.0、methodology 2.0.0。

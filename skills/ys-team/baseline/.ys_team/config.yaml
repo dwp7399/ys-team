@@ -1,13 +1,11 @@
 mode: manual
 output_mode: technical
-roles:
-  - id: arch
-    name: 架构师
-    focus: 结构与边界
-  - id: pm
-    name: 产品负责人
-    focus: 价值与优先级
-  - id: gate
-    name: 守门人
-    focus: 质量与证据
+verification:
+  default_min_level: L1
+  ui_min_level: L2
+  require_feedback_loop: true
+  allow_l0_with_reason: true
+review:
+  cross_model_adversarial: optional
+  trivial_skip: true
 max_retries: 2

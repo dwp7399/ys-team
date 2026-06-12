@@ -1,51 +1,44 @@
 # AGENTS.md
 
-## ys-team 工作流
+## ys-team v1 工作流
 
-本仓库使用 `ys-team` 排他工作流。任何请求必须先经过路由判断。
+非 trivial 改动先形成 verifier 卡，再执行。
 
-### 改动分流
+verifier 卡必须写清：
 
-- **L0 trivial**：单文件、无影响、用户声明 trivial → 直接执行
-- **L1 patch**：≤3 文件、单模块内、意图清晰 → 执行 + `status.md` 留痕
-- **L2 spec**：不满足 L0/L1 → 完整 `spec-talk -> spec-review -> spec-work -> qa -> close` 流程
+- 意图与非目标
+- Write-Scope / Delete-Scope
+- 验收保真度等级
+- 人等价验收脚本或降级理由
+- Feedback Loop
+- 交付清单
 
-不确定时走 L2。
+## 三道闸
 
-### 禁止项（完整版见 `.ys_team/rules.md`）
+- **入口闸**：没有合格 verifier 卡，不进入复杂实现。
+- **出口闸**：verifier 不真绿，不声明完成。
+- **可见性闸**：用 todo、status 和结果状态说明进度。
 
-1. 未路由不改文件（Hard Ban）
-2. 未读现实不下结论（Hard Ban）
-3. 无 spec 不执行（Hard Ban）
-4. 不越 Write-Scope（Hard Ban）
-5. 范围扩大必须回头（Confirmation Ban）
-6. 不顺手动别人的代码（Style Ban）
-7. 无证据不说完成（Hard Ban）
-8. 文档不同步不收口（Hard Ban）
+## 验收门槛
 
-### 可见标志
+- UI/交互类改动低于 L2 默认不通过。
+- L0/L1 必须说明为什么不能更高。
+- 无法自动化时，写清人工抽检步骤和剩余风险。
 
-每次经过 ys-team 路由的响应，末尾必须带状态标记，格式如下：
+## 现实读取
 
-路由判断：`` `ys-team` · [判断结果] → [下一步] ``
-- 讨论：`**[主持人]** ys-team · spec-talk`
-- 审阅：`**[审阅]** ys-team · spec-review`
-- 执行：`**[执行中]** ys-team · spec-work`
-- 质检：`**[质检]** ys-team · qa`
-- 关闭：`**[关闭]** ys-team · close`
-- 状态：`**[状态]** ys-team · status`
+涉及影响范围、风险或方案选择时，先读 `.ys_team/reality.md` 和相关项目文件。
 
-如果当前回复末尾没有出现 `ys-team` 可见标志，视为不在 ys-team 工作流中，必须立即切回路由。
+## Scope
 
-缺少这些标志时，直接要求：
+- spec-work 只能修改 Write-Scope / Delete-Scope 声明的路径。
+- 需要扩大范围时先停止并请求确认。
+- 不重构无关代码，不补未要求的功能。
 
-`请先进入 ys-team 工作流，并给出当前阶段标志。`
+## 结果状态
 
-### 现实索引
+可用简短状态帮助用户判断，例如：
 
-先读 `.ys_team/reality.md`，再判断影响范围。
+`spec 卡已签 · loop 3/5 验收项过 · 未全绿`
 
-### baseline 约定
-
-- `status.md` 是当前快照，不是历史总账；「最新判断」只保留最近 10 条。
-- 外部角色池来源定义在 `.ys_team/role-pool.yaml`；项目实际启用的槽位和绑定定义在 `.ys_team/config.yaml`。
+结果状态不是完成条件；verifier 与 evidence 才是完成条件。

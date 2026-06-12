@@ -4,85 +4,60 @@ Initiative: <YYYYMMDD-name>
 Status: draft
 Owner-Session: —
 Write-Scope:
-  - # 列出允许修改的文件/目录
+  - # 允许修改的文件/目录
 Delete-Scope:
-  - # 列出允许删除的文件/目录（可选）
+  - # 允许删除的文件/目录（可选）
 Depends-On: []
-Verification: "见 ## Verification"
+Verification: "见 ## 验收"
 ---
 
 # <标题>
 
-## Background
+## 意图
 
-为什么要做这件事。
+一句话说明要解决什么问题，以及为什么现在要做。
 
-## Goals
+## 非目标
 
-要达成什么。
+- 本次明确不做什么。
 
-## Integration Gate
+## Write-Scope
 
-实现期间必须保持的轻量约束。
+- `<path>`：为什么允许修改。
 
-- 用户不需要选择内部工作流；本 spec 负责承载必要的讨论、执行、验证和收口约束。
-- spec-review PASS 后先切到 release/work 分支，再进入 spec-work。
-- close 前必须完成项目发布 gate；具体发布方式按项目本地规则执行。
-- 如涉及高风险行为变化，优先小步推进：一个行为、一个测试或等价验证、一个实现闭环。
-- 不得以"简单"、"之后补验证"、"文档不用同步"作为降级或跳过 evidence 的理由。
+## 验收
 
-## Non-goals
+### 保真度等级
 
-不做什么（可选）。
+L3 / L2 / L1 / L0：说明选择理由。
 
-## Deliverables
+> UI/交互类改动低于 L2 默认不通过。L0/L1 必须说明为什么不能更高，以及剩余人工风险。
 
-具体交付物。
+### 人等价验收脚本
 
-## Documentation Updates
+- 命令或步骤：`<command or steps>`
+- 输入：`<realistic input>`
+- 期望：`<observable assertion>`
+- 复现成本：`<time>`
 
-需要同步更新的文档与状态留痕（可选）。
-
-## Project Local SOP Gate
-
-如本 spec 命中项目本地 SOP，在这里写明该 SOP 的条件式 close gate；不适用时写 `N/A`。
-
-## Acceptance Criteria
-
-- AC-01: ...
-- AC-02: ...
-
-## Verification
-
-```bash
-# 可直接执行的验证命令
-```
+如无法达到 L3/L2，写明降级理由和人工抽检项。
 
 ### Feedback Loop
 
 本 spec 改对了的最快 pass/fail 信号是什么？目标复现成本 < 30 秒。
 
-- 命令或步骤：<具体命令 / 操作>
-- 期望信号：<grep 行数 / 退出码 / 输出片段>
-- 复现成本：<秒数估计>
+- 命令或步骤：`<command or steps>`
+- 期望信号：`<exit code / output / assertion>`
+- 复现成本：`<time>`
 
-如不适用，写 `N/A — <一句话理由>`。
+## 交付清单
 
-可接受的 evidence 类型：
-- 测试：单元测试、集成测试、端到端测试
-- 构建：编译、打包、类型检查
-- 静态检查：lint、格式检查、安全扫描
-- 人工验证：明确步骤、输入、期望输出
-- 运行证据：日志、截图、命令输出、回调记录
+- [ ] 文档同步
+- [ ] 项目本地 SOP gate（不适用写 N/A）
+- [ ] 发布或部署 gate（不适用写 N/A）
 
-## Acceptance Evidence
+## 依赖 / 风险
 
-记录 evidence/ 中应留下的验证产物（可选）。
-
-## Risks
-
-（可选）
-
-## Rollback Plan
-
-（可选）
+- 依赖：
+- 风险：
+- 回滚：

@@ -1,0 +1,21 @@
+2026-06-12 npm dist-tags close check
+
+Command:
+npm view ys-team dist-tags --json
+
+Pre-close output:
+{
+  "latest": "0.6.5"
+}
+
+Pre-close result:
+exit 0.
+
+Post-publish output:
+{
+  "latest": "1.0.0",
+  "legacy": "0.6.5"
+}
+
+Post-publish result:
+exit 0.

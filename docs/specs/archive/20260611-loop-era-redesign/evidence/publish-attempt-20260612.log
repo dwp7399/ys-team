@@ -1,0 +1,23 @@
+2026-06-12 close publish preflight
+
+Command:
+npm whoami
+
+Result:
+exit 1.
+
+Output:
+npm error code E401
+npm error 401 Unauthorized - GET https://registry.npmjs.org/-/whoami
+
+Follow-up:
+The provided npm token was used through a temporary npmrc. The first retry hit local npm cache permissions under `/Users/ys/.npm`; the successful retry used a temporary cache under `/tmp`.
+
+Successful close commands:
+- npm whoami -> ys7399
+- npm dist-tag add ys-team@0.6.5 legacy -> `+legacy: ys-team@0.6.5`
+- npm publish --access public -> `+ ys-team@1.0.0`
+- npm view ys-team dist-tags --json -> `latest: 1.0.0`, `legacy: 0.6.5`
+
+Conclusion:
+npm publish and dist-tag updates completed.

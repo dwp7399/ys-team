@@ -1,0 +1,18 @@
+2026-06-12 npm pack dry-run
+
+Command:
+npm pack --dry-run
+
+Result:
+exit 0.
+
+Key output:
+name: ys-team
+version: 1.0.0
+filename: ys-team-1.0.0.tgz
+package size: 173.1 kB
+unpacked size: 512.3 kB
+total files: 213
+
+Note:
+dry-run did not leave a local tarball.

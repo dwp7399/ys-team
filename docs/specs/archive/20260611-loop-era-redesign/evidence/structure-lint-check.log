@@ -1,0 +1,28 @@
+2026-06-12 structure lint checks
+
+1. Old role/governance config removed
+
+Command:
+rg -n "governance_slots|slot_bindings|challenger|五角" examples/baseline/.ys_team/config.yaml skills/ys-team/baseline/.ys_team/config.yaml
+
+Result:
+exit 1, no matches.
+
+2. Removed old baseline files
+
+Commands:
+test ! -e examples/baseline/.ys_team/role-pool.yaml
+test ! -e examples/baseline/.ys_team/templates/monthly-summary.md
+test ! -e skills/ys-team/baseline/.ys_team/role-pool.yaml
+test ! -e skills/ys-team/baseline/.ys_team/templates/monthly-summary.md
+
+Result:
+all exited 0.
+
+3. Verifier card template fields present
+
+Command:
+rg -n "意图|非目标|Write-Scope|保真度等级|人等价验收脚本|Feedback Loop|交付清单" examples/baseline/.ys_team/templates/spec.md
+
+Result:
+exit 0; matched all required verifier-card fields.

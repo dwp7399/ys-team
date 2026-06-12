@@ -1,0 +1,13 @@
+2026-06-12 version consistency
+
+Commands:
+node -p "require('./package.json').version"
+cat examples/baseline/.ys_team/VERSION
+cat skills/ys-team/baseline/.ys_team/VERSION
+cat docs/methodology/VERSION
+
+Result:
+package.json: 1.0.0
+examples baseline VERSION: 1.0.0
+skills baseline VERSION: 1.0.0
+methodology VERSION: 2.0.0

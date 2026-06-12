@@ -3,10 +3,10 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-06-02
+**Last Updated**: 2026-06-12
 
 ## `docs/methodology/`（方法论规范）
-**职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节；当前包含项目本地 SOP、领域语言、Feedback Loop、状态机和 release-first close 等规则。
+**职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节；当前以 verifier 卡、验收保真度分级、三道闸、结构 lint、项目错题本和 release-first close 为核心。
 
 **关系**：
 - 入口：`docs/methodology/overview.md`、`docs/methodology/reference.md`
@@ -14,7 +14,7 @@
 - 版本：`docs/methodology/VERSION`
 
 ## `docs/guide/`（用户向使用指南）
-**职责**：面向个人开发者，解释”为什么需要 ys-team”（含反模式案例）和”怎么用”，并说明项目实践如何低成本沉淀为本地 SOP。
+**职责**：面向个人开发者，解释为什么 loop-era 需要 verifier-first 工作流、如何初始化和日常使用，以及 Python / Java 项目如何低成本从 verifier 卡开始沉淀本地 SOP。
 
 **关系**：
 - 入口：`docs/guide/why-ys-team.md`、`docs/guide/getting-started.md`
@@ -22,7 +22,7 @@
 - 被依赖：`README.md`
 
 ## `skills/`（方法入口与执行能力）
-**职责**：承载 4 个 skill：ys-team（入口+路由+讨论+状态）、ys-team-init（初始化+重建+现实索引）、ys-team-spec-talk（多角色讨论+spec 产出）、ys-team-spec-work（按 spec 执行+evidence）。
+**职责**：承载 4 个 skill：ys-team（入口+新路由+状态）、ys-team-init（初始化+重建+约束地图）、ys-team-spec-talk（grill + verifier 卡 + 结构 lint）、ys-team-spec-work（按 verifier loop 执行+evidence）。
 
 **关系**：
 - 入口：`skills/ys-team/SKILL.md`, `skills/ys-team-init/SKILL.md`
@@ -31,7 +31,7 @@
 - 被依赖：使用 ys-team 的外部仓库
 
 ## `examples/baseline/`（默认工作流骨架）
-**职责**：`ys-team-init` 的默认来源。提供最小 `.ys_team/` 结构：config.yaml、role-pool.yaml、rules.md、reality.md、glossary.md、status.md、history/、VERSION、templates/（checklist + spec + questions + monthly-summary）、memory/。
+**职责**：`ys-team-init` 的默认来源。提供 v1 最小 `.ys_team/` 结构：config.yaml、rules.md、reality.md（约束与风险地图）、glossary.md、status.md、history/、VERSION、templates/（verifier card + checklist + questions）、memory/（项目错题本）。
 
 **关系**：
 - 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`
@@ -39,7 +39,7 @@
 - 同步副本：`skills/ys-team/baseline/`
 
 ## `.ys_team/`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。已迁移到 0.5.0 新结构。
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。当前 spec 正在从 v0.x 流程基线迁移到 v1 verifier-first 口径。
 
 **关系**：
 - 入口：`.ys_team/status.md`, `.ys_team/rules.md`, `.ys_team/config.yaml`
@@ -63,15 +63,15 @@
 - 入口：`docs/project/module-index.md`
 - 被依赖：`.ys_team/`, `skills/*/SKILL.md`, `README.md`
 
-## `README.md` / `AGENTS.md`（对外接入口径）
-**职责**：`README.md` 面向用户解释接入方式，`AGENTS.md` 约束仓库内 agent 协作规则。
+## `README.md` / `AGENTS.md` / `CLAUDE.md`（对外接入口径）
+**职责**：`README.md` 面向用户解释接入方式，`AGENTS.md` / `CLAUDE.md` 约束仓库内 agent 协作规则。v1 入口强调 verifier 卡、三道闸和结果状态，不再依赖强制流程尾标。
 
 **关系**：
 - 依赖：`skills/`, `examples/baseline/`, `docs/`
 - 被依赖：使用者、贡献者
 
 ## `package.json` / `scripts/`（npm 分发与 CLI）
-**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill。本仓非 trivial 可交付改动采用 release-first close，发布线版本由 `package.json` 与 baseline `.ys_team/VERSION` 对齐。
+**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill；CLI help 对外说明 v1 的 grill → verifier 卡 → loop → evidence 使用方式。本仓非 trivial 可交付改动采用 release-first close，发布线版本由 `package.json` 与 baseline `.ys_team/VERSION` 对齐。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`

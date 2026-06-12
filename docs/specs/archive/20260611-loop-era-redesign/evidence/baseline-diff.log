@@ -1,0 +1,7 @@
+2026-06-12 baseline full-copy diff
+
+Command:
+diff -r examples/baseline/ skills/ys-team/baseline/
+
+Result:
+exit 0, no output.

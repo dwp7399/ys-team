@@ -1,231 +1,116 @@
 ---
 name: ys-team-init
-description: "Initialize or rebuild a repository-local ys-team baseline; generate .ys_team from project reality and maintain reality index. Use when 用户说「初始化 ys-team」「rebuild baseline」「装一下方法论」「项目结构变了，重建一下」等。"
+description: "Initialize or rebuild a repository-local ys-team v1 baseline: rules, constraint map, verifier-card templates, glossary, status, and project mistake book. Use when 用户说「初始化 ys-team」「rebuild baseline」「装一下方法论」「项目结构变了，重建一下」等。"
 ---
 
 # ys-team-init
 
 <what-to-do>
 
-被调用时按以下流程立即执行：
+被调用时立即执行：
 
-1. 检查仓库根是否存在 `.ys_team/` 目录。
-2. **不存在 → Init 模式**：按下方「Init 模式」逐步执行（语言检测 → 项目类型检测 → 产出文件 → 角色池绑定 → 记忆初始化）→ 完成后按「现实索引生成」生成 `.ys_team/reality.md`。
-3. **已存在 → Rebuild 模式**：按下方「Rebuild 模式」执行（旧结构检测 → 版本检查 → 重估规则 → 项目上下文与 ADR → 记忆健康检查）→ 必要时按「现实索引生成」更新 reality.md。
-4. baseline 资源按下方「Baseline Source」顺序解析；都不存在则报错。
-5. 完成后按「Success Criteria」自检，并向用户简短确认产出文件清单。
+1. 检查仓库根是否存在 `.ys_team/`。
+2. 不存在：Init 模式，复制 v1 baseline，生成约束与风险地图骨架，创建 docs/specs 目录。
+3. 已存在：Rebuild 模式，对比 baseline 版本，提示并最小化同步 v1 模板。
+4. 检测旧结构：`role-pool.yaml`、`governance_slots`、`slot_bindings`、按角色命名的记忆文件、旧 checklist 流程项。
+5. 保留本地定制，不覆盖项目 SOP。
+6. 输出变更清单和后续建议。
 
 </what-to-do>
 
 <supporting-info>
 
-初始化或重建项目本地 ys-team baseline。
-
 ## Purpose
 
-- 首次使用：从 bundled baseline 生成最小 `.ys_team/` 结构
-- 重建（`--rebuild`）：项目形态变化后最小化更新
-- 两种模式共享同一 skill，通过是否已存在 `.ys_team/` 自动判断
-- init/rebuild 的目标是让用户安装后正常开发，不要求用户学习或选择内部工作流
+ys-team-init 只负责把项目接入 v1 baseline。它不要求用户学习内部流程，也不把项目业务知识写进通用模板。
 
 ## Baseline Source
 
-按以下顺序解析 baseline 资源：
+按顺序解析：
+
 1. `examples/baseline/`（仓库内开发）
 2. `../ys-team/baseline/`（npm 安装后）
 
-都不存在则报错。
+## Init 输出
 
-## Init 模式（首次）
+从 baseline 复制：
 
-### 语言检测
+- `.ys_team/config.yaml`
+- `.ys_team/rules.md`
+- `.ys_team/reality.md`
+- `.ys_team/glossary.md`
+- `.ys_team/status.md`
+- `.ys_team/VERSION`
+- `.ys_team/templates/spec.md`
+- `.ys_team/templates/checklist.md`
+- `.ys_team/templates/questions.md`
+- `.ys_team/history/`
+- `.ys_team/memory/`
+- `docs/specs/`
+- `AGENTS.md` / `CLAUDE.md`（如不存在）
 
-1. 检查用户 CLAUDE.md 中的语言偏好
-2. 检查系统 locale
-3. 无法判断时询问用户
+不再默认生成 `role-pool.yaml`。
 
-### 项目类型检测
+## Project Detection
 
-| 检测信号 | 项目类型 |
-|----------|----------|
-| requirements.txt / pyproject.toml | python-backend |
-| pom.xml / build.gradle | java-backend |
-| package.json + React | frontend-react |
-| 前后端都有 | fullstack |
-| 以上都不匹配 | general |
+检测 Python、Java、React、fullstack 或 general 只用于生成现实提示和后续 SOP 建议，不再用于绑定固定角色槽位。
 
-### 产出文件
+低成本开始：
 
-从 baseline 复制并适配：
+- Python / Java 项目先 init。
+- 第一次复杂改动用 verifier 卡收敛。
+- 同类任务重复出现后，再沉淀项目本地 SOP。
 
-- `.ys_team/config.yaml` — 根据项目类型写入角色列表、治理槽位和槽位绑定
-- `.ys_team/role-pool.yaml` — 从 baseline 复制外部角色池来源和默认映射
-- `.ys_team/rules.md` — 从 baseline 复制
-- `.ys_team/reality.md` — 生成现实索引（见下文）
-- `.ys_team/status.md` — 空模板
-- `.ys_team/VERSION` — 当前 baseline 版本
-- `.ys_team/templates/checklist.md` — 从 baseline 复制
-- `.ys_team/templates/spec.md` — 从 baseline 复制
-- `.ys_team/templates/monthly-summary.md` — 从 baseline 复制
-- `.ys_team/history/` — 从 baseline 复制
-- `.ys_team/memory/` — 根据 config.yaml roles 生成空记忆文件
-- `docs/specs/`（目录结构）
-- `AGENTS.md`（如不存在，从 baseline 适配生成）
+## Reality
 
-### 角色池与槽位绑定
+v1 的 `reality.md` 是约束与风险地图，不复述目录树。
 
-1. 读取 baseline `.ys_team/role-pool.yaml`
-2. 根据项目类型挑选每个必备槽位的候选角色
-3. 将选中的角色写入 `.ys_team/config.yaml.roles`
-4. 将对应槽位绑定写入 `.ys_team/config.yaml.slot_bindings`
-5. 不依赖运行时联网抓取外部仓库
+应记录：
 
-### 记忆初始化
+- 难以从代码直接推断的运行约束
+- 发布、数据、权限、安全风险
+- 项目本地 SOP 入口
+- 必须读取的权威文档
 
-根据 config.yaml 的 roles 列表，为每个角色创建空记忆文件：
+如果暂时没有内容，保留骨架即可。
 
-```
-.ys_team/memory/<role-id>.md
-```
+## Memory
 
-文件初始内容：
-```markdown
-# <角色名> 经验记忆
+`memory/` 是项目错题本，不按人格建文件。
 
-## 当前核心原则
+推荐领域：
 
-（尚无经验积累）
+- `verification.md`
+- `release.md`
+- `ui-interaction.md`
+- `data-migration.md`
 
-## 经验条目
+init 默认保留空目录或 `.gitkeep`，不强行生成领域文件。
 
-（尚无条目）
-```
+## Rebuild
 
-## Rebuild 模式
+rebuild 原则：
 
-当 `.ys_team/` 已存在时自动进入 rebuild 模式。
+- 改最小面。
+- 保留本地 SOP、rules、references 和用户定制。
+- 更新 VERSION。
+- 提示旧结构迁移，不静默删除用户内容。
+- 如用户确认升级 v1，可迁移旧 role-pool / slot config 到错题本和 verifier 策略。
 
-### 旧结构检测
+旧结构提示：
 
-如果发现以下旧结构文件，输出迁移提示：
-- `policy.md` → 已替换为 `rules.md`
-- `team.md` → 已替换为 `config.yaml`
-- `delivery-flow.md` → 已替换为 `templates/checklist.md`
-- `toolbox/` → 已删除，不再需要
-- `evolution/` → 已删除，不再需要
-- 项目根目录的旧配置入口 → 配置已收进 `config.yaml`
-
-### 版本检查
-
-1. 读取项目 `.ys_team/VERSION`
-2. 对比 baseline VERSION
-3. 版本不同时提示用户是否同步
-4. 同步时保留项目本地定制
-
-### 重估规则
-
-- 改最小面：只更新确实需要变化的部分
-- 保留本地化：不覆盖项目已定制的内容
-- 版本对齐：更新 VERSION
-- 识别项目已有的领域说明、ADR、issue 约定和团队协作规则，并在输出中提示可作为讨论依据
-- 不强制生成重型文档；缺失领域说明或 ADR 时只提示是否值得补齐
-- 保留项目本地 `output_mode`；缺失时使用 `technical`
-- 保留项目本地 SOP 定制，包括本地 `.agents/skills/`、rules 中的触发条件、checklist 的条件式 gate 和项目 references；rebuild 不把它们覆盖成默认 baseline
-
-### 项目上下文与 ADR
-
-rebuild 可以识别这些材料：
-
-- `docs/project/context.md`、`CONTEXT.md`：领域语言、业务概念、系统边界
-- `docs/adr/`、`adr/`：架构决策记录
-- issue tracker 约定、label 约定、贡献约定：团队协作现实
-
-处理边界：
-
-- 现实索引继续记录模块结构和依赖关系
-- context 只记录业务语言和领域约定，不替代 reality
-- ADR 只建议用于难逆转、未来会疑惑、有真实 trade-off 的决策
-- 本地已有内容优先，rebuild 不覆盖用户定制
-- 项目本地 SOP 属于本地定制；rebuild 可以提示版本差异，但不得静默删除或重写
-
-### 记忆健康检查
-
-1. 角色记忆文件与 config.yaml roles 对齐
-   - 新角色缺记忆 → 创建空文件
-   - 角色已移除但记忆存在 → 保留，标记 `archived: true`
-2. 条目超过 15 条 → 合并相似条目，重新生成摘要头
-3. 摘要头过时 → 从条目重新提炼
-4. 项目类型或现实索引变化时，可重算 `slot_bindings`；用户本地自定义绑定优先保留
-
-## 现实索引生成（合并自 ys-team-doc-build）
-
-Init 和 rebuild 完成后，自动生成或更新 `.ys_team/reality.md`。
-
-### 核心原则
-
-- 关系优先：先建立模块间依赖关系图
-- 摘要辅助：每个模块 2-3 句业务职责摘要
-- 规模自适应：小项目详细索引，大项目只索引核心模块
-
-### 规模策略
-
-| 项目规模 | 策略 |
-|----------|------|
-| 小（<500 文件） | 详细模块索引 + 关键类描述 |
-| 中（500-2000） | 模块索引 + 入口点列表 |
-| 大（>2000） | 核心模块 + 分层入口点 |
-
-### 执行步骤
-
-1. 检测语言和构建工具
-2. 估算规模（排除 target/dist/node_modules/.git）
-3. 识别模块边界（语言特定信号）
-4. 提取模块间关系（Grep 扫描入口、服务、数据访问、消息、外部依赖）
-5. 生成业务摘要（每模块 2-3 句）
-6. 写入 `.ys_team/reality.md`
-
-### 输出格式
-
-```markdown
-# 项目现实索引
-
-**项目类型**: [检测结果]
-**规模**: [Small/Medium/Large] (~N 文件)
-**更新时间**: [YYYY-MM-DD]
-
-## [模块名]
-**职责**：[2-3 句业务摘要]
-
-**关系**：
-- 入口：[入口类]
-- 数据访问：[mapper/repository]
-- 外部依赖：[API/SDK]
-- 被依赖：[依赖此模块的模块]
-```
-
-### 验证
-
-- 每个模块有非空职责摘要
-- 依赖关系双向一致
-- 不编造条目
-
-### Token 成本
-
-生成超过 ~80k tokens 时警告用户，建议缩减到核心模块。
-
-## After Init/Rebuild
-
-- 使用生成的 `.ys_team/` 作为项目 baseline
-- 正常工作不需要重新 init
-- 只在项目形态明显变化后 rebuild
-- `status.md` 继续只保留当前快照；跨月统计写入 `.ys_team/history/YYYY-MM.md`
-- 项目可以在 `.ys_team/config.yaml` 设置 `output_mode: friendly`，让 ys-team 在技术输出后追加人话版总结；默认 `technical`
+- `role-pool.yaml`：v1 baseline 不再需要。
+- `governance_slots` / `slot_bindings`：改为轻量 verification/review 策略。
+- `templates/monthly-summary.md`：不再默认提供。
+- `.ys_team/memory/<role>.md`：建议拍平成领域错题本。
 
 ## Success Criteria
 
-Init/rebuild 后项目可以立即使用 ys-team：
-- 讨论可以收敛为 spec
-- spec 可以指导执行
-- 执行可以用证据验收
+init/rebuild 后：
+
+- 非 trivial 改动能起 verifier 卡。
+- spec-work 能根据 Feedback Loop 自跑。
+- UI/交互类最低验收等级清楚。
+- 项目本地 SOP 有承载位置，但不是必须立即编写。
 
 </supporting-info>

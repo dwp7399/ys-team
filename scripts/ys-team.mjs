@@ -23,7 +23,7 @@ function defaultSkillsDir() {
 
 function helpText() {
   return [
-    "ys-team — AI 团队治理方法论工具链",
+    "ys-team — verifier-first AI coding workflow",
     "",
     "Commands:",
     "  ys-team install-skills [--dest <dir>] [--force] [--dry-run]",
@@ -42,10 +42,13 @@ function helpText() {
     "  npx ys-team@latest install-skills --force",
     "  # --force also prunes stale bundled ys-team skills",
     "",
-    "Workflow levels:",
-    "  L0 trivial  — single file, no impact, direct execution",
-    "  L1 patch    — ≤3 files, single module, execute + record",
-    "  L2 spec     — cross-module or risky, full spec flow",
+    "Workflow:",
+    "  Simple reversible changes run directly with minimal verification.",
+    "  Non-trivial changes use grill -> verifier card -> loop -> evidence.",
+    "  Routing is based on irreversibility x uncertainty, not file counts.",
+    "",
+    "Verifier card focus:",
+    "  intent, non-goals, Write-Scope, fidelity level, human-equivalent check, Feedback Loop",
     "",
     "Docs: docs/methodology/ for the full method specification"
   ].join("\n");

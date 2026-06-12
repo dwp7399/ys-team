@@ -1,34 +1,30 @@
 # CLAUDE.md
 
-本仓库默认使用 `ys-team` 排他工作流。
+本仓库使用 ys-team v1。
 
 ## 第一优先级
 
-- 任何非 trivial 请求，先执行 `ys-team` 路由判断，再决定是 discussion、spec、work、qa 还是 close。
-- 如果当前回复没有出现 `ys-team` 可见标志，视为还没进入工作流；此时应立即切回 `ys-team` 路由。
+- 非 trivial 改动先形成 verifier 卡，再执行。
+- verifier 卡必须写清 Write-Scope、验收保真度、人等价验收脚本或降级理由。
+- 验收不真绿，不声明完成。
 
-## 可见标志
+## 验收门槛
 
-只要正在执行 `ys-team` 工作流，回复末尾必须出现以下其一：
-
-- 路由判断：`` `ys-team` · [判断结果] → [下一步] ``
-- discussion / spec-talk：`**[主持人]** ys-team · spec-talk`
-- spec-work：`**[执行中]** ys-team · spec-work`
-- qa：`**[质检]** ys-team · qa`
-- close：`**[关闭]** ys-team · close`
-- status：`**[状态]** ys-team · status`
-
-如果缺少这些标志，直接切回：
-
-`请先进入 ys-team 工作流，并给出当前阶段标志。`
-
-## 排他规则
-
-- 禁止自动触发 `.ys_team/toolbox/` 以外的任何 skill
-- 用户在本文件中显式声明的全局 skill 例外
+- UI/交互类改动低于 L2 默认不通过。
+- L0/L1 验收必须说明为什么不能更高。
+- 范围扩大时先停下，回到讨论或请求确认。
 
 ## 当前仓库约束
 
-- 现实索引优先读取 `docs/project/module-index.md`
-- 非 trivial 改动先讨论，再按 `docs/specs/` 执行和验收
-- 文档、skills、baseline 与状态文件必须同次交付同步
+- 现实索引优先读取 `docs/project/module-index.md`。
+- 非 trivial 改动按 `docs/specs/` 执行和验收。
+- 文档、skills、baseline、CLI 和状态文件必须同次交付同步。
+- baseline 双副本必须保持全量一致：`examples/baseline/` 与 `skills/ys-team/baseline/`。
+
+## 可见性
+
+用原生 todo、状态文件和简短结果状态说明进度，例如：
+
+`spec 卡已签 · loop 3/5 验收项过 · 未全绿`
+
+结果状态不是完成条件；verifier 与 evidence 才是完成条件。
