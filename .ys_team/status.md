@@ -1,12 +1,11 @@
 # 团队状态
 
-updated: 2026-06-16T09:57:55+08:00
+updated: 2026-06-16T10:02:57+08:00
 
 ## 活跃 Spec
 
 | Spec | 阶段 | 状态 | 负责角色 | 重试次数 | 模式 |
 |------|------|------|---------|---------|------|
-| 20260615-managed-agent-entry-upgrade | close | BLOCKED | codex | 0 | full-auto |
 | 20260421-baseline-status-and-role-pool-sourcing | close | in-progress | gate | 1 | full-auto |
 | 20260421-baseline-visible-marker-hardening | close | in-progress | arch, gate | 0 | full-auto |
 
@@ -14,6 +13,7 @@ updated: 2026-06-16T09:57:55+08:00
 
 | 时间 | Spec | 角色 | 决定 | 原因 |
 |------|------|------|------|------|
+| 2026-06-16 | 20260615-managed-agent-entry-upgrade | close | PASS | npm publish 成功，registry 返回 ys-team@1.0.1，latest=1.0.1、legacy=0.6.5；spec 已归档，进入 main/tag/push 收口 |
 | 2026-06-16 | 20260615-managed-agent-entry-upgrade | close | BLOCKED | pre-publish gate 通过，但 `npm whoami` 连续返回 E401 Unauthorized；未执行 npm publish、合回 main、tag 或 push，需恢复 npm 登录后继续 close |
 | 2026-06-15 | 20260615-managed-agent-entry-upgrade | qa | PASS | AGENTS/CLAUDE managed block 入口、CLI legacy 替换/插入/幂等路径、check-update 提示、baseline 双副本和 npm pack dry-run 均已验证；未执行 npm publish、合回 main、tag 或 push |
 | 2026-06-15 | 20260615-managed-agent-entry-upgrade | spec-work | READY_FOR_QA | baseline 入口托管块、`init-project` 安全升级逻辑、`ys-team-init` rebuild 说明、用户文档和 1.0.1 版本线已落地；evidence 已记录 |
@@ -67,7 +67,6 @@ updated: 2026-06-16T09:57:55+08:00
 
 ## 阻塞项
 
-- `20260615-managed-agent-entry-upgrade`：pre-publish gate 已通过；`npm whoami` 返回 E401 Unauthorized，需恢复 npm 登录后执行 `npm publish`、合回 `main`、tag 和 push
 - `20260507-skill-structure-refactor`：已归档（0.6.0 release 完成）
 - `20260507-context-and-feedback-loop`：已归档（0.6.0 release 完成）
 - `20260421-baseline-status-and-role-pool-sourcing`：工作区存在本轮无关的已修改文件，close 暂不自动执行 Git 收口
