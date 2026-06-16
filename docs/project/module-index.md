@@ -3,7 +3,7 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-06-12
+**Last Updated**: 2026-06-15
 
 ## `docs/methodology/`（方法论规范）
 **职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节；当前以 verifier 卡、验收保真度分级、三道闸、结构 lint、项目错题本和 release-first close 为核心。
@@ -31,7 +31,7 @@
 - 被依赖：使用 ys-team 的外部仓库
 
 ## `examples/baseline/`（默认工作流骨架）
-**职责**：`ys-team-init` 的默认来源。提供 v1 最小 `.ys_team/` 结构：config.yaml、rules.md、reality.md（约束与风险地图）、glossary.md、status.md、history/、VERSION、templates/（verifier card + checklist + questions）、memory/（项目错题本）。
+**职责**：`ys-team-init` 的默认来源。提供 v1 最小 `.ys_team/` 结构：config.yaml、rules.md、reality.md（约束与风险地图）、glossary.md、status.md、history/、VERSION、templates/（verifier card + checklist + questions）、memory/（项目错题本），以及带 `ys-team:managed` 托管块的 `AGENTS.md` / `CLAUDE.md`。
 
 **关系**：
 - 入口：`examples/baseline/.ys_team/*`, `examples/baseline/AGENTS.md`
@@ -64,14 +64,14 @@
 - 被依赖：`.ys_team/`, `skills/*/SKILL.md`, `README.md`
 
 ## `README.md` / `AGENTS.md` / `CLAUDE.md`（对外接入口径）
-**职责**：`README.md` 面向用户解释接入方式，`AGENTS.md` / `CLAUDE.md` 约束仓库内 agent 协作规则。v1 入口强调 verifier 卡、三道闸和结果状态，不再依赖强制流程尾标。
+**职责**：`README.md` 面向用户解释接入方式，`AGENTS.md` / `CLAUDE.md` 约束仓库内 agent 协作规则。v1 入口强调 verifier 卡、三道闸和结果状态，不再依赖强制流程尾标；外部项目入口由 `ys-team:managed` 托管块升级，托管块外保留项目本地规则。
 
 **关系**：
 - 依赖：`skills/`, `examples/baseline/`, `docs/`
 - 被依赖：使用者、贡献者
 
 ## `package.json` / `scripts/`（npm 分发与 CLI）
-**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill；CLI help 对外说明 v1 的 grill → verifier 卡 → loop → evidence 使用方式。本仓非 trivial 可交付改动采用 release-first close，发布线版本由 `package.json` 与 baseline `.ys_team/VERSION` 对齐。
+**职责**：提供 npm 分发能力。CLI 三个命令：`install-skills`、`init-project`、`check-update`。`install-skills --force` 会清理旧 skill；`init-project` 会刷新 repo-local skills 并更新 `AGENTS.md` / `CLAUDE.md` 托管块；CLI help 对外说明 v1 的 grill → verifier 卡 → loop → evidence 使用方式。本仓非 trivial 可交付改动采用 release-first close，发布线版本由 `package.json` 与 baseline `.ys_team/VERSION` 对齐。
 
 **关系**：
 - 入口：`package.json`, `scripts/ys-team.mjs`

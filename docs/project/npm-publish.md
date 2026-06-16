@@ -79,3 +79,5 @@ node scripts/ys-team.mjs install-skills --dry-run
 node scripts/ys-team.mjs init-project --dir /tmp/ys-team-project-check --dry-run
 npm pack --dry-run
 ```
+
+`init-project` 的 dry-run 应显示 `AGENTS.md` / `CLAUDE.md` 托管块动作，例如 `created`、`managed-block-updated`、`legacy-entry-replaced` 或 `managed-block-inserted`。

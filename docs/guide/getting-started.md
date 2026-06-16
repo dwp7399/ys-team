@@ -22,7 +22,10 @@ npx ys-team install-skills --dest /your/path --force
 ```bash
 npx ys-team check-update
 npx ys-team@latest install-skills --force
+npx ys-team@latest init-project --dir /path/to/project
 ```
+
+`init-project` 对已有项目是安全更新：它会刷新 repo-local skills，并只更新 `AGENTS.md` / `CLAUDE.md` 中的 `ys-team:managed` 托管块。项目自己的运行命令、发布规则、性能或安全约束应保留在托管块外。
 
 ## 初始化项目
 
@@ -120,6 +123,8 @@ SOP 应留在项目本地 rules、references、文档或 skill 中，不写回�
 - baseline 大版本升级
 
 rebuild 应保留本地定制。
+
+从旧版本升级后，检查 `AGENTS.md` / `CLAUDE.md` 主入口是否还残留 `L0/L1/L2`、固定响应尾标、`role-pool`、`governance_slots` 或 `slot_bindings`。这些旧口径应被 v1 的 `direct / patch / spec` 托管块替代；托管块外的项目规则保留。
 
 ## 输出模式
 

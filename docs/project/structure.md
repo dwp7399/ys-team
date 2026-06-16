@@ -5,7 +5,7 @@
   - 同时包含支撑默认工作流的静默内部 skills
 - `CLAUDE.md` / `AGENTS.md`
   - 仓库级协作入口
-  - 明确 ys-team 排他工作流与可见标志规则
+  - 本仓保留项目本地规则；外部项目的 baseline 入口由 `ys-team:managed` 托管块维护
 - `examples/baseline/`
   - 默认工作流骨架，作为 `ys-team-init` 的默认来源
   - 包含会下发到项目的 `AGENTS.md` / `CLAUDE.md` 默认约束
@@ -19,4 +19,4 @@
   - 版本或阶段级规划，当前仅保留目录
 - `package.json` / `scripts/`
   - npm 分发元数据和 CLI 安装入口
-  - 当前提供 `install-skills` 与 `init-project` 两个命令
+  - 当前提供 `install-skills`、`init-project` 与 `check-update` 命令

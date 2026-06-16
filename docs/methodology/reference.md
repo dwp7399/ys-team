@@ -264,7 +264,7 @@ init 生成最小 baseline：
 - `.ys_team/history/`
 - `.ys_team/memory/`
 - `docs/specs/`
-- `AGENTS.md` / `CLAUDE.md`（如不存在）
+- `AGENTS.md` / `CLAUDE.md`（如不存在；如存在则更新 `ys-team:managed` 托管块）
 
 rebuild 原则：
 
@@ -272,7 +272,20 @@ rebuild 原则：
 - 只更新确实需要变化的模板和版本。
 - reality 从结构地图瘦身为约束与风险地图。
 - 检测旧 `role-pool.yaml`、`governance_slots`、`slot_bindings`、按角色记忆文件时提示迁移到 v1。
+- 检测 `AGENTS.md` / `CLAUDE.md` 旧入口口径，并只替换 `ys-team:managed` 托管块或可识别的旧 ys-team 段落。
 - 不把项目业务知识写回通用 baseline。
+
+### AGENTS / CLAUDE 托管块
+
+`AGENTS.md` / `CLAUDE.md` 里的 ys-team 入口使用托管块维护：
+
+```markdown
+<!-- ys-team:managed:start version=1.0.1 -->
+...
+<!-- ys-team:managed:end -->
+```
+
+升级时只替换托管块，托管块外的项目本地规则保留。若旧项目没有托管块，rebuild 或 `init-project` 应替换可识别的旧 ys-team 入口段；无法安全识别时，在标题后插入托管块并提示用户清理旧 L0/L1/L2、固定尾标或 role/slot 口径。
 
 ## 讨论协议
 
@@ -315,4 +328,4 @@ spec 卡已签 · loop 3/5 验收项过 · 未全绿
 | baseline | `.ys_team/VERSION` | 项目本地基线版本 |
 | methodology | `docs/methodology/VERSION` | 方法论规范版本 |
 
-v1.0 本仓三条线分别为 npm 1.0.0、baseline 1.0.0、methodology 2.0.0。
+v1.0.1 本仓三条线分别为 npm 1.0.1、baseline 1.0.1、methodology 2.0.0。

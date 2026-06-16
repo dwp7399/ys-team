@@ -1,10 +1,17 @@
 # AGENTS.md
 
+<!-- ys-team:managed:start version=1.0.1 -->
 ## ys-team v1 工作流
 
-非 trivial 改动先形成 verifier 卡，再执行。
+ys-team v1 强制的是“先路由、再选择合适验收”，不是所有请求都进入完整 spec 流程。
 
-verifier 卡必须写清：
+按“不可逆性 × 不确定性”分三档处理：
+
+- `direct`：简单、可逆、低风险、验收显然的改动可以直接做，并说明最小验证。
+- `patch`：范围清楚、影响有限的改动可以直接执行，但必须用快速 verifier 验收并留下必要证据。
+- `spec`：不可逆、高不确定性、跨边界、验收不清的改动，必须先形成 verifier 卡，再进入实现。
+
+复杂改动的 verifier 卡必须写清：
 
 - 意图与非目标
 - Write-Scope / Delete-Scope
@@ -15,7 +22,7 @@ verifier 卡必须写清：
 
 ## 三道闸
 
-- **入口闸**：没有合格 verifier 卡，不进入复杂实现。
+- **入口闸**：非 trivial 改动先形成 verifier 卡。
 - **出口闸**：verifier 不真绿，不声明完成。
 - **可见性闸**：用 todo、status 和结果状态说明进度。
 
@@ -42,3 +49,8 @@ verifier 卡必须写清：
 `spec 卡已签 · loop 3/5 验收项过 · 未全绿`
 
 结果状态不是完成条件；verifier 与 evidence 才是完成条件。
+<!-- ys-team:managed:end -->
+
+## Project Local Instructions
+
+在这里保留项目自己的约束，例如运行命令、发布方式、目录约定、性能或安全边界。`ys-team-init --rebuild` 和 `ys-team init-project` 只更新上方 managed block，不覆盖本地内容。

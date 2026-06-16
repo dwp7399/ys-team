@@ -1,39 +1,27 @@
-# 交付检查清单
+# 交付清单模板
 
-Spec: <spec-id>
+把本文件中的适用项复制到 verifier 卡的 `## 交付清单`。流程性待办交给 agent 原生 todo，不在这里打勾。
 
-## spec-talk
-- [ ] 路由判断完成（L0/L1/L2）
-- [ ] 参与角色已选定
-- [ ] 讨论收敛，spec.md 已写入
-- [ ] Write-Scope 明确到文件级
+## 文档
 
-## spec-review
-- [ ] 独立审阅完成
-- [ ] AC 可验证、Verification 可执行
-- [ ] Write-Scope 无遗漏
-- [ ] 已确认执行分支策略
+- [ ] README / 用户文档已同步
+- [ ] 方法论 / 规则 / skill 文案已同步
+- [ ] 项目现实索引或约束地图已同步
 
-## spec-work
-- [ ] spec-review PASS 后已切到 release/work 分支
-- [ ] 按 Write-Scope 执行，无越界
-- [ ] work.md 记录关键决策
-- [ ] 代码变更与 spec 一致
+## 验收
 
-## qa
-- [ ] AC 逐项验证
-- [ ] Verification 命令执行通过
-- [ ] evidence/ 已存放证据
+- [ ] 保真度等级已声明
+- [ ] Feedback Loop 可在 30 秒内复现，或 N/A 理由成立
+- [ ] UI/交互类达到至少 L2
+- [ ] L0/L1 降级理由已写明人工剩余项
 
-## close
-- [ ] 角色记忆回顾写入
-- [ ] status.md 更新
-- [ ] 文档同步完成
-- [ ] 如本 spec 命中项目本地 SOP，已完成该 SOP 的条件式 close gate，并更新经验总结或说明已有总结覆盖
-- [ ] git commit（代码 + evidence）
-- [ ] 发布线版本一致
-- [ ] npm pack 验证通过
-- [ ] npm publish 成功
-- [ ] 发布分支已合回 main
-- [ ] main 和 git tag 已 push
-- [ ] spec 目录归档并完成 close commit
+## 发布
+
+- [ ] 版本文件已同步
+- [ ] 构建或打包验证已通过
+- [ ] 发布 gate 已完成
+
+## 项目本地 SOP
+
+- [ ] 命中项目本地 SOP 时，已完成该 SOP 的结果责任项
+- [ ] 如发现可复用失败模式，已写入 `.ys_team/memory/` 错题本

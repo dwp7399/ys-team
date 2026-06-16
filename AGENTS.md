@@ -6,7 +6,15 @@
 
 本仓自身使用 ys-team v1。
 
-非 trivial 改动必须先形成 verifier 卡，再进入实现。verifier 卡重心是：
+ys-team v1 强制的是“先路由、再选择合适验收”，不是所有请求都进入完整 spec 流程。
+
+按“不可逆性 × 不确定性”分三档处理：
+
+- `direct`：简单、可逆、低风险、验收显然的改动可以直接做，并说明最小验证。
+- `patch`：范围清楚、影响有限的改动可以直接执行，但必须用快速 verifier 验收并留下必要证据。
+- `spec`：不可逆、高不确定性、跨方法论 / skills / baseline / CLI / 发布入口，或验收方式不清楚的改动，必须先形成 verifier 卡，再进入实现。
+
+verifier 卡重心是：
 
 - 意图和非目标
 - Write-Scope / Delete-Scope
@@ -19,7 +27,9 @@
 
 ## Primary Rule
 
-- 所有非 trivial 改动先讨论，再以 `docs/specs/` 中的 spec 为准执行和验收。
+- 所有请求先做轻量路由：`direct` / `patch` / `spec`。
+- `direct` 和 `patch` 不需要创建 `docs/specs/` 制品，但要说明为什么风险可逆、scope 清楚、verifier 足够。
+- `spec` 改动先讨论，再以 `docs/specs/` 中的 verifier 卡为准执行和验收。
 - 文档必须反映仓库当前真实状态；实现变化时，同次交付内同步更新。
 - 本仓 release-first：close 必须完成版本一致性、`npm pack`、`npm publish`、合回 `main`、tag 和 push。
 
@@ -32,7 +42,13 @@
 - 验收方式不清楚
 - 需要用户确认迁移、发布或兼容性策略
 
-简单、可逆、验收显然的改动可以直接做，但仍要说明最小验证。
+以下情况不强制进入完整 ys-team spec 流程：
+
+- 只读查询、状态说明、命令输出解释。
+- 单文件小文案、拼写、注释或格式修正。
+- 明确可回滚、影响面有限、能用一个快速检查验收的 patch。
+
+这些改动仍要说明最小验证；不能用“简单”作为跳过验收、越界修改或文档不同步的理由。
 
 ## 出口闸
 

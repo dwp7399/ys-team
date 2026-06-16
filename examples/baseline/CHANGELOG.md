@@ -2,6 +2,34 @@
 
 记录 `examples/baseline/` 及其直接配套接入面的结构化变化，供用户迁移、rebuild 判断和后续 `check-update` 摘要提取使用。
 
+## [1.0.1] - 2026-06-15
+
+### What Changed
+
+- **入口托管块**：`AGENTS.md` / `CLAUDE.md` 增加 `ys-team:managed` 标记，升级时只替换 ys-team 入口块，不覆盖项目本地规则
+- **CLI 安全升级**：`init-project` 不再只做整文件复制；已有项目会更新 managed block、替换可识别旧 ys-team 段落，或在标题后插入托管块
+- **旧口径检测**：rebuild 口径要求检查 L0/L1/L2、固定响应尾标、`governance_slots` / `slot_bindings` 等旧入口残留
+
+### Why
+
+- 已初始化项目通常会在 `AGENTS.md` / `CLAUDE.md` 写入本地性能、发布、文档或安全规则，整文件覆盖会丢定制，完全跳过又会留下旧流程
+- 托管块把“ys-team 入口版本”与“项目本地规则”拆开，旧用户可以安全升级入口口径
+
+### Key Files
+
+- `scripts/ys-team.mjs`
+- `examples/baseline/AGENTS.md`
+- `examples/baseline/CLAUDE.md`
+- `skills/ys-team-init/SKILL.md`
+- `README.md`
+- `docs/guide/getting-started.md`
+
+### Migration Hint
+
+- 已有项目升级后运行 `npx ys-team@latest init-project --dir <repo>`，刷新 repo-local skills 和 `AGENTS.md` / `CLAUDE.md` 托管块
+- 将项目自己的运行、发布、性能、安全规则放在 `ys-team:managed` 托管块外
+- 若入口文件仍残留 L0/L1/L2、固定尾标或 role/slot 口径，按 v1 `direct / patch / spec` 托管块清理
+
 ## [1.0.0] - 2026-06-12
 
 ### What Changed

@@ -1,11 +1,14 @@
 # CLAUDE.md
 
+<!-- ys-team:managed:start version=1.0.1 -->
 本项目使用 ys-team v1。
 
 ## 工作方式
 
-- 简单、可逆、验收显然的改动可以直接做并说明最小验证。
-- 非 trivial 改动先形成 verifier 卡，再执行。
+- 先判断请求属于 `direct`、`patch` 还是 `spec`。
+- `direct`：简单、可逆、验收显然的改动可以直接做，并说明最小验证。
+- `patch`：范围清楚、影响有限的改动可以直接做，但要用快速 verifier 验收。
+- `spec`：不可逆、高不确定性、跨边界或验收方式不清楚的改动，先形成 verifier 卡，再执行。
 - 验收不真绿，不声明完成。
 
 ## Verifier 卡
@@ -34,3 +37,8 @@
 用 todo、status 和简短结果状态说明进度，例如：
 
 `spec 卡已签 · loop 3/5 验收项过 · 未全绿`
+<!-- ys-team:managed:end -->
+
+## Project Local Instructions
+
+在这里保留项目自己的 Claude 侧约束。升级时只更新上方 managed block，不覆盖本地内容。

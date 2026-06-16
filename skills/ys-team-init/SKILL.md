@@ -12,7 +12,7 @@ description: "Initialize or rebuild a repository-local ys-team v1 baseline: rule
 1. 检查仓库根是否存在 `.ys_team/`。
 2. 不存在：Init 模式，复制 v1 baseline，生成约束与风险地图骨架，创建 docs/specs 目录。
 3. 已存在：Rebuild 模式，对比 baseline 版本，提示并最小化同步 v1 模板。
-4. 检测旧结构：`role-pool.yaml`、`governance_slots`、`slot_bindings`、按角色命名的记忆文件、旧 checklist 流程项。
+4. 检测旧结构：`role-pool.yaml`、`governance_slots`、`slot_bindings`、按角色命名的记忆文件、旧 checklist 流程项、旧 `AGENTS.md` / `CLAUDE.md` 入口口径。
 5. 保留本地定制，不覆盖项目 SOP。
 6. 输出变更清单和后续建议。
 
@@ -47,7 +47,7 @@ ys-team-init 只负责把项目接入 v1 baseline。它不要求用户学习内�
 - `.ys_team/history/`
 - `.ys_team/memory/`
 - `docs/specs/`
-- `AGENTS.md` / `CLAUDE.md`（如不存在）
+- `AGENTS.md` / `CLAUDE.md`（如不存在；如存在则只更新 `ys-team:managed` 托管块）
 
 不再默认生成 `role-pool.yaml`。
 
@@ -94,6 +94,7 @@ rebuild 原则：
 - 改最小面。
 - 保留本地 SOP、rules、references 和用户定制。
 - 更新 VERSION。
+- 更新 `AGENTS.md` / `CLAUDE.md` 的 `ys-team:managed` 托管块；托管块外的项目本地内容不得覆盖。
 - 提示旧结构迁移，不静默删除用户内容。
 - 如用户确认升级 v1，可迁移旧 role-pool / slot config 到错题本和 verifier 策略。
 
@@ -103,6 +104,32 @@ rebuild 原则：
 - `governance_slots` / `slot_bindings`：改为轻量 verification/review 策略。
 - `templates/monthly-summary.md`：不再默认提供。
 - `.ys_team/memory/<role>.md`：建议拍平成领域错题本。
+- `AGENTS.md` / `CLAUDE.md` 中的 `L0/L1/L2`、`Response Markers`、`必须带状态标记`、`排他工作流`：替换为 v1 `direct / patch / spec` 托管块。
+
+## AGENTS / CLAUDE Managed Block
+
+v1 的入口文件使用托管块保护项目本地定制：
+
+```markdown
+<!-- ys-team:managed:start version=1.0.1 -->
+... ys-team v1 routing ...
+<!-- ys-team:managed:end -->
+```
+
+rebuild 时：
+
+1. 若文件有托管块，只替换托管块。
+2. 若文件没有托管块但有旧 ys-team 入口段，替换该段并保留其它项目规则。
+3. 若文件没有托管块也没有旧入口段，在标题后插入托管块。
+4. 若检测到托管块外仍有旧口径，提示用户手工清理，不能声明升级完成。
+
+可建议用户运行：
+
+```bash
+npx ys-team@latest init-project --dir <repo>
+```
+
+该命令会安全刷新 repo-local skills 和 `AGENTS.md` / `CLAUDE.md` 托管块。
 
 ## Success Criteria
 
@@ -112,5 +139,6 @@ init/rebuild 后：
 - spec-work 能根据 Feedback Loop 自跑。
 - UI/交互类最低验收等级清楚。
 - 项目本地 SOP 有承载位置，但不是必须立即编写。
+- `AGENTS.md` / `CLAUDE.md` 主入口不再残留旧 L0/L1/L2、固定尾标或 role/slot 口径。
 
 </supporting-info>

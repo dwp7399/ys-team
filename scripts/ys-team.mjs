@@ -16,6 +16,26 @@ const bundledBaselineChangelogPath = path.join(bundledBaselineDir, "CHANGELOG.md
 const baselineAgentsPath = path.join(packageRoot, "examples", "baseline", "AGENTS.md");
 const baselineClaudePath = path.join(packageRoot, "examples", "baseline", "CLAUDE.md");
 const installedBaselineSkillName = "ys-team";
+const managedEntryStartRegex = /<!--\s*ys-team:managed:start\b[^>]*-->/;
+const managedEntryEndRegex = /<!--\s*ys-team:managed:end\s*-->/;
+const legacyEntryHeadingPatterns = [
+  /^ys-team\b/,
+  /^工作流$/,
+  /^首先做什么$/,
+  /^第一优先级$/,
+  /^工作方式$/,
+  /^三道闸$/,
+  /^入口闸$/,
+  /^出口闸$/,
+  /^Verifier\s*卡$/,
+  /^验收门槛$/,
+  /^现实读取$/,
+  /^现实索引$/,
+  /^Scope$/,
+  /^可见性$/,
+  /^可见标志$/,
+  /^结果状态$/
+];
 
 function defaultSkillsDir() {
   return path.join(os.homedir(), ".claude", "skills");
@@ -40,7 +60,9 @@ function helpText() {
     "Update:",
     "  npx ys-team check-update",
     "  npx ys-team@latest install-skills --force",
-    "  # --force also prunes stale bundled ys-team skills",
+    "  npx ys-team@latest init-project --dir /path/to/project",
+    "  # --force prunes stale bundled ys-team skills",
+    "  # init-project refreshes repo-local skills and AGENTS.md / CLAUDE.md managed blocks",
     "",
     "Workflow:",
     "  Simple reversible changes run directly with minimal verification.",
@@ -175,7 +197,165 @@ function copyFileWithPolicy(sourcePath, targetPath, { force, dryRun }) {
   return { action: exists ? "replaced" : "created", targetPath };
 }
 
-function installSkills({ dest, force, dryRun }) {
+function findManagedBlockRange(markdown) {
+  const startMatch = managedEntryStartRegex.exec(markdown);
+  if (!startMatch) {
+    return null;
+  }
+
+  const rest = markdown.slice(startMatch.index + startMatch[0].length);
+  const endMatch = managedEntryEndRegex.exec(rest);
+  if (!endMatch) {
+    return null;
+  }
+
+  return {
+    start: startMatch.index,
+    end: startMatch.index + startMatch[0].length + endMatch.index + endMatch[0].length
+  };
+}
+
+function extractManagedBlock(markdown) {
+  const range = findManagedBlockRange(markdown);
+  if (!range) {
+    throw new Error("Baseline entry template is missing ys-team managed block markers");
+  }
+  return markdown.slice(range.start, range.end).trim();
+}
+
+function findFirstHeadingEnd(markdown) {
+  const match = /^# .*(?:\r?\n|$)/.exec(markdown);
+  if (!match) {
+    return 0;
+  }
+
+  let offset = match[0].length;
+  const blank = /^\r?\n/.exec(markdown.slice(offset));
+  if (blank) {
+    offset += blank[0].length;
+  }
+  return offset;
+}
+
+function isLegacyEntryHeadingTitle(title) {
+  return legacyEntryHeadingPatterns.some((pattern) => pattern.test(title.trim()));
+}
+
+function findLegacyEntryEnd(markdown, firstHeadingIndex) {
+  const headingRegex = /^##\s+(.+)$/gm;
+  headingRegex.lastIndex = firstHeadingIndex + 1;
+
+  let match = headingRegex.exec(markdown);
+  while (match) {
+    if (match.index > firstHeadingIndex && !isLegacyEntryHeadingTitle(match[1])) {
+      return match.index;
+    }
+    match = headingRegex.exec(markdown);
+  }
+
+  return markdown.length;
+}
+
+function appendAfterManagedBlock(managedBlock, rest) {
+  const trimmedRest = rest.replace(/^\s+/, "");
+  return trimmedRest ? `${managedBlock}\n\n${trimmedRest}` : `${managedBlock}\n`;
+}
+
+function findLegacyEntryRange(markdown, kind) {
+  const headingPatterns = kind === "claude"
+    ? [/^##\s+ys-team\b.*$/m, /^##\s+首先做什么\s*$/m, /^##\s+工作方式\s*$/m]
+    : [/^##\s+ys-team\b.*$/m];
+
+  for (const pattern of headingPatterns) {
+    const match = pattern.exec(markdown);
+    if (!match) {
+      continue;
+    }
+
+    let start = match.index;
+
+    if (kind === "claude") {
+      const h1End = findFirstHeadingEnd(markdown);
+      const lead = markdown.slice(h1End, match.index);
+      if (/本(项目|仓库).*ys-team/.test(lead)) {
+        start = h1End;
+      }
+    }
+
+    const end = findLegacyEntryEnd(markdown, match.index);
+
+    const candidate = markdown.slice(start, end);
+    const legacySignals = [
+      /L0\s*\/\s*L1\s*\/\s*L2/,
+      /L0 trivial|L1 patch|L2 spec/,
+      /Response Markers/,
+      /必须带.*状态标记/,
+      /排他工作流/,
+      /governance_slots|slot_bindings/,
+      /spec-talk\s*->\s*spec-review\s*->\s*spec-work/
+    ];
+
+    if (legacySignals.some((signal) => signal.test(candidate)) || /ys-team/.test(candidate)) {
+      return { start, end };
+    }
+  }
+
+  return null;
+}
+
+function normalizeBlockForCompare(text) {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function mergeManagedEntryMarkdown(existingMarkdown, templateMarkdown, { kind }) {
+  const managedBlock = extractManagedBlock(templateMarkdown);
+
+  if (!existingMarkdown) {
+    return { action: "created", markdown: templateMarkdown };
+  }
+
+  const currentRange = findManagedBlockRange(existingMarkdown);
+  if (currentRange) {
+    const currentBlock = existingMarkdown.slice(currentRange.start, currentRange.end);
+    if (normalizeBlockForCompare(currentBlock) === normalizeBlockForCompare(managedBlock)) {
+      return { action: "unchanged", markdown: existingMarkdown };
+    }
+    return {
+      action: "managed-block-updated",
+      markdown: `${existingMarkdown.slice(0, currentRange.start)}${managedBlock}${existingMarkdown.slice(currentRange.end)}`
+    };
+  }
+
+  const legacyRange = findLegacyEntryRange(existingMarkdown, kind);
+  if (legacyRange) {
+    return {
+      action: "legacy-entry-replaced",
+      markdown: `${existingMarkdown.slice(0, legacyRange.start)}${appendAfterManagedBlock(managedBlock, existingMarkdown.slice(legacyRange.end))}`
+    };
+  }
+
+  const insertAt = findFirstHeadingEnd(existingMarkdown);
+  return {
+    action: "managed-block-inserted",
+    markdown: `${existingMarkdown.slice(0, insertAt)}${managedBlock}\n\n${existingMarkdown.slice(insertAt)}`
+  };
+}
+
+function updateManagedEntryFile(sourcePath, targetPath, { dryRun, kind }) {
+  const templateMarkdown = fs.readFileSync(sourcePath, "utf8");
+  const exists = fs.existsSync(targetPath);
+  const existingMarkdown = exists ? fs.readFileSync(targetPath, "utf8") : "";
+  const result = mergeManagedEntryMarkdown(existingMarkdown, templateMarkdown, { kind });
+
+  if (!dryRun && result.action !== "unchanged") {
+    fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+    fs.writeFileSync(targetPath, result.markdown);
+  }
+
+  return { action: result.action, targetPath };
+}
+
+function installSkills({ dest, force, dryRun, includeNext = true }) {
   const skills = listBundledSkills();
   const operations = [];
   const skipped = [];
@@ -259,10 +439,10 @@ function installSkills({ dest, force, dryRun }) {
     }
   }
 
-  if (!dryRun && operations.length > 0) {
+  if (includeNext && !dryRun && operations.length > 0) {
     lines.push("", "next:");
     lines.push("- run ys-team-init in the target repository");
-    lines.push("- update AGENTS.md and CLAUDE.md so ys-team is the highest-priority workflow");
+    lines.push("- run `ys-team init-project --dir <repo>` to refresh AGENTS.md / CLAUDE.md managed blocks in existing projects");
   }
 
   return lines.join("\n");
@@ -276,11 +456,12 @@ function initProject({ dir, force, dryRun }) {
   const installSummary = installSkills({
     dest: skillsDest,
     force,
-    dryRun
+    dryRun,
+    includeNext: false
   });
 
-  const agentsResult = copyFileWithPolicy(baselineAgentsPath, agentsDest, { force, dryRun });
-  const claudeResult = copyFileWithPolicy(baselineClaudePath, claudeDest, { force, dryRun });
+  const agentsResult = updateManagedEntryFile(baselineAgentsPath, agentsDest, { dryRun, kind: "agents" });
+  const claudeResult = updateManagedEntryFile(baselineClaudePath, claudeDest, { dryRun, kind: "claude" });
 
   return [
     dryRun ? "ys-team init-project dry-run" : "ys-team init-project",
@@ -296,7 +477,7 @@ function initProject({ dir, force, dryRun }) {
     "- open the target repository",
     "- run ys-team-init in that repository",
     `- baseline assets are available at ${sharedBaselineInstallPath(skillsDest)}`,
-    "- verify AGENTS.md and CLAUDE.md match your project-local needs"
+    "- verify AGENTS.md and CLAUDE.md kept project-local instructions outside the managed block"
   ].join("\n");
 }
 
@@ -472,8 +653,9 @@ function formatUpdateReport({ packageName, localVersion, latestVersion, notes, c
     return lines.join("\n");
   }
 
-  lines.push("", "发现新版本，运行以下命令更新 skills：");
+  lines.push("", "发现新版本，运行以下命令更新 skills 和项目入口：");
   lines.push(`  npx ${packageName}@${latestVersion} install-skills --force`);
+  lines.push(`  npx ${packageName}@${latestVersion} init-project --dir /path/to/project`);
 
   if (summaryAvailable && notes.length > 0) {
     lines.push("", `落后版本: ${notes.map((note) => `v${note.version}`).join(", ")}`);
@@ -615,6 +797,8 @@ export {
   collectUpgradeNotes,
   compareVersions,
   extractFileFromTarGz,
+  extractManagedBlock,
   formatUpdateReport,
+  mergeManagedEntryMarkdown,
   parseChangelog
 };

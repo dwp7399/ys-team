@@ -108,6 +108,8 @@ npx ys-team check-update
 
 `install-skills --force` 会替换当前 ys-team 已安装的同名 skill，并清理当前 npm 包不再提供的旧 ys-team skill。
 
+`init-project` 会安全刷新项目内 `.agents/skills`，并更新 `AGENTS.md` / `CLAUDE.md` 的 `ys-team:managed` 托管块。已有项目规则应写在托管块外；升级时只替换托管块，不覆盖项目本地约束。旧项目如果仍有 L0/L1/L2、固定尾标或 role/slot 入口段，`init-project` 会尽量替换为 v1 `direct / patch / spec` 入口。
+
 ## 仓库发版约束
 
 ys-team 本仓是 npm 分发产品。本仓所有非 trivial 可交付改动都按 release-first close：

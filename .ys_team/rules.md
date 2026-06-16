@@ -1,64 +1,44 @@
 # 行为规则
 
-## 8 条禁止项
+## 三道闸
 
-| # | 级别 | 口号 | 行为 | 自检锚点 |
-|---|------|------|------|----------|
-| 1 | Hard Ban | 未路由不改文件 | 每个请求先完成 L0/L1/L2 判断，未判断前不得修改任何文件 | 回复中是否出现路由判断标志？ |
-| 2 | Hard Ban | 未读现实不下结论 | 涉及影响范围、风险或方案选择时，必须先读现实索引或相关代码 | 结论中引用的模块/文件，是否在本轮对话中实际读取过？ |
-| 3 | Hard Ban | 无 spec 不执行 | L2 改动未形成 spec.md，不得进入实现 | 是否存在对应 spec 目录且 spec.md 已写入？ |
-| 4 | Hard Ban | 不越 Write-Scope | spec-work 只能修改 Write-Scope 声明的文件 | 本次 diff 中每个文件路径是否在 Write-Scope 列表内？ |
-| 5 | Confirmation Ban | 范围扩大必须回头 | 发现必须修改 scope 外文件时，停止执行，回到讨论 | 是否在继续执行前显式声明了 scope 变更并获得确认？ |
-| 6 | Style Ban | 不顺手动别人的代码 | 不重构无关代码、不格式化无关文件、不补未要求的功能 | 每行 diff 能否追溯到用户请求或 spec 条目？ |
-| 7 | Hard Ban | 无证据不说完成 | 无 verification 结果或 evidence，不得声明完成 | close/done 前是否有可复核的验证产出？ |
-| 8 | Hard Ban | 文档不同步不收口 | 受影响文档未同步更新，不得 close | Write-Scope 中的文档类文件是否全部已更新？ |
+| 闸 | 规则 | 自检 |
+|----|------|------|
+| 入口闸 | 非 trivial 改动先形成 verifier 卡 | 是否写清 Write-Scope、保真度等级、验收脚本或降级理由？ |
+| 出口闸 | verifier 不真绿，不声明完成 | 是否运行 Feedback Loop 和最终 Verification？ |
+| 可见性闸 | 用 todo、status、结果状态说明进展 | 用户能否看出是否全绿、还差什么？ |
 
-## Ban Levels
+## 验收门槛
 
-| 级别 | 含义 | 违反时行为 |
-|------|------|------------|
-| Hard Ban | 硬 gate | 立即停止，必须先满足条件 |
-| Confirmation Ban | 软 gate | 显式声明并获得确认后可继续 |
-| Style Ban | 默认禁止 | 用户明确要求时可以做 |
+- UI/交互类改动低于 L2 默认不通过。
+- L0/L1 必须写明为什么不能更高，以及剩余人工风险。
+- 没有合格 verifier 的复杂改动不能进入实现。
+- 无法验证时必须明确说明限制和人工抽检步骤。
 
-## Escape Clause
+## Scope
 
-L0 级别请求可跳过 #1 和 #2，但必须声明跳过原因。
+- spec-work 只能修改 Write-Scope / Delete-Scope 声明的文件。
+- 发现必须改 scope 外文件时，停止并回到讨论或请求确认。
+- 不顺手重构无关代码。
 
-## Anti-rationalization
+## 现实
 
-以下说法不能作为降级、越界或跳过验证的理由：
-
-- "这个很简单，所以不用路由"：除非明确满足 L0，否则仍需完成 L0/L1/L2 判断。
-- "先改完再补 spec"：L2 必须先有 spec，再进入 spec-work。
-- "测试之后再补"：能验证的改动必须在完成前留下 evidence；不能验证时必须说明原因。
-- "文档不用同步"：对外行为、方法论、baseline 或模块边界变化时，文档同步是 close 前置条件。
-- "顺手一起改了"：scope 外改动必须回到讨论或获得确认。
-- "用户没要求 TDD"：高风险行为改动默认优先小步验证，一个行为一个测试或等价证据。
-
-## 执行规则
-
-- 改动按三级分流：L0 trivial → L1 patch → L2 spec
-- L2 改动先有 spec，再按 spec 执行和验收
-- 用户不需要选择内部工作流；规格、测试、审阅、诊断和收口由 ys-team 路由决定
-- 非 trivial 可交付改动应在 spec-review PASS 后切到 release/work 分支，再进入 spec-work
-- close 前必须完成项目发布 gate；具体发布方式由项目本地规则定义
-- 文档必须反映项目当前真实状态
-- spec、实现和验收证据应保持同一次交付闭环
-
-## 文档同步
-
-- 模块边界变化 → 更新现实索引
-- 对外行为变化 → 更新用户文档
-- 同步更新应在同一次交付中完成
+- 讨论影响范围、风险或方案选择时，先读 `.ys_team/reality.md` 和相关项目文件。
+- `reality.md` 只记录 agent 难以重建的约束与风险，不复述目录树。
 
 ## 项目本地 SOP
 
-- 项目可为高频、领域强、容易漏交付面的工作声明本地 SOP。
-- 本地 SOP 不改变 L0/L1/L2；它只在路由判断后补充项目内交付约束。
-- 本地 SOP 可由项目本地 skill、references、rules、checklist 或权威文档承载。
-- 若 spec 命中本地 SOP，close 前必须完成该 SOP 声明的条件式 gate，例如二次现实对照、最小成本验证、文档质量确认、readiness/evidence 对齐。
-- close 阶段只归纳可复用模式；若已有总结覆盖，应记录“已有总结覆盖，无需更新”，不要追加流水账。
+- 高频、领域强、漏项成本高的工作可以沉淀为项目本地 SOP。
+- SOP 只补充交付清单和验收 gate，不改变用户入口。
+- 项目业务知识留在本地 rules、references、文档或 skill 中，不写回通用 baseline。
+
+## 结果状态
+
+可以用简短状态帮助用户判断，例如：
+
+`spec 卡已签 · loop 3/5 验收项过 · 未全绿`
+
+结果状态不是完成条件；verifier 与 evidence 才是完成条件。
 
 ---
 
@@ -75,38 +55,39 @@ L0 级别请求可跳过 #1 和 #2，但必须声明跳过原因。
 
 ### Spec Rules
 
-- spec 文件写入 `docs/specs/<phase>/<initiative-id>/`
-- `phase` 使用 `queued`、`active`、`completed`、`cancelled`
-- evidence 放在 initiative 目录下的 `evidence/`
-- 验收必须包含可复核证据
+- spec 文件写入 `docs/specs/<phase>/<initiative-id>/`。
+- `phase` 使用 `queued`、`active`、`completed`、`cancelled`。
+- evidence 放在 initiative 目录下的 `evidence/`。
+- 验收必须包含可复核证据。
 
 ### Release Gate
 
-- 发布线版本由 `package.json`、`examples/baseline/.ys_team/VERSION`、`.ys_team/VERSION` 共同组成
-- `docs/methodology/VERSION` 是方法论规范版本，独立于发布线
-- 本仓所有非 trivial 可交付改动都按 release-first 处理；不得自行降级为“只提交不发布”
-- spec-review PASS 后必须先切到 `release/<version>` 或 `work/<spec-id>` 分支，未切分支不得进入 spec-work
-- close 前必须完成 npm 发布链路：版本一致性检查、`npm pack` 验证、`npm publish` 成功
-- npm 发布成功后，发布分支必须合回 `main`，创建同版本 git tag，并 push main / tag
-- 未完成 npm publish、合回 main、tag、push 的 spec 不得 close 或 archive
+- 发布线版本由 `package.json`、`examples/baseline/.ys_team/VERSION`、`.ys_team/VERSION` 共同组成。
+- `docs/methodology/VERSION` 是方法论规范版本，独立于发布线。
+- 本仓所有非 trivial 可交付改动都按 release-first 处理；不得自行降级为“只提交不发布”。
+- spec-review PASS 后必须先切到 `release/<version>` 或 `work/<spec-id>` 分支，未切分支不得进入 spec-work。
+- close 前必须完成 npm 发布链路：版本一致性检查、`npm pack` 验证、`npm publish` 成功。
+- npm 发布成功后，发布分支必须合回 `main`，创建同版本 git tag，并 push main / tag。
+- 未完成 npm publish、合回 main、tag、push 的 spec 不得 close 或 archive。
 
 ### Spec-Review Gate
 
 semi-auto / full-auto 模式下，spec-talk 完成后自动触发独立审阅。
 
-- PASS → 进入 spec-work（semi-auto 暂停等确认）
-- REJECT → 回退到 spec-talk，重试计数 +1
+- PASS → 进入 spec-work（semi-auto 暂停等确认）。
+- REJECT → 回退到 spec-talk，重试计数 +1。
 
 ### QA Gate
 
 semi-auto / full-auto 模式下，spec-work 完成后自动触发独立验证。
 
-- PASS → 进入 close（semi-auto 暂停等确认）
-- REJECT → 回退到 spec-work，重试计数 +1
-- 本仓 QA PASS 只表示实现可发布；真实 `npm publish` 成功证据由 close 阶段收集
+- PASS → 进入 close（semi-auto 暂停等确认）。
+- REJECT → 回退到 spec-work，重试计数 +1。
+- 本仓 QA PASS 只表示实现可发布；真实 `npm publish` 成功证据由 close 阶段收集。
 
 ### Quality Bar
 
-- 根因修复，不做兼容层
-- 未完成文档同步的实现视为未完成交付
-- 改动方法论定义时，优先减少概念数量，避免增加用户心智负担
+- 根因修复，不做兼容层。
+- 未完成文档同步的实现视为未完成交付。
+- 改动方法论定义时，优先减少概念数量，避免增加用户心智负担。
+- baseline 改动必须保持 `examples/baseline/` 与 `skills/ys-team/baseline/` 全量一致。
