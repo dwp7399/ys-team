@@ -2,7 +2,7 @@
 
 ## 结论
 
-PASS / READY_FOR_CLOSE。
+PASS / CLOSE_BLOCKED_NPM_AUTH。
 
 实现已满足 spec 的主要目的：
 
@@ -29,8 +29,9 @@ PASS / READY_FOR_CLOSE。
 
 ## 剩余 Gate
 
+- `npm whoami` 返回 E401 Unauthorized，当前本机 npm 未认证。
 - 未执行 `npm publish`。
 - 未合回 `main`。
 - 未创建或 push `v1.0.2` tag。
 
-这些属于 release-first close，需要用户确认后继续。
+恢复 npm 登录后继续 release-first close。

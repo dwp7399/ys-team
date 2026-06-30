@@ -22,4 +22,10 @@
 
 ## Release Gate
 
-未执行 `npm publish`、合回 `main`、tag 或 push。原因：这些属于不可逆 close 操作，需用户确认后执行。
+BLOCKED。
+
+- `npm whoami` 返回 E401 Unauthorized。
+- 未执行 `npm publish`。
+- 未合回 `main`。
+- 未创建或 push `v1.0.2` tag。
+- 详情见 `evidence/publish-attempt-20260630.md`。
