@@ -2,7 +2,7 @@
 
 ## 结论
 
-PASS / CLOSE_BLOCKED_NPM_AUTH。
+PASS / PUBLISHED。
 
 实现已满足 spec 的主要目的：
 
@@ -29,9 +29,9 @@ PASS / CLOSE_BLOCKED_NPM_AUTH。
 
 ## 剩余 Gate
 
-- `npm whoami` 返回 E401 Unauthorized，当前本机 npm 未认证。
-- 未执行 `npm publish`。
+- `npm publish` 已成功，registry 返回 `ys-team@1.0.2`。
+- `latest=1.0.2`，`legacy=0.6.5`。
 - 未合回 `main`。
 - 未创建或 push `v1.0.2` tag。
 
-恢复 npm 登录后继续 release-first close。
+继续执行 Git close gate。

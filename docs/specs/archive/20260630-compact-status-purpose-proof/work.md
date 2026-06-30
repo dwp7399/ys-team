@@ -22,10 +22,10 @@
 
 ## Release Gate
 
-BLOCKED。
+PASS in progress.
 
-- `npm whoami` 返回 E401 Unauthorized。
-- 未执行 `npm publish`。
-- 未合回 `main`。
-- 未创建或 push `v1.0.2` tag。
-- 详情见 `evidence/publish-attempt-20260630.md`。
+- 初次 `npm whoami` 返回 E401 Unauthorized，已记录在 `evidence/publish-attempt-20260630.md`。
+- 用户提供一次性 token 后，使用临时 `NODE_AUTH_TOKEN` 发布；未写入项目文件或长期 npm 配置。
+- `npm publish --access public` 成功，registry 返回 `+ ys-team@1.0.2`。
+- `npm view ys-team version dist-tags --json` 返回 `version=1.0.2`、`latest=1.0.2`、`legacy=0.6.5`。
+- 待完成：归档 spec、合回 `main`、创建并 push `v1.0.2` tag。
