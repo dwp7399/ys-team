@@ -70,6 +70,15 @@ ys-team v1 是 verifier-first 的 AI coding workflow。agent 原生会循环执�
 
 UI/交互类改动低于 L2 默认不通过。
 
+## Verifier Card
+
+非 trivial spec 应写清 `目的与验收证明`：
+
+- 目的：用户真正想达成的结果，不写成“修改某文件”。
+- 验收证明：可观察结果、命令断言、人工脚本或明确降级理由。
+
+该段负责把目标与 verifier 对齐，不替代人等价验收脚本或 Feedback Loop。
+
 ## 三道闸
 
 - **入口闸**：非 trivial 改动必须有 verifier 卡。
@@ -96,10 +105,13 @@ UI/交互类改动低于 L2 默认不通过。
 
 - 当前 mode / output_mode
 - 活跃 spec
+- queued spec
 - 最近判断
 - 阻塞项
 - 待办
 - 需要用户决策的点
+
+`status.md` 只做当前仪表盘：活跃项、queued 项和最近 5 条判断。任务过程、命令输出、QA 结论和发布证据在 spec 目录；可复用经验在 `.ys_team/memory/`。
 
 `friendly` 模式下补充普通语言总结，不弱化阻塞、验证失败或 scope 扩大。
 

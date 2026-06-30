@@ -8,7 +8,7 @@
 - 简单、可逆、验收显然的 `direct` 改动可以直接做，并说明最小验证。
 - 范围清楚、影响有限的 `patch` 改动可以直接做，但要用快速 verifier 验收。
 - 不可逆、高不确定性、跨方法论 / skills / baseline / CLI / 发布入口，或验收方式不清楚的 `spec` 改动，先形成 verifier 卡，再执行。
-- verifier 卡必须写清 Write-Scope、验收保真度、人等价验收脚本或降级理由、Feedback Loop。
+- verifier 卡必须写清 Write-Scope、目的与验收证明、验收保真度、人等价验收脚本或降级理由、Feedback Loop。
 - 验收不真绿，不声明完成。
 
 ## 验收门槛
@@ -29,5 +29,7 @@
 用原生 todo、状态文件和简短结果状态说明进度，例如：
 
 `spec 卡已签 · loop 3/5 验收项过 · 未全绿`
+
+`status.md` 只做当前仪表盘：活跃项、queued 项和最近 5 条判断。任务过程、命令输出、QA 结论和发布证据写入 spec；可复用经验写入 `.ys_team/memory/`。
 
 结果状态不是完成条件；verifier 与 evidence 才是完成条件。

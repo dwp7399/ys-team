@@ -63,9 +63,17 @@ spec.md 使用 YAML frontmatter + Markdown body。
 - 意图
 - 非目标
 - Write-Scope
+- 目的与验收证明
 - 验收
 - 交付清单
 - 依赖 / 风险
+
+`目的与验收证明` 是目标对齐层：
+
+| 字段 | 说明 |
+|------|------|
+| 目的 | 用户真正想达成的结果，不写成“修改某文件”这类实现动作 |
+| 验收证明 | 可观察结果、命令断言、人工脚本或明确降级理由 |
 
 验收段必须包含：
 
@@ -112,6 +120,7 @@ spec.md 使用 YAML frontmatter + Markdown body。
 
 - Write-Scope 非空。
 - Delete-Scope 覆盖所有删除行为。
+- 目的与验收证明存在，且目的不是实现动作。
 - 每个 Deliverable / 交付清单项能追溯到 Write-Scope。
 - 验收声明 L3/L2/L1/L0。
 - UI/交互类没有低于 L2。
@@ -129,6 +138,7 @@ v1.0 的结构 lint 是文档化必检规则。审阅者发现不满足时直接
 
 - 意图与非目标清楚
 - Write-Scope / Delete-Scope 完整
+- 目的与验收证明能覆盖用户目标
 - 验收保真度等级合理
 - Feedback Loop 真实可运行
 - 交付清单覆盖项目本地 SOP
@@ -184,7 +194,7 @@ close 是项目本地发布 gate。ys-team 本仓使用 release-first：
 | `rules.md` | 项目行为边界 |
 | `reality.md` | 约束与风险地图，不复述目录树 |
 | `glossary.md` | 术语表 |
-| `status.md` | 当前快照 |
+| `status.md` | 当前仪表盘：活跃项、queued 项和最近 5 条判断 |
 | `templates/spec.md` | verifier 卡模板 |
 | `templates/checklist.md` | 项目交付清单模板 |
 | `templates/questions.md` | 文件化 grill 问卷模板 |
@@ -192,6 +202,19 @@ close 是项目本地发布 gate。ys-team 本仓使用 release-first：
 | `history/` | 低频历史归档 |
 
 不再默认生成 `role-pool.yaml`、治理槽位绑定或按人格拆分的角色记忆。
+
+`status.md` 不保存任务日志、命令输出、QA 摘要或长期经验。任务过程保存在 spec 的 `work.md`、`qa-report.md`、`evidence/`；可复用失败模式和项目经验保存在 `.ys_team/memory/`。
+
+## Skill 分层
+
+ys-team 自带的四个 skill 是用户入口：
+
+- `ys-team`：路由、状态和轻量判断。
+- `ys-team-init`：初始化和 rebuild。
+- `ys-team-spec-talk`：grill、verifier 卡和结构 lint。
+- `ys-team-spec-work`：按 verifier loop 执行和收集 evidence。
+
+项目本地可以增加 discipline / SOP，例如 TDD、故障诊断、领域建模、供应商接入或发布检查。它们只补充交付面和验收 gate，不改变用户入口；agent 在命中场景时读取本地规则、references 或 repo-local skill。
 
 ## config.yaml Schema
 
@@ -280,7 +303,7 @@ rebuild 原则：
 `AGENTS.md` / `CLAUDE.md` 里的 ys-team 入口使用托管块维护：
 
 ```markdown
-<!-- ys-team:managed:start version=1.0.1 -->
+<!-- ys-team:managed:start version=1.0.2 -->
 ...
 <!-- ys-team:managed:end -->
 ```
@@ -328,4 +351,4 @@ spec 卡已签 · loop 3/5 验收项过 · 未全绿
 | baseline | `.ys_team/VERSION` | 项目本地基线版本 |
 | methodology | `docs/methodology/VERSION` | 方法论规范版本 |
 
-v1.0.1 本仓三条线分别为 npm 1.0.1、baseline 1.0.1、methodology 2.0.0。
+v1.0.2 本仓三条线分别为 npm 1.0.2、baseline 1.0.2、methodology 2.1.0。

@@ -3,7 +3,7 @@
 **Project Type**: Markdown-first method repository
 **Project Scale**: Small
 **Index Strategy**: Core module index
-**Last Updated**: 2026-06-15
+**Last Updated**: 2026-06-30
 
 ## `docs/methodology/`（方法论规范）
 **职责**：承载 ys-team 方法论的完整规范。overview.md 面向理解，reference.md 面向查规则细节；当前以 verifier 卡、验收保真度分级、三道闸、结构 lint、项目错题本和 release-first close 为核心。
@@ -14,10 +14,10 @@
 - 版本：`docs/methodology/VERSION`
 
 ## `docs/guide/`（用户向使用指南）
-**职责**：面向个人开发者，解释为什么 loop-era 需要 verifier-first 工作流、如何初始化和日常使用，以及 Python / Java 项目如何低成本从 verifier 卡开始沉淀本地 SOP。
+**职责**：面向个人开发者，解释为什么 loop-era 需要 verifier-first 工作流、如何初始化和日常使用，以及 Python / Java 项目如何低成本从 verifier 卡开始沉淀本地 SOP。`examples.md` 提供 direct / patch、目的-验收证明和项目本地 SOP 的短示例。
 
 **关系**：
-- 入口：`docs/guide/why-ys-team.md`、`docs/guide/getting-started.md`
+- 入口：`docs/guide/why-ys-team.md`、`docs/guide/getting-started.md`、`docs/guide/examples.md`
 - 引用：`docs/methodology/`
 - 被依赖：`README.md`
 
@@ -39,7 +39,7 @@
 - 同步副本：`skills/ys-team/baseline/`
 
 ## `.ys_team/`（方法仓自用本地基线）
-**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。当前 spec 正在从 v0.x 流程基线迁移到 v1 verifier-first 口径。
+**职责**：本仓自己的 `.ys_team/` 用来”用 ys-team 管理 ys-team”。`status.md` 只做当前仪表盘，任务过程和验证证据进入 spec，长期项目经验进入 `memory/`。
 
 **关系**：
 - 入口：`.ys_team/status.md`, `.ys_team/rules.md`, `.ys_team/config.yaml`

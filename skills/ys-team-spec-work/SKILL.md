@@ -10,7 +10,7 @@ description: "Execute an approved ys-team verifier card in a loop until its veri
 被调用时立即执行：
 
 1. 读取当前 active spec 的 `spec.md`、`work.md`、`qa-report.md`（如存在）、`.ys_team/rules.md`、`.ys_team/reality.md` 和相关错题本。
-2. 校验前置：spec-review PASS；当前位于 `release/<version>` 或 `work/<spec-id>` 分支；verifier 卡含 Write-Scope、保真度等级和 Feedback Loop。
+2. 校验前置：spec-review PASS；当前位于 `release/<version>` 或 `work/<spec-id>` 分支；verifier 卡含 Write-Scope、目的与验收证明、保真度等级和 Feedback Loop。
 3. 建立原生 todo，小步执行：一个原则或机制一个闭环。
 4. 在 loop 内反复运行 Feedback Loop；失败则继续修。
 5. 最终运行 Verification；未全绿不得声明完成。
@@ -40,6 +40,7 @@ scope 外修改需求出现时停止，回到 spec-talk 或请求用户确认。
 - spec 已通过审阅或用户明确确认。
 - 已切到 release/work 分支。
 - Write-Scope / Delete-Scope 覆盖预期改动。
+- 目的与验收证明存在，且能覆盖用户目标。
 - 验收保真度声明存在。
 - UI/交互类改动不低于 L2。
 - Feedback Loop 存在，或 N/A 理由经审阅接受。
@@ -89,6 +90,8 @@ scope 外修改需求出现时停止，回到 spec-talk 或请求用户确认。
 - 验证未全绿：继续执行，不声明完成
 - 全绿：ready for qa
 - 阻塞：blocked，并写清需要谁处理什么
+
+`status.md` 只记录当前仪表盘和最近 5 条判断。完整过程、命令输出、QA 结论和发布证据写入 `work.md`、`qa-report.md` 或 `evidence/`；可复用经验写入 `.ys_team/memory/`。
 
 ## Output
 

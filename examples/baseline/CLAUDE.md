@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-<!-- ys-team:managed:start version=1.0.1 -->
+<!-- ys-team:managed:start version=1.0.2 -->
 本项目使用 ys-team v1。
 
 ## 工作方式
@@ -17,6 +17,7 @@
 
 - 意图与非目标
 - Write-Scope / Delete-Scope
+- 目的与验收证明
 - 保真度等级 L3/L2/L1/L0
 - 人等价验收脚本或降级理由
 - Feedback Loop
@@ -37,6 +38,8 @@
 用 todo、status 和简短结果状态说明进度，例如：
 
 `spec 卡已签 · loop 3/5 验收项过 · 未全绿`
+
+`status.md` 只做当前仪表盘：活跃项、queued 项和最近 5 条判断。任务过程、命令输出、QA 结论和发布证据写入 spec；可复用经验写入 `.ys_team/memory/`。
 <!-- ys-team:managed:end -->
 
 ## Project Local Instructions

@@ -1,6 +1,6 @@
 # AGENTS.md
 
-<!-- ys-team:managed:start version=1.0.1 -->
+<!-- ys-team:managed:start version=1.0.2 -->
 ## ys-team v1 工作流
 
 ys-team v1 强制的是“先路由、再选择合适验收”，不是所有请求都进入完整 spec 流程。
@@ -15,6 +15,7 @@ ys-team v1 强制的是“先路由、再选择合适验收”，不是所有请
 
 - 意图与非目标
 - Write-Scope / Delete-Scope
+- 目的与验收证明
 - 验收保真度等级
 - 人等价验收脚本或降级理由
 - Feedback Loop
@@ -49,6 +50,8 @@ ys-team v1 强制的是“先路由、再选择合适验收”，不是所有请
 `spec 卡已签 · loop 3/5 验收项过 · 未全绿`
 
 结果状态不是完成条件；verifier 与 evidence 才是完成条件。
+
+`status.md` 只做当前仪表盘：活跃项、queued 项和最近 5 条判断。任务过程、命令输出、QA 结论和发布证据写入 spec；可复用经验写入 `.ys_team/memory/`。
 <!-- ys-team:managed:end -->
 
 ## Project Local Instructions

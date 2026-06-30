@@ -94,6 +94,7 @@ rebuild 原则：
 - 改最小面。
 - 保留本地 SOP、rules、references 和用户定制。
 - 更新 VERSION。
+- 更新 verifier 卡模板中的“目的与验收证明”和短 status 规则。
 - 更新 `AGENTS.md` / `CLAUDE.md` 的 `ys-team:managed` 托管块；托管块外的项目本地内容不得覆盖。
 - 提示旧结构迁移，不静默删除用户内容。
 - 如用户确认升级 v1，可迁移旧 role-pool / slot config 到错题本和 verifier 策略。
@@ -111,7 +112,7 @@ rebuild 原则：
 v1 的入口文件使用托管块保护项目本地定制：
 
 ```markdown
-<!-- ys-team:managed:start version=1.0.1 -->
+<!-- ys-team:managed:start version=1.0.2 -->
 ... ys-team v1 routing ...
 <!-- ys-team:managed:end -->
 ```

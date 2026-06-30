@@ -2,6 +2,33 @@
 
 记录 `examples/baseline/` 及其直接配套接入面的结构化变化，供用户迁移、rebuild 判断和后续 `check-update` 摘要提取使用。
 
+## [1.0.2] - 2026-06-30
+
+### What Changed
+
+- **短 status**：`status.md` 改为当前仪表盘，只保留活跃项、queued 项和最近 5 条判断
+- **目的与验收证明**：verifier 卡模板新增目标-证据矩阵，要求先证明用户目标而不是只列实现动作
+- **入口同步**：`AGENTS.md` / `CLAUDE.md` 托管块同步短 status 和目的-验收证明口径
+
+### Why
+
+- 任务日志应留在 spec，项目经验应留在 memory；常驻 status 过长会降低 agent 读取质量
+- 复杂改动需要先绑定“目的”和“证明方式”，避免只完成交付物但没有证明用户目标成立
+
+### Key Files
+
+- `examples/baseline/.ys_team/status.md`
+- `examples/baseline/.ys_team/templates/spec.md`
+- `examples/baseline/.ys_team/templates/checklist.md`
+- `examples/baseline/.ys_team/rules.md`
+- `examples/baseline/AGENTS.md`
+- `examples/baseline/CLAUDE.md`
+
+### Migration Hint
+
+- 已初始化项目可在 rebuild 后把 `status.md` 压缩为当前仪表盘，历史过程不要搬回 status
+- 后续复杂 spec 建议补 `目的与验收证明`，旧 spec 不必为归档补格式
+
 ## [1.0.1] - 2026-06-15
 
 ### What Changed

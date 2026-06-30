@@ -1,6 +1,6 @@
 # 月度摘要
 
-`status.md` 只保留当前快照和最近 10 条判断。跨月的轻量统计留在 `.ys_team/history/YYYY-MM.md`。
+`status.md` 只保留当前仪表盘和最近 5 条判断。跨月的轻量统计留在 `.ys_team/history/YYYY-MM.md`。
 
 ## 字段约定
 

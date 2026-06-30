@@ -79,6 +79,7 @@ Ready For Spec：
 - 意图
 - 非目标
 - Write-Scope
+- 目的与验收证明
 - 验收
   - 保真度等级 L3/L2/L1/L0
   - 人等价验收脚本，或降级理由
@@ -94,6 +95,7 @@ Ready For Spec：
 
 - Write-Scope 非空。
 - Delete-Scope 覆盖删除行为。
+- 目的与验收证明存在，且目的不是实现动作。
 - 每个交付项能追溯到 Write-Scope。
 - 验收声明 L3/L2/L1/L0。
 - UI/交互类验收低于 L2 时 REJECT。
@@ -120,9 +122,12 @@ trivial / 低风险 patch 可跳过。
 写入 `.ys_team/status.md`：
 
 - active spec
+- queued spec
 - 当前阶段
-- 最新判断
+- 最新判断（最多 5 条）
 - 阻塞项或待确认问题
+
+status 只做当前仪表盘；任务过程和验证证据写入 spec 目录，可复用经验写入 `.ys_team/memory/`。
 
 ## Output
 

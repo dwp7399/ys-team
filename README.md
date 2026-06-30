@@ -38,7 +38,7 @@ v1 不再排他，也不靠强制尾标证明“进入流程”。真正的 gate
 
 两个真决策点：
 
-1. 看 spec 卡，尤其验收是否足够像真人会做的检查。
+1. 看 spec 卡，尤其目的与验收证明是否对齐，验收是否足够像真人会做的检查。
 2. 看最终证据，确认 verifier 真绿或人工剩余项已诚实标注。
 
 ## 30 秒开始
@@ -75,12 +75,15 @@ verifier 卡会写清：
 
 - 意图和非目标
 - Write-Scope / Delete-Scope
+- 目的与验收证明
 - 验收保真度等级 L3/L2/L1/L0
 - 人等价验收脚本或降级理由
 - Feedback Loop
 - 项目交付清单
 
 UI/交互类改动低于 L2 默认不通过。也就是说，不能只靠单测或编译来证明一个真实交互已经好用。
+
+`status.md` 只做当前仪表盘。任务过程、命令输出、QA 结论和发布证据留在 spec；项目经验和失败模式留在 `.ys_team/memory/`。
 
 ## 输出模式
 
@@ -131,4 +134,5 @@ v1 原地替换现有 `ys-team` skill；旧版 npm 包通过 `legacy` tag 保留
 |------|------|
 | [为什么需要 ys-team](docs/guide/why-ys-team.md) | 问题、解法、反模式案例 |
 | [开始使用](docs/guide/getting-started.md) | 安装、初始化、日常使用、常见问题 |
+| [短示例](docs/guide/examples.md) | direct / patch、目的-验收 spec、本地 SOP 的 curated examples |
 | [方法论规范](docs/methodology/) | 形式化规则与协议 |
