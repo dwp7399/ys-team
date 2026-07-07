@@ -50,12 +50,14 @@ scope 外修改需求出现时停止，回到 spec-talk 或请求用户确认。
 ## Execution Loop
 
 1. 从 verifier 卡提取交付项和验收项。
-2. 建立 todo。
-3. 执行一个小闭环。
-4. 运行 Feedback Loop。
-5. 红了继续改，绿了进入下一项。
-6. 全部交付项完成后运行完整 Verification。
-7. 写 evidence 和 work.md。
+2. **任务拆解**（复杂 spec 必做，简单 spec 可跳）：把交付项拆成 bite-sized 任务，每任务一个原则或机制，TDD 节奏（写失败测试 → 跑确认失败 → 最小实现 → 跑确认通过 → commit）。拆解写入 `work.md` 任务清单。
+3. 建立 todo。
+4. 执行一个小闭环。
+5. 运行 Feedback Loop。
+6. 红了继续改，绿了进入下一项。
+7. 全部交付项完成后运行完整 Verification。
+8. **独立审阅**（spec 级默认，trivial/patch 跳过）：Verification 全绿后，开新 subagent 会话（不继承实现上下文，只给 spec + 代码 diff + 验证结果）做两阶段 review——spec 合规（不多不少）+ 代码质量（bug/边界/安全/模式）。两阶段都过才放行；发现问题回 spec-work 修，修完重审。具体派发由所在 agent 决定：支持自动派的直接派，不支持的由用户主动命名启动新会话。
+9. 写 evidence 和 work.md（含独立审阅结论）。
 
 不要把“编译通过”冒充 UI/交互完成。无法自动化时标注 L0 和人工剩余项。
 

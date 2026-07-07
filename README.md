@@ -19,7 +19,7 @@ ys-team v1 的核心是把流程重量搬到 verifier：复杂改动先写一张
 
 - 现实先于生成：先读项目事实和硬约束
 - 规格先于执行：非 trivial 改动先写 verifier 卡
-- 讨论归于收敛：先 grill 澄清意图，必要时独立审阅
+- 讨论归于收敛：先 grill 澄清意图，必要时跨模型对抗审阅
 - 证据胜于感觉：验收不真绿，不声明完成
 
 v1 不再排他，也不靠强制尾标证明“进入流程”。真正的 gate 是三道闸：
@@ -68,8 +68,10 @@ Python / Java 项目低成本开始方式：
 非 trivial 改动会先进入：
 
 ```text
-grill → verifier 卡 → loop 自跑 → 抽检证据
+grill → verifier 卡 → loop 自跑 → 独立审阅 → 抽检证据
 ```
+
+spec 级改动实现后默认由新 subagent（不继承实现上下文）做独立审阅：spec 合规 + 代码质量两阶段。单 agent 自审有盲区，独立审阅能抓「测试通过但运行时坏」的缺陷。trivial/patch 跳过。流程 agent 中立，Claude/Codex 共用。
 
 verifier 卡会写清：
 
